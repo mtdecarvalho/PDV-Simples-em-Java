@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Carvalho
  */
 public class Venda {
+    private int codigo;
     private String data, hora;
     private double valor;
     private Cliente cliente;
