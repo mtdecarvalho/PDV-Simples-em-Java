@@ -11,18 +11,17 @@ package Classes;
  */
 public class Cliente {
     private int codigo, telefone;
-    private String nome, email;
-    private Endereco endereco;
+    private String nome, email, CEP;
     
     public int getCodigo()                          { return codigo; }
     public int getTelefone()                        { return telefone; }
     public String getNome()                         { return nome; }
     public String getEmail()                        { return email; }
-    public Endereco getEndereco()                   { return endereco; }
+    public String getCEP()                          { return CEP;   } 
     
     public void setCodigo( int codigo )             { this.codigo = codigo; }
     public void setTelefone( int telefone )         { this.telefone = telefone; }
     public void setNome( String nome )              { this.nome = nome; }
     public void setEmail(String email )             { this.email = email; }
-    public void setEndereco(Endereco endereco)      { this.endereco = endereco; }
+    public void setCEP(String CEP)                  { this.CEP = CEP; }
 }
