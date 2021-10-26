@@ -1,11 +1,15 @@
 package view;
 
-import java.io.File;
+import Classes.Cliente;
+import Classes.ClienteDAO;
+import Classes.Endereco;
+import Classes.EnderecoDAO;
+import Classes.ModeloTabelaCliente;
 import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.Scanner;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableRowSorter;
 /**
  *
@@ -14,65 +18,44 @@ import javax.swing.table.TableRowSorter;
 public class GradeCadastroCliente extends javax.swing.JDialog {
 
     private ModeloTabelaCliente modeloClientes;
-    private ArrayList<ClientePF> clientes = new ArrayList<ClientePF>();
-    
-    private void LerArquivo(){
-        clientes.clear();
-            Scanner entrada = null;
-            try{
-                try{
-                    entrada = new Scanner(new File("ClientesPF.txt"));
-                    while (entrada.hasNext()){
-                        ClientePF leitura = new ClientePF();
-                        leitura.setNome(entrada.next());
-                        leitura.setCPF(entrada.next());
-                        leitura.setTelefone(entrada.next());
-                        leitura.setTelComercial(entrada.next());
-                        leitura.setTelCel(entrada.next());
-                        leitura.setFAX(entrada.next());
-                        clientes.add(leitura);
-                        modeloClientes.inserirContato(leitura);
-                    }
-                } 
-                finally {
-                    if (entrada != null){
-                        entrada.close();
-                    }
-                }
-            } 
-            catch (Exception e){
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
-    }
-    
-    private void SalvarArquivo(){
-        Formatter saida = null;
-            try{
-                try{
-                    saida = new Formatter("ClientesPF.txt");
-                    for (int i = 0; i < clientes.size(); i++){
-                        ClientePF cliente = clientes.get(i);
-                            saida.format("%s %s %s %s %s %s\n", cliente.getNome(), cliente.getCPF(), cliente.getTelefone(), 
-                            cliente.getTelComercial(), cliente.getTelCel(), cliente.getFAX());
-                    }
-                }
-                finally{
-                    if (saida!= null){
-                        saida.close();
-                    }
-                }
-            }
-            catch(Exception e){
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
-    }
+    private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
     
     public GradeCadastroCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        modeloClientes = new ModeloTabelaClientePF(clientes);
-        tbGradePF.setModel(modeloClientes);
-        LerArquivo();
+        modeloClientes = new ModeloTabelaCliente(clientes);
+        tbGradeCliente.setModel(modeloClientes);
+        readJTable();
+    }
+    
+    public void readJTable()
+    {
+        ModeloTabelaCliente modeloClientes = new ModeloTabelaCliente(clientes);
+        ClienteDAO clienteDAO = new ClienteDAO();
+        EnderecoDAO enderecoDAO = new EnderecoDAO();
+        
+        for ( Cliente cliente : clienteDAO.read() )
+        {
+            
+            cliente.getCodigo();
+            cliente.getTelefone();
+            cliente.getNome();
+            cliente.getEmail();
+            cliente.getCEP();
+            modeloClientes.inserirCliente(cliente);
+        }
+        
+        for ( Endereco endereco : enderecoDAO.read() )
+        {
+            endereco.getCEP();
+            endereco.getRua();
+            endereco.getNumero();
+            endereco.getComplemento();
+            endereco.getCidade();
+            endereco.getUF();
+        }
+        
+        tbGradeCliente.setModel(modeloClientes);
     }
 
     /**
@@ -88,20 +71,20 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         btnConsultar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbGradePF = new javax.swing.JTable();
-        btnAlterar = new javax.swing.JButton();
+        tbGradeCliente = new javax.swing.JTable();
+        btnAlterarPessoais = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         btnAdicionar = new javax.swing.JButton();
+        btnAlterarEndereco = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pessoa Física");
         setMinimumSize(new java.awt.Dimension(677, 398));
         setResizable(false);
 
-        btnExcluir.setText("Excluir");
+        btnExcluir.setText("Excluir cliente");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -122,12 +105,12 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
             }
         });
 
-        jScrollPane1.setViewportView(tbGradePF);
+        jScrollPane1.setViewportView(tbGradeCliente);
 
-        btnAlterar.setText("Alterar");
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+        btnAlterarPessoais.setText("Alterar dados pessoais do cliente");
+        btnAlterarPessoais.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
+                btnAlterarPessoaisActionPerformed(evt);
             }
         });
 
@@ -135,7 +118,6 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         jLabel1.setText("Cliente");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/JDialogsEFrames/pesquisar.png"))); // NOI18N
         jLabel2.setText("Pesquisar:");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -144,12 +126,17 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/JDialogsEFrames/cadastro.png"))); // NOI18N
-
-        btnAdicionar.setText("Adicionar");
+        btnAdicionar.setText("Adicionar novo cliente");
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionarActionPerformed(evt);
+            }
+        });
+
+        btnAlterarEndereco.setText("Alterar dados de endereço do cliente");
+        btnAlterarEndereco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarEnderecoActionPerformed(evt);
             }
         });
 
@@ -166,20 +153,19 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField1))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
                         .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addGap(195, 195, 195)))
+                        .addGap(201, 201, 201)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAlterarPessoais, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnExcluir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnConsultar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnFechar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnFechar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAlterarEndereco, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(btnAdicionar))
                 .addGap(18, 18, 18))
         );
@@ -188,17 +174,17 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addComponent(btnAdicionar)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAlterar)
+                        .addComponent(btnAlterarPessoais)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAlterarEndereco)
                         .addGap(18, 18, 18)
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
@@ -216,15 +202,7 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        int indice = tbGradePF.getSelectedRow();
-        if (indice >= 0){
-            ClientePF PF = modeloClientes.getContato(indice);
-            JOptionPane.showMessageDialog(this, "Nome: " + PF.getNome() +  "\nCPF: " +
-                PF.getCPF() + "\nTelefone Residencial: " + PF.getTelefone() + "\nTelefone Comercial: " +
-                PF.getTelComercial() + "\nTelefone Celular: " + PF.getTelCel() + "\nFAX: " + PF.getFAX());
-        }
-        else
-        JOptionPane.showMessageDialog(null, "É necessário selecionar uma pessoa");
+        
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -232,41 +210,51 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        int indice = tbGradePF.getSelectedRow();
-        if(JOptionPane.showConfirmDialog(null, "Confirma a exclusão?") == 0){
-            if (indice >= 0){
-                modeloClientes.excluirContato(indice);
-                clientes.remove(indice);
-                SalvarArquivo();
-                JOptionPane.showMessageDialog(this, "Contato removido");
-            }
-            else
-                JOptionPane.showMessageDialog(null, "É necessário selecionar uma pessoa");
-        }
+        
     }//GEN-LAST:event_btnExcluirActionPerformed
 
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        int indice = tbGradePF.getSelectedRow();
-        if (indice >= 0){
-            ClientePF PF = modeloClientes.getContato(indice);
-            if(CadastrarCliente.executar(null, opcCadastro.ocAlterar, PF, indice)){
-                modeloClientes.atualizarContato(indice, PF);
-            }
+    private void btnAlterarPessoaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarPessoaisActionPerformed
+        int indice = tbGradeCliente.getSelectedRow();
+        
+        if ( indice >= 0 )
+        {
+            Cliente cliente = modeloClientes.getCliente(indice);
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            AlterarCliente abre = new AlterarCliente(frame, cliente, indice, modeloClientes.getCliente(indice).getCodigo());
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
+            readJTable();
         }
-        else 
-            JOptionPane.showMessageDialog(null, "É necessário selecionar uma pessoa");
-    }//GEN-LAST:event_btnAlterarActionPerformed
+    }//GEN-LAST:event_btnAlterarPessoaisActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        TableRowSorter<ModeloTabelaClientePF> sorter = new TableRowSorter<ModeloTabelaClientePF>(((ModeloTabelaClientePF) tbGradePF.getModel())); 
+        TableRowSorter<ModeloTabelaCliente> sorter = new TableRowSorter<ModeloTabelaCliente>(((ModeloTabelaCliente) tbGradeCliente.getModel())); 
         sorter.setRowFilter(RowFilter.regexFilter(jTextField1.getText()));
 
-        tbGradePF.setRowSorter(sorter);
+        tbGradeCliente.setRowSorter(sorter);
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        // TODO add your handling code here:
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        CadastrarCliente abre = new CadastrarCliente(frame, true);
+        abre.setLocationRelativeTo(null);
+        abre.setVisible(true);
+        readJTable();
     }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void btnAlterarEnderecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarEnderecoActionPerformed
+        int indice = tbGradeCliente.getSelectedRow();
+        
+        if ( indice >= 0 )
+        {
+            Cliente cliente = modeloClientes.getCliente(indice);
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            AlterarCliente abre = new AlterarCliente(frame, cliente, indice, modeloClientes.getCliente(indice).getCodigo());
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
+            readJTable();
+        }
+    }//GEN-LAST:event_btnAlterarEnderecoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -315,15 +303,15 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnAlterarEndereco;
+    private javax.swing.JButton btnAlterarPessoais;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tbGradePF;
+    private javax.swing.JTable tbGradeCliente;
     // End of variables declaration//GEN-END:variables
 }

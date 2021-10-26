@@ -5,11 +5,13 @@
  */
 package Classes;
 
-import Classes.Produto;
-import Classes.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -45,8 +47,74 @@ public class ProdutoDAO {
         {
             ConnectionFactory.closeConnection(con, stmt);
         }
-        
-        
     }
     
+    public ArrayList<Produto> read()
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        ArrayList<Produto> produtos = new ArrayList<>();
+        
+        try
+        {
+            stmt = con.prepareStatement("SELECT * FROM produto");
+            rs = stmt.executeQuery();
+            
+            while (rs.next())
+            {
+                Produto produto = new Produto();
+                
+                produto.setCodigo(rs.getInt("codigo"));
+                produto.setUnidade(rs.getInt("unidade"));
+                produto.setQtdEstoque(rs.getInt("qtdEstoque"));
+                produto.setNome(rs.getString("nome"));
+                produto.setPreco(rs.getDouble("preco"));
+                produto.setUltimaVenda(rs.getString("ultimaVenda"));
+                
+                produtos.add(produto);
+            }
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return produtos;
+    }
+    
+    public void update(Produto produto)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null; 
+        
+        try 
+        {
+            stmt = con.prepareStatement("UPDATE produto SET unidade = ? , "
+                    + "qtdEstoque = ? , nome = ? , preco = ? WHERE codigo = ?");
+            
+            stmt.setInt(1, produto.getUnidade());
+            stmt.setInt(2, produto.getQtdEstoque());
+            stmt.setString(3, produto.getNome());
+            stmt.setDouble(4, produto.getPreco());
+            stmt.setInt(5, produto.getCodigo());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+        } 
+        finally 
+        {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
 }

@@ -1,57 +1,87 @@
 package view;
 
-import Classes.Produto;
+import Classes.Cliente;
 import javax.swing.JOptionPane;
-import Classes.ProdutoDAO;
+import Classes.ClienteDAO;
 /**
  *
  * @author Carvalho
  */
-public class CadastrarProduto extends javax.swing.JDialog {
-    
+public class AlterarCliente extends javax.swing.JDialog {
+//    private opcCadastro opc;
+//    private ClientePF pfAlterado;
+    private boolean confirmado;
     private int indice;
+    private int cod;
     
-    public CadastrarProduto(java.awt.Frame parent, boolean modal) {
+//    public static boolean executar(java.awt.Frame parent, opcCadastro opc, ClientePF pf, int i){
+//        CadastrarCliente cadastrar = new CadastrarCliente(parent, opc, pf, i);
+//        cadastrar.setLocationRelativeTo(null);
+//        cadastrar.setVisible(true);
+//        return cadastrar.opcConfirmada();
+//    }
+    
+    public AlterarCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
+    public AlterarCliente(java.awt.Frame parent, Cliente c, int i, int cod){
+        super(parent, true);
+        this.indice = i;
+        this.cod = cod;
+        initComponents();
+        tbxNome.setText(c.getNome());
+        tbxTelefone.setText(String.valueOf(c.getTelefone()));
+        tbxEmail.setText(c.getEmail());
+    }
     
+//    public CadastrarCliente(java.awt.Frame parent, opcCadastro opc, ClientePF pf, int i){
+//        super(parent, true);
+//        confirmado = false;
+//        this.opc = opc;
+//        pfAlterado = pf;
+//        this.indice = i;
+//        initComponents();
+//        if(opc == opc.ocAlterar){
+//            tbxCodigo.setText(pf.getNome());
+//            tbxNome.setText(pf.getCPF());
+//            tbxTelefone.setText(pf.getTelefone());
+//            tbxEmail.setText(pf.getTelComercial());
+//            tbxCEP.setText(pf.getTelCel());
+//            tbxRua.setText(pf.getFAX());
+//        }    
+//    }
     
+    public boolean opcConfirmada(){
+        return confirmado;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tbxUnidade = new javax.swing.JTextField();
-        tbxPreco = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        tbxUltimaVenda = new javax.swing.JTextField();
+        tbxEmail = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnOk = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        tbxCodigo = new javax.swing.JTextField();
         tbxNome = new javax.swing.JTextField();
-        tbxQtdEstoque = new javax.swing.JTextField();
+        tbxTelefone = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Pessoa Física");
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Codigo:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Nome:");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel7.setText("Produto");
+        jLabel7.setText("Cliente");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Qtd. em estoque:");
+        jLabel3.setText("Telefone:");
 
         btnOk.setText("Ok");
         btnOk.addActionListener(new java.awt.event.ActionListener() {
@@ -61,7 +91,7 @@ public class CadastrarProduto extends javax.swing.JDialog {
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Unidade:");
+        jLabel4.setText("Email:");
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -70,46 +100,33 @@ public class CadastrarProduto extends javax.swing.JDialog {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setText("Preço:");
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setText("Última Venda:");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(168, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnOk)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancelar)
-                                .addGap(78, 78, 78))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tbxCodigo)
-                                    .addComponent(tbxNome)
-                                    .addComponent(tbxQtdEstoque)
-                                    .addComponent(tbxUnidade)
-                                    .addComponent(tbxPreco)
-                                    .addComponent(tbxUltimaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(51, 51, 51))
+                        .addComponent(btnOk)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar)
+                        .addGap(129, 129, 129))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(162, 162, 162))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tbxNome, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                    .addComponent(tbxTelefone)
+                    .addComponent(tbxEmail))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,30 +134,18 @@ public class CadastrarProduto extends javax.swing.JDialog {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(tbxCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(tbxNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(tbxQtdEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tbxTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(tbxUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(tbxPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(tbxUltimaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                    .addComponent(tbxEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnOk))
@@ -151,17 +156,15 @@ public class CadastrarProduto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        Produto produto = new Produto();
-        ProdutoDAO dao = new ProdutoDAO();
+        Cliente cliente = new Cliente();
         
-        produto.setCodigo(Integer.parseInt(tbxCodigo.getText()));
-        produto.setNome(tbxNome.getText());
-        produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
-        produto.setUnidade(Integer.parseInt(tbxUnidade.getText()));
-        produto.setPreco(Double.parseDouble(tbxPreco.getText()));
-        produto.setUltimaVenda(tbxUltimaVenda.getText());
+        ClienteDAO dao = new ClienteDAO();
         
-        dao.create(produto);
+        cliente.setNome(tbxNome.getText());
+        cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
+        cliente.setEmail(tbxEmail.getText());
+        
+        dao.updatePessoal(cliente);
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed
 
@@ -187,13 +190,13 @@ public class CadastrarProduto extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -207,7 +210,7 @@ public class CadastrarProduto extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                CadastrarProduto dialog = new CadastrarProduto(new javax.swing.JFrame(), true);
+                AlterarCliente dialog = new AlterarCliente(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -222,18 +225,12 @@ public class CadastrarProduto extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnOk;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField tbxCodigo;
+    private javax.swing.JTextField tbxEmail;
     private javax.swing.JTextField tbxNome;
-    private javax.swing.JTextField tbxPreco;
-    private javax.swing.JTextField tbxQtdEstoque;
-    private javax.swing.JTextField tbxUltimaVenda;
-    private javax.swing.JTextField tbxUnidade;
+    private javax.swing.JTextField tbxTelefone;
     // End of variables declaration//GEN-END:variables
 }

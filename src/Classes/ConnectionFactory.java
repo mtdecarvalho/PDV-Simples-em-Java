@@ -64,22 +64,6 @@ public class ConnectionFactory {
         }
     }
     
-    public static void closeConnection(Connection con, PreparedStatement stmt, PreparedStatement stmt2)
-    {
-        closeConnection(con, stmt);
-        
-        try 
-        {
-            if (stmt2 != null) 
-            {
-                stmt2.close();
-            }
-        } catch (SQLException ex) 
-        {
-            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     public static void closeConnection(Connection con, PreparedStatement stmt, ResultSet rs)
     {
         closeConnection(con, stmt);

@@ -13,10 +13,10 @@ public class ModeloTabelaProduto extends AbstractTableModel {
     
     private String colunas[] = new String[]{"Código", "Nome", "Quantidade em Estoque",
         "Unidade", "Preco", "Ultima Venda"};
-    private ArrayList<ClientePF> produtos;
+    private ArrayList<Produto> produtos;
     
-    public ModeloTabelaProduto(ArrayList<ClientePF> clientes){
-        this.clientes = new ArrayList<ClientePF>(clientes);
+    public ModeloTabelaProduto(ArrayList<Produto> produtos){
+        this.produtos = new ArrayList<Produto>(produtos);
     }
     
     @Override
@@ -25,7 +25,7 @@ public class ModeloTabelaProduto extends AbstractTableModel {
     }
     @Override
     public int getRowCount(){
-        return clientes.size();
+        return produtos.size();
     }
     @Override
     public String getColumnName(int coluna){
@@ -37,7 +37,7 @@ public class ModeloTabelaProduto extends AbstractTableModel {
     }
     @Override
     public Object getValueAt(int linha, int coluna){
-        ClientePF produto = produtos.get(linha);
+        Produto produto = produtos.get(linha);
         switch(coluna){
             case COLUNA_CODIGO:
                 return produto.getCodigo();
@@ -56,22 +56,22 @@ public class ModeloTabelaProduto extends AbstractTableModel {
     }
     @Override
     public void setValueAt(Object valor, int linha, int coluna){
-        ClientePF produto = produtos.get(linha);
+        Produto produto = produtos.get(linha);
         switch(coluna){
             case COLUNA_CODIGO:
-                produto.setCodigo(valor.toString());
+                produto.setCodigo(Integer.parseInt(valor.toString()));
                 break;
             case COLUNA_NOME:
                 produto.setNome(valor.toString());
                 break;
             case COLUNA_QTD:
-                produto.setQtdEstoque(valor.toString());
+                produto.setQtdEstoque(Integer.parseInt(valor.toString()));
                 break;
             case COLUNA_UNIDADE:
-                produto.setUnidade(valor.toString());
+                produto.setUnidade(Integer.parseInt(valor.toString()));
                 break;
             case COLUNA_PRECO:
-                produto.setPreco(valor.toString());
+                produto.setPreco(Double.parseDouble(valor.toString()));
                 break;
             case COLUNA_ULTIMA_VENDA:
                 produto.setUltimaVenda(valor.toString());
@@ -80,21 +80,21 @@ public class ModeloTabelaProduto extends AbstractTableModel {
         }
     }
     
-    public ClientePF getContato(int indice){
-        return clientes.get(indice);
+    public Produto getProduto(int indice){
+        return produtos.get(indice);
     }
-    public void inserirContato(ClientePF cliente){
-        clientes.add(cliente);
+    public void inserirProduto(Produto produto){
+        produtos.add(produto);
         int ultimo = getRowCount()-1;
         fireTableRowsInserted(ultimo, ultimo);
     }
-    public void atualizarContato(int indice, ClientePF cliente){
-        clientes.set(indice, cliente);
+    public void atualizarProduto(int indice, Produto produto){
+        produtos.set(indice, produto);
         fireTableRowsUpdated(indice, indice);
 
     }
-    public void excluirContato(int indice){
-        clientes.remove(indice);
+    public void excluirProduto(int indice){
+        produtos.remove(indice);
         fireTableRowsDeleted(indice, indice);
         
     }

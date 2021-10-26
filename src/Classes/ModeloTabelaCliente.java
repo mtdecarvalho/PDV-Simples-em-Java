@@ -11,10 +11,10 @@ public class ModeloTabelaCliente extends AbstractTableModel {
     private static final int COLUNA_CEP = 4;
     
     private String colunas[] = new String[]{"Código", "Nome", "Telefone", "Email", "CEP"};
-    private ArrayList<ClientePF> clientes;
+    private ArrayList<Cliente> clientes;
     
-    public ModeloTabelaCliente(ArrayList<ClientePF> clientes){
-        this.clientes = new ArrayList<ClientePF>(clientes);
+    public ModeloTabelaCliente(ArrayList<Cliente> clientes){
+        this.clientes = new ArrayList<Cliente>(clientes);
     }
     
     @Override
@@ -35,7 +35,7 @@ public class ModeloTabelaCliente extends AbstractTableModel {
     }
     @Override
     public Object getValueAt(int linha, int coluna){
-        ClientePF cliente = clientes.get(linha);
+        Cliente cliente = clientes.get(linha);
         switch(coluna){
             case COLUNA_CODIGO:
                 return cliente.getCodigo();
@@ -52,40 +52,40 @@ public class ModeloTabelaCliente extends AbstractTableModel {
     }
     @Override
     public void setValueAt(Object valor, int linha, int coluna){
-        ClientePF cliente = clientes.get(linha);
+        Cliente cliente = clientes.get(linha);
         switch(coluna){
             case COLUNA_CODIGO:
-                cliente.setCodigo(valor.toString());
+                cliente.setCodigo(Integer.parseInt(valor.toString()));
                 break;
             case COLUNA_NOME:
                 cliente.setNome(valor.toString());
                 break;
             case COLUNA_TELEFONE:
-                cliente.setTelefone(valor.toString());
+                cliente.setTelefone(Integer.parseInt(valor.toString()));
                 break;
             case COLUNA_EMAIL:
                 cliente.setEmail(valor.toString());
                 break;
             case COLUNA_CEP:
-                cliente.endereco.setCEP(valor.toString());
+                cliente.setCEP(valor.toString());
                 break;
         }
     }
     
-    public ClientePF getContato(int indice){
+    public Cliente getCliente(int indice){
         return clientes.get(indice);
     }
-    public void inserirContato(ClientePF cliente){
+    public void inserirCliente(Cliente cliente){
         clientes.add(cliente);
         int ultimo = getRowCount()-1;
         fireTableRowsInserted(ultimo, ultimo);
     }
-    public void atualizarContato(int indice, ClientePF cliente){
+    public void atualizarCliente(int indice, Cliente cliente){
         clientes.set(indice, cliente);
         fireTableRowsUpdated(indice, indice);
 
     }
-    public void excluirContato(int indice){
+    public void excluirCliente(int indice){
         clientes.remove(indice);
         fireTableRowsDeleted(indice, indice);
         

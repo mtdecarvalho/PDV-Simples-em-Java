@@ -5,8 +5,6 @@
  */
 package Classes;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Carvalho
@@ -16,8 +14,8 @@ public class Venda {
     private String data, hora;
     private double valor;
     private Cliente cliente;
-    private ArrayList<itemVenda> itens;
     
+    public int getCodigo()                          { return codigo; }
     public String getData()                         { return data; }
     public String getHora()                         { return hora; }
     public double getValor()                        { return valor; }

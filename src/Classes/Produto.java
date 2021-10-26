@@ -12,8 +12,7 @@ package Classes;
  */
 public class Produto {
     private int codigo, unidade, qtdEstoque;
-    private String nome;
-    private String ultimaVenda;
+    private String nome, ultimaVenda;
     private double preco;
     
     public int getCodigo()                                  { return codigo; }
