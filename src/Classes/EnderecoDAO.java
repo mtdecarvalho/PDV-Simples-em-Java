@@ -37,12 +37,10 @@ public class EnderecoDAO {
             stmt.setString(6, endereco.getUF());
             
             stmt.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } 
         catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao salvar endereco: " + ex);
         } 
         finally 
         {
@@ -50,76 +48,76 @@ public class EnderecoDAO {
         }
         }
         
-        public ArrayList<Endereco> read()
+    public ArrayList<Endereco> read()
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        ArrayList<Endereco> enderecos = new ArrayList<>();
+
+        try
         {
-            Connection con = ConnectionFactory.getConnection();
-            PreparedStatement stmt = null;
-            ResultSet rs = null;
+            stmt = con.prepareStatement("SELECT * FROM endereco");
+            rs = stmt.executeQuery();
 
-            ArrayList<Endereco> enderecos = new ArrayList<>();
-
-            try
+            while (rs.next())
             {
-                stmt = con.prepareStatement("SELECT * FROM endereco");
-                rs = stmt.executeQuery();
+                Endereco endereco = new Endereco();
 
-                while (rs.next())
-                {
-                    Endereco endereco = new Endereco();
-                    
-                    endereco.setCEP(rs.getString("CEP"));
-                    endereco.setRua(rs.getString("rua"));
-                    endereco.setNumero(rs.getInt("numero"));
-                    endereco.setComplemento(rs.getString("complemento"));
-                    endereco.setCidade(rs.getString("cidade"));
-                    endereco.setUF(rs.getString("UF"));
+                endereco.setCEP(rs.getString("CEP"));
+                endereco.setRua(rs.getString("rua"));
+                endereco.setNumero(rs.getInt("numero"));
+                endereco.setComplemento(rs.getString("complemento"));
+                endereco.setCidade(rs.getString("cidade"));
+                endereco.setUF(rs.getString("UF"));
 
-                    enderecos.add(endereco);
-                }
-
-            }
-            catch (SQLException ex) {
-                Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            finally
-            {
-                ConnectionFactory.closeConnection(con, stmt, rs);
+                enderecos.add(endereco);
             }
 
-            return enderecos;
         }
-    
-        public void update(Endereco endereco, String CEP)
+        catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
         {
-            Connection con = ConnectionFactory.getConnection();
-            PreparedStatement stmt = null; 
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
 
-            try 
-            {
-                stmt = con.prepareStatement("UPDATE endereco SET CEP = ? , "
-                        + "rua = ? , numero = ? , complemento = ? , "
-                        + "cidade = ? , UF = ? WHERE CEP = ?");
+        return enderecos;
+    }
 
-                stmt.setString(1, endereco.getCEP());
-                stmt.setString(2, endereco.getRua());
-                stmt.setInt(3, endereco.getNumero());
-                stmt.setString(4, endereco.getComplemento());
-                stmt.setString(5, endereco.getCidade());
-                stmt.setString(6, endereco.getUF());
-                stmt.setString(7, CEP);
+    public void update(Endereco endereco, String CEP)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null; 
 
-                stmt.executeUpdate();
+        try 
+        {
+            stmt = con.prepareStatement("UPDATE endereco SET CEP = ? , "
+                    + "rua = ? , numero = ? , complemento = ? , "
+                    + "cidade = ? , UF = ? WHERE CEP = ?");
 
-                JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
-            } 
-            catch (SQLException ex) 
-            {
-                JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
-            } 
-            finally 
-            {
-                ConnectionFactory.closeConnection(con, stmt);
-            }
+            stmt.setString(1, endereco.getCEP());
+            stmt.setString(2, endereco.getRua());
+            stmt.setInt(3, endereco.getNumero());
+            stmt.setString(4, endereco.getComplemento());
+            stmt.setString(5, endereco.getCidade());
+            stmt.setString(6, endereco.getUF());
+            stmt.setString(7, CEP);
+
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+        } 
+        finally 
+        {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
     }
     
 }

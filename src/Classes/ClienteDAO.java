@@ -25,16 +25,28 @@ public class ClienteDAO {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
         PreparedStatement stmtEndereco = null;
+        EnderecoDAO eDAO = new EnderecoDAO();
         
         try 
         {
+            stmt = con.prepareStatement("INSERT INTO endereco(CEP, rua, numero, complemento, cidade, UF) VALUES (?,?,?,?,?,?)");
+            
+            stmt.setString(1, cliente.getEndereco().getCEP());
+            stmt.setString(2, cliente.getEndereco().getRua());
+            stmt.setInt(3, cliente.getEndereco().getNumero());
+            stmt.setString(4, cliente.getEndereco().getComplemento());
+            stmt.setString(5, cliente.getEndereco().getCidade());
+            stmt.setString(6, cliente.getEndereco().getUF());
+            
+            stmt.executeUpdate();
+            
             stmt = con.prepareStatement("INSERT INTO cliente(codigo, telefone, nome, email, CEP) VALUES (?,?,?,?,?)");
             
             stmt.setInt(1, cliente.getCodigo());
             stmt.setInt(2, cliente.getTelefone());
             stmt.setString(3, cliente.getNome());
             stmt.setString(4, cliente.getEmail());
-            stmt.setString(5, cliente.getCEP());
+            stmt.setString(5, cliente.getEndereco().getCEP());
             
             stmt.executeUpdate();
             
@@ -42,7 +54,7 @@ public class ClienteDAO {
         } 
         catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao salvar cliente: " + ex);
         } 
         finally 
         {
@@ -60,18 +72,26 @@ public class ClienteDAO {
         
         try
         {
-            stmt = con.prepareStatement("SELECT * FROM cliente");
+            stmt = con.prepareStatement("SELECT c.*, e.rua, e.numero, e.complemento, e.cidade, e.UF"
+                    + " FROM cliente as c, endereco as e WHERE c.CEP = e.CEP");
             rs = stmt.executeQuery();
             
             while (rs.next())
             {
                 Cliente cliente = new Cliente();
+                Endereco endereco = new Endereco();
                 
                 cliente.setCodigo(rs.getInt("codigo"));
                 cliente.setTelefone(rs.getInt("telefone"));
                 cliente.setNome(rs.getString("nome"));
                 cliente.setEmail(rs.getString("email"));
-                cliente.setCEP(rs.getString("CEP"));
+                endereco.setCEP(rs.getString("CEP"));
+                endereco.setRua(rs.getString("rua"));
+                endereco.setNumero(rs.getInt("numero"));
+                endereco.setComplemento(rs.getString("complemento"));
+                endereco.setCidade(rs.getString("cidade"));
+                endereco.setUF(rs.getString("UF"));
+                cliente.setEndereco(endereco);
                 
                 clientes.add(cliente);
             }
@@ -88,21 +108,35 @@ public class ClienteDAO {
         return clientes;
     }
     
-    public void updatePessoal(Cliente cliente)
+    public void update(Cliente cliente, String CEP, int codigo)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
         
         try 
         {
-            stmt = con.prepareStatement("UPDATE cliente SET telefone = ? , "
+            stmt = con.prepareStatement("UPDATE endereco SET CEP = ?, rua = ? , "
+                    + "numero = ? , complemento = ? , cidade = ? , UF = ? WHERE CEP = ?");
+            
+            stmt.setString(1, cliente.getEndereco().getCEP());
+            stmt.setString(2, cliente.getEndereco().getRua());
+            stmt.setInt(3, cliente.getEndereco().getNumero());
+            stmt.setString(4, cliente.getEndereco().getComplemento());
+            stmt.setString(5, cliente.getEndereco().getCidade());
+            stmt.setString(6, cliente.getEndereco().getUF());
+            stmt.setString(7, CEP);
+            
+            stmt.executeUpdate();
+            
+            stmt = con.prepareStatement("UPDATE cliente SET codigo = ? , telefone = ? , "
                     + "nome = ? , email = ? , CEP = ? WHERE codigo = ?");
             
-            stmt.setInt(1, cliente.getTelefone());
-            stmt.setString(2, cliente.getNome());
-            stmt.setString(3, cliente.getEmail());
-            stmt.setString(4, cliente.getCEP());
-            stmt.setInt(4, cliente.getCodigo());
+            stmt.setInt(1, cliente.getCodigo());
+            stmt.setInt(2, cliente.getTelefone());
+            stmt.setString(3, cliente.getNome());
+            stmt.setString(4, cliente.getEmail());
+            stmt.setString(5, cliente.getEndereco().getCEP());
+            stmt.setInt(6, codigo);
             
             stmt.executeUpdate();
             

@@ -46,7 +46,7 @@ public class ModeloTabelaCliente extends AbstractTableModel {
             case COLUNA_EMAIL:
                 return cliente.getEmail();
             case COLUNA_CEP:
-                return cliente.getCEP();
+                return cliente.getEndereco().getCEP();
         }
         return "";
     }
@@ -67,7 +67,7 @@ public class ModeloTabelaCliente extends AbstractTableModel {
                 cliente.setEmail(valor.toString());
                 break;
             case COLUNA_CEP:
-                cliente.setCEP(valor.toString());
+                cliente.getEndereco().setCEP(valor.toString());
                 break;
         }
     }
