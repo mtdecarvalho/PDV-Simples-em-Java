@@ -1,6 +1,7 @@
 package view;
 
 import Classes.ModeloTabelaProduto;
+import Classes.Parametros;
 import Classes.Produto;
 import Classes.ProdutoDAO;
 import java.util.ArrayList;
@@ -24,8 +25,7 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
     public GradeCadastroProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-//        modeloProdutos = new ModeloTabelaProduto(produtos);
-//        tbGradeProduto.setModel(modeloProdutos);
+        modeloProdutos = new ModeloTabelaProduto(produtos);
         readJTable();
     }
     
@@ -185,7 +185,13 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        int indice = tbGradeProduto.getSelectedRow();
         
+        if ( indice >= 0 )
+        {
+            Produto produto = modeloProdutos.getProduto(indice);
+            ModificarProduto.executar(null, Parametros.CONSULTAR, produto, indice);
+        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -211,10 +217,11 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
         if ( indice >= 0 )
         {
             Produto produto = modeloProdutos.getProduto(indice);
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            AlterarProduto abre = new AlterarProduto(frame, produto, indice, modeloProdutos.getProduto(indice).getCodigo());
-            abre.setLocationRelativeTo(null);
-            abre.setVisible(true);
+
+            if (ModificarProduto.executar(null, Parametros.ALTERAR, produto, indice))
+            {
+                modeloProdutos.atualizarProduto(indice, produto);
+            }
             readJTable();
         }
         
@@ -226,9 +233,12 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        CadastrarProduto abre = new CadastrarProduto(frame, true);
-        abre.setLocationRelativeTo(null);
-        abre.setVisible(true);
+        Produto produto = new Produto();
+        if (ModificarProduto.executar(null, Parametros.ADICIONAR, produto, 0))
+        {
+            modeloProdutos.inserirProduto(produto);
+            
+        }
         readJTable();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 

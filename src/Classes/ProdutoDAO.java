@@ -88,21 +88,22 @@ public class ProdutoDAO {
         return produtos;
     }
     
-    public void update(Produto produto)
+    public void update(Produto produto, int codigo)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
         
         try 
         {
-            stmt = con.prepareStatement("UPDATE produto SET unidade = ? , "
+            stmt = con.prepareStatement("UPDATE produto SET codigo = ? , unidade = ? , "
                     + "qtdEstoque = ? , nome = ? , preco = ? WHERE codigo = ?");
             
-            stmt.setInt(1, produto.getUnidade());
-            stmt.setInt(2, produto.getQtdEstoque());
-            stmt.setString(3, produto.getNome());
-            stmt.setDouble(4, produto.getPreco());
-            stmt.setInt(5, produto.getCodigo());
+            stmt.setInt(1, produto.getCodigo());
+            stmt.setInt(2, produto.getUnidade());
+            stmt.setInt(3, produto.getQtdEstoque());
+            stmt.setString(4, produto.getNome());
+            stmt.setDouble(5, produto.getPreco());
+            stmt.setInt(6, codigo);
             
             stmt.executeUpdate();
             

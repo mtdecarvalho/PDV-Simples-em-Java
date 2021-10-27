@@ -1,4 +1,4 @@
-package view;
+package view.old;
 
 import Classes.Produto;
 import javax.swing.JOptionPane;
