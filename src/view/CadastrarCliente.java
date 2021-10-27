@@ -248,15 +248,14 @@ public class CadastrarCliente extends javax.swing.JDialog {
         cliente.setNome(tbxNome.getText());
         cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
         cliente.setEmail(tbxEmail.getText());
-        cliente.setCEP(tbxCEP.getText());
         endereco.setCEP(tbxCEP.getText());
         endereco.setRua(tbxRua.getText());
         endereco.setNumero(Integer.parseInt(tbxNumero.getText()));
         endereco.setComplemento(tbxComplemento.getText());
         endereco.setCidade(tbxCidade.getText());
         endereco.setUF(cbUF.getSelectedItem().toString());
+        cliente.setEndereco(endereco);
         
-        daoE.create(endereco);
         daoC.create(cliente);
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed
