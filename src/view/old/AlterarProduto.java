@@ -1,4 +1,4 @@
-package view;
+package view.old;
 
 import Classes.Produto;
 import javax.swing.JOptionPane;
@@ -90,10 +90,9 @@ public class AlterarProduto extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 151, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(151, 151, 151)
                                 .addComponent(btnOk)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCancelar)
@@ -163,7 +162,7 @@ public class AlterarProduto extends javax.swing.JDialog {
         produto.setPreco(Double.parseDouble(tbxPreco.getText()));
         produto.setUltimaVenda(tbxUltimaVenda.getText());
         
-        dao.update(produto);
+        dao.update(produto, cod);
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed
 

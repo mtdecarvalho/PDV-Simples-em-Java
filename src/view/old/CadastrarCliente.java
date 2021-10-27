@@ -1,4 +1,4 @@
-package view;
+package view.old;
 
 import Classes.Cliente;
 import Classes.Endereco;
@@ -9,13 +9,11 @@ import Classes.EnderecoDAO;
  *
  * @author Carvalho
  */
-public class AlterarCliente extends javax.swing.JDialog {
+public class CadastrarCliente extends javax.swing.JDialog {
 //    private opcCadastro opc;
 //    private ClientePF pfAlterado;
     private boolean confirmado;
     private int indice;
-    private String CEP;
-    private int cod;
     
 //    public static boolean executar(java.awt.Frame parent, opcCadastro opc, ClientePF pf, int i){
 //        CadastrarCliente cadastrar = new CadastrarCliente(parent, opc, pf, i);
@@ -24,34 +22,9 @@ public class AlterarCliente extends javax.swing.JDialog {
 //        return cadastrar.opcConfirmada();
 //    }
     
-    public AlterarCliente(java.awt.Frame parent, boolean modal) {
+    public CadastrarCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
-    
-    public AlterarCliente(java.awt.Frame parent, Cliente c, int indice, String CEP, int cod){
-        super(parent, true);
-        this.indice = indice;
-        this.CEP = CEP;
-        this.cod = cod;
-        initComponents();
-        tbxCodigo.setText(String.valueOf(c.getCodigo()));
-        tbxNome.setText(c.getNome());
-        tbxTelefone.setText(String.valueOf(c.getTelefone()));
-        tbxEmail.setText(c.getEmail());
-        tbxCEP.setText(c.getEndereco().getCEP());
-        tbxRua.setText(c.getEndereco().getRua());
-        tbxNumero.setText(String.valueOf(c.getEndereco().getNumero()));
-        tbxComplemento.setText(c.getEndereco().getComplemento());
-        for ( int i = 0 ; i < cbUF.getItemCount() ; i++ )
-        {
-            if ( cbUF.getItemAt(i).contains(c.getEndereco().getUF()) )
-            {
-                cbUF.setSelectedIndex(i);
-                break;
-            }
-        }
-        tbxCidade.setText(c.getEndereco().getCidade());
     }
     
 //    public CadastrarCliente(java.awt.Frame parent, opcCadastro opc, ClientePF pf, int i){
@@ -159,11 +132,27 @@ public class AlterarCliente extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbxComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tbxCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(51, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnOk)
                                 .addGap(18, 18, 18)
@@ -187,20 +176,7 @@ public class AlterarCliente extends javax.swing.JDialog {
                                         .addComponent(tbxTelefone)
                                         .addComponent(tbxEmail)
                                         .addComponent(tbxCEP)
-                                        .addComponent(tbxRua, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbxComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbxCidade)))
+                                        .addComponent(tbxRua, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(51, 51, 51))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -245,11 +221,13 @@ public class AlterarCliente extends javax.swing.JDialog {
                     .addComponent(tbxComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
-                    .addComponent(cbUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
                     .addComponent(tbxCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(cbUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnOk))
@@ -264,6 +242,7 @@ public class AlterarCliente extends javax.swing.JDialog {
         Endereco endereco = new Endereco();
         
         ClienteDAO daoC = new ClienteDAO();
+        EnderecoDAO daoE = new EnderecoDAO();
         
         cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
         cliente.setNome(tbxNome.getText());
@@ -277,7 +256,7 @@ public class AlterarCliente extends javax.swing.JDialog {
         endereco.setUF(cbUF.getSelectedItem().toString());
         cliente.setEndereco(endereco);
         
-        daoC.update(cliente, CEP, cod);
+        daoC.create(cliente);
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed
 
@@ -303,18 +282,14 @@ public class AlterarCliente extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AlterarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -323,7 +298,7 @@ public class AlterarCliente extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AlterarCliente dialog = new AlterarCliente(new javax.swing.JFrame(), true);
+                CadastrarCliente dialog = new CadastrarCliente(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

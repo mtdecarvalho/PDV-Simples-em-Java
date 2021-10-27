@@ -2,6 +2,7 @@ package view;
 
 import Classes.Cliente;
 import Classes.Endereco;
+import Classes.Parametros;
 import javax.swing.JOptionPane;
 import Classes.ClienteDAO;
 import Classes.EnderecoDAO;
@@ -9,44 +10,78 @@ import Classes.EnderecoDAO;
  *
  * @author Carvalho
  */
-public class CadastrarCliente extends javax.swing.JDialog {
-//    private opcCadastro opc;
-//    private ClientePF pfAlterado;
+public class ModificarCliente extends javax.swing.JDialog {
+    private Parametros param;
     private boolean confirmado;
     private int indice;
+    private String CEP;
+    private int cod;
     
-//    public static boolean executar(java.awt.Frame parent, opcCadastro opc, ClientePF pf, int i){
-//        CadastrarCliente cadastrar = new CadastrarCliente(parent, opc, pf, i);
-//        cadastrar.setLocationRelativeTo(null);
-//        cadastrar.setVisible(true);
-//        return cadastrar.opcConfirmada();
-//    }
+    public static boolean executar(java.awt.Frame parent, Parametros param, Cliente cliente, int indice)
+    {
+        ModificarCliente modificar = new ModificarCliente(parent, param, cliente, indice);
+        modificar.setLocationRelativeTo(null);
+        modificar.setVisible(true);
+        return modificar.paramConfirmado();
+    }
     
-    public CadastrarCliente(java.awt.Frame parent, boolean modal) {
+    public boolean paramConfirmado()
+    {
+        return confirmado;
+    }
+    
+    public ModificarCliente(java.awt.Frame parent, boolean modal) 
+    {
         super(parent, modal);
         initComponents();
     }
     
-//    public CadastrarCliente(java.awt.Frame parent, opcCadastro opc, ClientePF pf, int i){
-//        super(parent, true);
-//        confirmado = false;
-//        this.opc = opc;
-//        pfAlterado = pf;
-//        this.indice = i;
-//        initComponents();
-//        if(opc == opc.ocAlterar){
-//            tbxCodigo.setText(pf.getNome());
-//            tbxNome.setText(pf.getCPF());
-//            tbxTelefone.setText(pf.getTelefone());
-//            tbxEmail.setText(pf.getTelComercial());
-//            tbxCEP.setText(pf.getTelCel());
-//            tbxRua.setText(pf.getFAX());
-//        }    
-//    }
+    public ModificarCliente(java.awt.Frame parent, Parametros param, Cliente c, int indice)
+    {
+        super(parent, true);
+        confirmado = false;
+        this.param = param;
+        this.indice = indice;
+        this.CEP = c.getEndereco().getCEP();
+        this.cod = c.getCodigo();
+        initComponents();
+        if ( param == Parametros.ALTERAR || param == Parametros.CONSULTAR )
+        {
+            tbxCodigo.setText(String.valueOf(c.getCodigo()));
+            tbxNome.setText(c.getNome());
+            tbxTelefone.setText(String.valueOf(c.getTelefone()));
+            tbxEmail.setText(c.getEmail());
+            tbxCEP.setText(c.getEndereco().getCEP());
+            tbxRua.setText(c.getEndereco().getRua());
+            tbxNumero.setText(String.valueOf(c.getEndereco().getNumero()));
+            tbxComplemento.setText(c.getEndereco().getComplemento());
+            for ( int i = 0 ; i < cbUF.getItemCount() ; i++ )
+            {
+                if ( cbUF.getItemAt(i).contains(c.getEndereco().getUF()) )
+                {
+                    cbUF.setSelectedIndex(i);
+                    break;
+                }
+            }
+            tbxCidade.setText(c.getEndereco().getCidade());
+            
+            if ( param == Parametros.CONSULTAR )
+            {
+                tbxCodigo.setEditable(false);
+                tbxNome.setEditable(false);
+                tbxTelefone.setEditable(false);
+                tbxEmail.setEditable(false);
+                tbxCEP.setEditable(false);
+                tbxRua.setEditable(false);
+                tbxNumero.setEditable(false);
+                tbxComplemento.setEditable(false);
+                cbUF.setEditable(false);
+                tbxCidade.setEditable(false);
+            }
+        }
+}
     
-    public boolean opcConfirmada(){
-        return confirmado;
-    }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -240,23 +275,42 @@ public class CadastrarCliente extends javax.swing.JDialog {
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         Cliente cliente = new Cliente();
         Endereco endereco = new Endereco();
-        
+
         ClienteDAO daoC = new ClienteDAO();
-        EnderecoDAO daoE = new EnderecoDAO();
         
-        cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
-        cliente.setNome(tbxNome.getText());
-        cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
-        cliente.setEmail(tbxEmail.getText());
-        endereco.setCEP(tbxCEP.getText());
-        endereco.setRua(tbxRua.getText());
-        endereco.setNumero(Integer.parseInt(tbxNumero.getText()));
-        endereco.setComplemento(tbxComplemento.getText());
-        endereco.setCidade(tbxCidade.getText());
-        endereco.setUF(cbUF.getSelectedItem().toString());
-        cliente.setEndereco(endereco);
-        
-        daoC.create(cliente);
+        switch(param)
+        {
+            case ADICIONAR:
+                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
+                cliente.setNome(tbxNome.getText());
+                cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
+                cliente.setEmail(tbxEmail.getText());
+                endereco.setCEP(tbxCEP.getText());
+                endereco.setRua(tbxRua.getText());
+                endereco.setNumero(Integer.parseInt(tbxNumero.getText()));
+                endereco.setComplemento(tbxComplemento.getText());
+                endereco.setCidade(tbxCidade.getText());
+                endereco.setUF(cbUF.getSelectedItem().toString());
+                cliente.setEndereco(endereco);
+
+                daoC.create(cliente);
+                break;
+            case ALTERAR:
+                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
+                cliente.setNome(tbxNome.getText());
+                cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
+                cliente.setEmail(tbxEmail.getText());
+                endereco.setCEP(tbxCEP.getText());
+                endereco.setRua(tbxRua.getText());
+                endereco.setNumero(Integer.parseInt(tbxNumero.getText()));
+                endereco.setComplemento(tbxComplemento.getText());
+                endereco.setCidade(tbxCidade.getText());
+                endereco.setUF(cbUF.getSelectedItem().toString());
+                cliente.setEndereco(endereco);
+
+                daoC.update(cliente, CEP, cod);
+                break;
+        }
         dispose();
     }//GEN-LAST:event_btnOkActionPerformed
 
@@ -282,14 +336,18 @@ public class CadastrarCliente extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -298,7 +356,7 @@ public class CadastrarCliente extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                CadastrarCliente dialog = new CadastrarCliente(new javax.swing.JFrame(), true);
+                ModificarCliente dialog = new ModificarCliente(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

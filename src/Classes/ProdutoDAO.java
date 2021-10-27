@@ -88,21 +88,22 @@ public class ProdutoDAO {
         return produtos;
     }
     
-    public void update(Produto produto)
+    public void update(Produto produto, int codigo)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
         
         try 
         {
-            stmt = con.prepareStatement("UPDATE produto SET unidade = ? , "
+            stmt = con.prepareStatement("UPDATE produto SET codigo = ? , unidade = ? , "
                     + "qtdEstoque = ? , nome = ? , preco = ? WHERE codigo = ?");
             
-            stmt.setInt(1, produto.getUnidade());
-            stmt.setInt(2, produto.getQtdEstoque());
-            stmt.setString(3, produto.getNome());
-            stmt.setDouble(4, produto.getPreco());
-            stmt.setInt(5, produto.getCodigo());
+            stmt.setInt(1, produto.getCodigo());
+            stmt.setInt(2, produto.getUnidade());
+            stmt.setInt(3, produto.getQtdEstoque());
+            stmt.setString(4, produto.getNome());
+            stmt.setDouble(5, produto.getPreco());
+            stmt.setInt(6, codigo);
             
             stmt.executeUpdate();
             
@@ -111,6 +112,31 @@ public class ProdutoDAO {
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+        } 
+        finally 
+        {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+    
+    public void delete(Produto produto)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null; 
+        
+        try 
+        {
+            stmt = con.prepareStatement("DELETE FROM produto WHERE codigo = ?");
+            
+            stmt.setInt(1, produto.getCodigo());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir: " + ex);
         } 
         finally 
         {

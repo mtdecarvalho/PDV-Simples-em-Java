@@ -2,12 +2,10 @@ package view;
 
 import Classes.Cliente;
 import Classes.ClienteDAO;
-import Classes.Endereco;
-import Classes.EnderecoDAO;
 import Classes.ModeloTabelaCliente;
+import Classes.Parametros;
 import java.util.ArrayList;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableRowSorter;
@@ -181,7 +179,13 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        int indice = tbGradeCliente.getSelectedRow();
         
+        if ( indice >= 0 )
+        {
+            Cliente cliente = modeloClientes.getCliente(indice);
+            ModificarCliente.executar(null, Parametros.CONSULTAR, cliente, indice);
+        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -189,7 +193,16 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int indice = tbGradeCliente.getSelectedRow();
         
+        if ( indice >= 0 )
+        {
+            ClienteDAO dao = new ClienteDAO();
+            Cliente cliente = modeloClientes.getCliente(indice);
+            dao.delete(cliente);
+            modeloClientes.excluirCliente(indice);
+            readJTable();
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
@@ -198,10 +211,12 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         if ( indice >= 0 )
         {
             Cliente cliente = modeloClientes.getCliente(indice);
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            AlterarCliente abre = new AlterarCliente(frame, cliente, indice, modeloClientes.getCliente(indice).getEndereco().getCEP(), modeloClientes.getCliente(indice).getCodigo());
-            abre.setLocationRelativeTo(null);
-            abre.setVisible(true);
+
+            if (ModificarCliente.executar(null, Parametros.ALTERAR, cliente, indice))
+            {
+                modeloClientes.atualizarCliente(indice, cliente);
+                
+            }
             readJTable();
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
@@ -215,10 +230,14 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        CadastrarCliente abre = new CadastrarCliente(frame, true);
-        abre.setLocationRelativeTo(null);
-        abre.setVisible(true);
+        Cliente cliente = new Cliente();
+        if (ModificarCliente.executar(null, Parametros.ADICIONAR, cliente, 0))
+        {
+            modeloClientes.inserirCliente(cliente);
+            
+        }
         readJTable();
+        
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     /**
