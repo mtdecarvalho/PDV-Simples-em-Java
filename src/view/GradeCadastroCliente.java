@@ -189,7 +189,16 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int indice = tbGradeCliente.getSelectedRow();
         
+        if ( indice >= 0 )
+        {
+            ClienteDAO dao = new ClienteDAO();
+            Cliente cliente = modeloClientes.getCliente(indice);
+            dao.delete(cliente);
+            modeloClientes.excluirCliente(indice);
+            readJTable();
+        }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed

@@ -153,4 +153,38 @@ public class ClienteDAO {
         
     }
     
+    public void delete(Cliente cliente)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null; 
+        
+        try 
+        {
+            
+            
+            stmt = con.prepareStatement("DELETE FROM cliente WHERE codigo = ?");
+            
+            stmt.setInt(1, cliente.getCodigo());
+            
+            stmt.executeUpdate();
+            
+            stmt = con.prepareStatement("DELETE FROM endereco WHERE CEP = ?");
+            
+            stmt.setString(1, cliente.getEndereco().getCEP());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir: " + ex);
+        } 
+        finally 
+        {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+        
+    }
+    
 }
