@@ -25,4 +25,5 @@ public class Venda {
     public void setHota( String hora )              { this.hora = hora; }
     public void setValor( double valor )            { this.valor = valor; }
     public void setCliente( Cliente cliente )       { this.cliente = cliente; }
+    public void setCodigo(int codigo)               {this.codigo = codigo;}
 }
