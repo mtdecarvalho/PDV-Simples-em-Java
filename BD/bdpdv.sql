@@ -8,19 +8,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema bdpdv
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema bdpdv
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `bdpdv` DEFAULT CHARACTER SET utf8 ;
+USE `bdpdv` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Endereco`
+-- Table `bdpdv`.`Endereco`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Endereco` (
+CREATE TABLE IF NOT EXISTS `bdpdv`.`Endereco` (
   `CEP` VARCHAR(10) NOT NULL,
   `rua` VARCHAR(100) NOT NULL,
   `numero` INT NOT NULL,
@@ -32,9 +32,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Cliente`
+-- Table `bdpdv`.`Cliente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
+CREATE TABLE IF NOT EXISTS `bdpdv`.`Cliente` (
   `codigo` INT NOT NULL,
   `telefone` INT NOT NULL,
   `nome` VARCHAR(100) NOT NULL,
@@ -44,16 +44,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
   INDEX `fk_Cliente_Endereco1_idx` (`CEP` ASC) VISIBLE,
   CONSTRAINT `fk_Cliente_Endereco1`
     FOREIGN KEY (`CEP`)
-    REFERENCES `mydb`.`Endereco` (`CEP`)
+    REFERENCES `bdpdv`.`Endereco` (`CEP`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Produto`
+-- Table `bdpdv`.`Produto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Produto` (
+CREATE TABLE IF NOT EXISTS `bdpdv`.`Produto` (
   `codigo` INT NOT NULL,
   `unidade` INT NOT NULL,
   `qtdEstoque` INT NOT NULL,
@@ -65,9 +65,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`formaDePagamento`
+-- Table `bdpdv`.`formaDePagamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`formaDePagamento` (
+CREATE TABLE IF NOT EXISTS `bdpdv`.`formaDePagamento` (
   `codigo` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `valorTotal` DOUBLE NOT NULL,
@@ -76,9 +76,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Venda`
+-- Table `bdpdv`.`Venda`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Venda` (
+CREATE TABLE IF NOT EXISTS `bdpdv`.`Venda` (
   `codigo` INT NOT NULL,
   `data` DATE NOT NULL,
   `hora` TIME NOT NULL,
@@ -90,21 +90,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Venda` (
   INDEX `fk_Venda_formaDePagamento1_idx` (`formaDePagamento` ASC) VISIBLE,
   CONSTRAINT `fk_Venda_Cliente1`
     FOREIGN KEY (`codigoCliente`)
-    REFERENCES `mydb`.`Cliente` (`codigo`)
+    REFERENCES `bdpdv`.`Cliente` (`codigo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Venda_formaDePagamento1`
     FOREIGN KEY (`formaDePagamento`)
-    REFERENCES `mydb`.`formaDePagamento` (`codigo`)
+    REFERENCES `bdpdv`.`formaDePagamento` (`codigo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`itemVenda`
+-- Table `bdpdv`.`itemVenda`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`itemVenda` (
+CREATE TABLE IF NOT EXISTS `bdpdv`.`itemVenda` (
   `codigoVenda` INT NOT NULL,
   `codigoProduto` INT NOT NULL,
   `qtdVendida` INT NOT NULL,
@@ -113,12 +113,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`itemVenda` (
   INDEX `fk_itemVenda_Produto1_idx` (`codigoProduto` ASC) VISIBLE,
   CONSTRAINT `fk_itemVenda_Venda`
     FOREIGN KEY (`codigoVenda`)
-    REFERENCES `mydb`.`Venda` (`codigo`)
+    REFERENCES `bdpdv`.`Venda` (`codigo`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_itemVenda_Produto1`
     FOREIGN KEY (`codigoProduto`)
-    REFERENCES `mydb`.`Produto` (`codigo`)
+    REFERENCES `bdpdv`.`Produto` (`codigo`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
