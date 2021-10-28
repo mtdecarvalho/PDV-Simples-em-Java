@@ -32,7 +32,7 @@ public class itemVendaDAO {
             
             stmt.setInt(1, itemvenda.getCodigoProduto());
             stmt.setInt(2, itemvenda.getCodigoVenda());
-            stmt.setInt(3, itemvenda.getqtdVendida());            
+            stmt.setInt(3, itemvenda.getQtdVendida());            
             stmt.setDouble(4, itemvenda.getPreco());
             
             stmt.executeUpdate();
@@ -98,7 +98,7 @@ public class itemVendaDAO {
             
             stmt.setInt(1, itemvenda.getCodigoProduto());
             stmt.setInt(2, itemvenda.getCodigoVenda());
-            stmt.setInt(3, itemvenda.getqtdVendida());            
+            stmt.setInt(3, itemvenda.getQtdVendida());            
             stmt.setDouble(4, itemvenda.getPreco());
             stmt.setInt(5, codigo);
             
@@ -140,6 +140,4 @@ public class itemVendaDAO {
             ConnectionFactory.closeConnection(con, stmt);
         }
     }
-    
-    
 }

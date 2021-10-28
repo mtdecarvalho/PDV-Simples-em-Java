@@ -6,9 +6,13 @@
 package view;
 
 import Classes.ModeloTabelaCarrinho;
+import Classes.Venda;
+import Classes.VendaDAO;
 import Classes.itemVenda;
 import Classes.itemVendaDAO;
 import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -17,6 +21,8 @@ import java.util.ArrayList;
 public class Carrinho extends javax.swing.JDialog {
     private ModeloTabelaCarrinho modeloCarrinho;
     private ArrayList<itemVenda> itens = new ArrayList<itemVenda>();
+    private int codVenda;
+    private double preco;
     /**
      * Creates new form Carrinho
      */
@@ -24,24 +30,25 @@ public class Carrinho extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         modeloCarrinho = new ModeloTabelaCarrinho(itens);
-        readJTable();
+        tbCarrinho.setModel(modeloCarrinho);
     }
     
-    public void readJTable()
-    {
+    public Carrinho(java.awt.Frame parent, boolean modal, int codVenda) {
+        super(parent, modal);
+        initComponents();
+        this.codVenda = codVenda+1;
         modeloCarrinho = new ModeloTabelaCarrinho(itens);
-        itemVendaDAO itemdao = new itemVendaDAO();
-
-        for ( itemVenda itemvenda : itemdao.read() )
-        {
-            
-            itemvenda.getCodigoProduto();        
-            itemvenda.getNome();
-            itemvenda.getqtdVendida();
-            modeloCarrinho.inserirItemVenda(itemvenda);
-        }
-        
         tbCarrinho.setModel(modeloCarrinho);
+    }
+    
+    public void calcularPreco()
+    {
+        preco = 0;
+        for ( itemVenda item : modeloCarrinho.getItens() )
+        {
+            preco += item.getPreco();
+        }
+        tbxPrecoTotal.setText(String.valueOf(preco));
     }
 
     /**
@@ -56,6 +63,13 @@ public class Carrinho extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCarrinho = new javax.swing.JTable();
+        btnAddItem = new javax.swing.JButton();
+        btnRemoverItem = new javax.swing.JButton();
+        btnFinalizar = new javax.swing.JButton();
+        cbFormaPagamento = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        tbxPrecoTotal = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -72,6 +86,35 @@ public class Carrinho extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tbCarrinho);
 
+        btnAddItem.setText("Adicionar item");
+        btnAddItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddItemActionPerformed(evt);
+            }
+        });
+
+        btnRemoverItem.setText("Remover item");
+        btnRemoverItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverItemActionPerformed(evt);
+            }
+        });
+
+        btnFinalizar.setText("Finalizar Venda");
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
+
+        cbFormaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartão de Crédito", "Dinheiro" }));
+
+        jLabel2.setText("Forma de pagamento:");
+
+        tbxPrecoTotal.setEditable(false);
+
+        jLabel3.setText("Preço total:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -79,11 +122,26 @@ public class Carrinho extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(208, 208, 208)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAddItem)
+                                .addGap(90, 90, 90)
+                                .addComponent(btnRemoverItem)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnFinalizar))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tbxPrecoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -93,11 +151,69 @@ public class Carrinho extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(tbxPrecoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddItem)
+                    .addComponent(btnRemoverItem)
+                    .addComponent(btnFinalizar))
+                .addGap(40, 40, 40))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        AdicionarItem abre = new AdicionarItem(frame, true, codVenda);
+        abre.setLocationRelativeTo(null);
+        abre.setVisible(true);
+        if ( abre.getItem() != null )  { modeloCarrinho.inserirItemVenda(abre.getItem()); }
+        calcularPreco();
+    }//GEN-LAST:event_btnAddItemActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        Venda venda = new Venda();
+        VendaDAO vendaDAO = new VendaDAO();
+        
+        venda.setCodigo(codVenda);
+        venda.setData(String.valueOf(java.time.LocalDate.now()));
+        venda.setHora(String.valueOf(java.time.LocalTime.now()));
+        if ( cbFormaPagamento.getSelectedItem().toString().equals("Cartão de Crédito") )
+        {
+            venda.setFormaPagamento(0);
+        } else venda.setFormaPagamento(1);
+        venda.setPrecoTotal(preco);
+        
+        vendaDAO.create(venda);
+        
+        for ( itemVenda item : modeloCarrinho.getItens() )
+        {
+            itemVendaDAO dao = new itemVendaDAO();
+            item.getCodigoVenda();
+            item.getCodigoProduto();
+            item.getQtdVendida();
+            item.getPreco();
+            dao.create(item);
+        }
+        
+        dispose();
+    }//GEN-LAST:event_btnFinalizarActionPerformed
+
+    private void btnRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverItemActionPerformed
+        int indice = tbCarrinho.getSelectedRow();
+        
+        if ( indice >= 0 )
+        {
+            modeloCarrinho.excluirItemVenda(indice);
+            calcularPreco();
+        }
+    }//GEN-LAST:event_btnRemoverItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -142,8 +258,15 @@ public class Carrinho extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddItem;
+    private javax.swing.JButton btnFinalizar;
+    private javax.swing.JButton btnRemoverItem;
+    private javax.swing.JComboBox<String> cbFormaPagamento;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbCarrinho;
+    private javax.swing.JTextField tbxPrecoTotal;
     // End of variables declaration//GEN-END:variables
 }

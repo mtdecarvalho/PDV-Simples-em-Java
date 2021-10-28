@@ -17,7 +17,7 @@ public class itemVenda {
     
     public int getCodigoProduto()                           { return codigoProduto; }
     public double getPreco()                                { return preco; }  
-    public int getqtdVendida()                              { return qtdVendida; }
+    public int getQtdVendida()                              { return qtdVendida; }
     public double getPrecoTotal()                           { return precoTotal; }
     public int getCodigoVenda()                             { return codigoVenda; }
     public String getNome()                                 { return nome; }

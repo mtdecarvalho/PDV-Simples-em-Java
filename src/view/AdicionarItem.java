@@ -8,13 +8,13 @@ package view;
 import Classes.ModeloTabelaProduto;
 import Classes.Produto;
 import Classes.ProdutoDAO;
-import Classes.Venda;
-import Classes.VendaDAO;
 import Classes.itemVenda;
-import Classes.itemVendaDAO;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.text.DefaultFormatter;
 
 /**
  *
@@ -25,8 +25,10 @@ public class AdicionarItem extends javax.swing.JDialog {
     
     private ArrayList<Produto> produtos = new ArrayList<Produto>();
     private ModeloTabelaProduto modeloProdutos;
-    int qtd;
+    private itemVenda item;
     double preco;
+    int codVenda;
+    Produto produto = new Produto();
 
     /**
      * Creates new form AdicionarItem
@@ -36,6 +38,19 @@ public class AdicionarItem extends javax.swing.JDialog {
         initComponents();
         modeloProdutos = new ModeloTabelaProduto(produtos);
         readJTable();
+    }
+    
+    public AdicionarItem(java.awt.Frame parent, boolean modal, int codVenda) {
+        super(parent, modal);
+        initComponents();
+        this.codVenda = codVenda;
+        modeloProdutos = new ModeloTabelaProduto(produtos);
+        readJTable();
+    }
+    
+    public itemVenda getItem()
+    {
+        return item;
     }
     
     public void readJTable()
@@ -57,6 +72,24 @@ public class AdicionarItem extends javax.swing.JDialog {
         
         tbAddItem.setModel(modeloProdutos);
     }
+    
+    public void calculoPrecoTotal()
+    {
+        preco = produto.getPreco();
+        preco *= Double.parseDouble(spnQtd.getValue().toString());
+    }
+    
+    public void atualizarPrecoTotal()
+    {
+        JComponent comp = spnQtd.getEditor();
+        JFormattedTextField field = (JFormattedTextField) comp.getComponent(0);
+        DefaultFormatter formatter = (DefaultFormatter) field.getFormatter();
+        formatter.setCommitsOnValidEdit(true);
+        spnQtd.addChangeListener((ChangeEvent e) -> {
+            calculoPrecoTotal();
+            tbxPreco.setText(String.valueOf(preco));
+        });
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,11 +109,9 @@ public class AdicionarItem extends javax.swing.JDialog {
         tbxPreco = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         spnQtd = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAddCarrinho = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -95,39 +126,41 @@ public class AdicionarItem extends javax.swing.JDialog {
 
             }
         ));
+        tbAddItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbAddItemMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbAddItem);
+
+        tbxNome.setEditable(false);
 
         jLabel1.setText("Nome:");
 
         jLabel3.setText("Preço Total: R$");
 
+        tbxPreco.setEditable(false);
+
         jLabel4.setText("Quantidade:");
 
-        jButton1.setText("Calcular");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        spnQtd.setModel(new javax.swing.SpinnerNumberModel(0, 0, 0, 1));
+        spnQtd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                spnQtdMouseClicked(evt);
             }
         });
 
-        jButton2.setText("Adicionar ao carrinho");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAddCarrinho.setText("Adicionar ao carrinho");
+        btnAddCarrinho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAddCarrinhoActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Cancelar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton4.setText("+");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -148,24 +181,20 @@ public class AdicionarItem extends javax.swing.JDialog {
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(tbxPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnAddCarrinho)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3))
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCancelar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(spnQtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(jButton1))))
+                                .addComponent(spnQtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(202, 202, 202)
                 .addComponent(jLabel2)
@@ -178,85 +207,65 @@ public class AdicionarItem extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(51, 51, 51)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel1)
-                                    .addComponent(tbxNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(spnQtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton1))
-                                .addGap(24, 24, 24)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(tbxPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(46, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton3)
-                                    .addComponent(jButton2))
-                                .addGap(32, 32, 32))))
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(tbxNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(spnQtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(tbxPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(46, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelar)
+                            .addComponent(btnAddCarrinho))
+                        .addGap(32, 32, 32))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int indice = tbAddItem.getSelectedRow();
-        
-        if (indice >= 0){
-            Produto produto = modeloProdutos.getProduto(indice);
-            tbxNome.setText(produto.getNome());
-            
-        }
-        
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int indice = tbAddItem.getSelectedRow();
-        
-        if (indice >= 0){
-            Produto produto = modeloProdutos.getProduto(indice);
-            itemVenda itemvenda = new itemVenda();
-            qtd = Integer.parseInt(spnQtd.getValue().toString());
-            preco = qtd * produto.getPreco();
-            tbxPreco.setText(String.valueOf(preco));
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAddCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCarrinhoActionPerformed
         int indice = tbAddItem.getSelectedRow();
         if (indice >= 0){
-            Produto produto = modeloProdutos.getProduto(indice);
-            Venda venda = new Venda();
-            VendaDAO vendadao = new VendaDAO();
-            itemVenda itemvenda = new itemVenda();
-            itemVendaDAO itemDAO = new itemVendaDAO();
-            itemvenda.setCodigoProduto(produto.getCodigo());
-            itemvenda.setNome(produto.getNome());
-            itemvenda.setCodigoVenda(1);
-            itemvenda.setQtdVendida(qtd);
-            itemvenda.setPreco(preco);
-            itemDAO.create(itemvenda);
+            produto = modeloProdutos.getProduto(indice);
+            item = new itemVenda();
+            item.setCodigoProduto(produto.getCodigo());
+            item.setCodigoVenda(codVenda);
+            item.setNome(produto.getNome());
+            calculoPrecoTotal();
+            item.setQtdVendida(Integer.parseInt(spnQtd.getValue().toString()));
+            item.setPreco(preco);
         }
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        Carrinho abre = new Carrinho(frame, true);
-        abre.setLocationRelativeTo(null);
-        abre.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnAddCarrinhoActionPerformed
+
+    private void tbAddItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAddItemMouseClicked
+        int indice = tbAddItem.getSelectedRow();
+        
+        produto = modeloProdutos.getProduto(indice);
+        spnQtd.setModel(new SpinnerNumberModel(1, 0, produto.getQtdEstoque(), 1));
+        tbxNome.setText(produto.getNome());
+        preco = produto.getPreco();
+        tbxPreco.setText(String.valueOf(produto.getPreco()));
+        atualizarPrecoTotal();
+    }//GEN-LAST:event_tbAddItemMouseClicked
+
+    private void spnQtdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_spnQtdMouseClicked
+
+    }//GEN-LAST:event_spnQtdMouseClicked
 
     /**
      * @param args the command line arguments
@@ -301,10 +310,8 @@ public class AdicionarItem extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnAddCarrinho;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

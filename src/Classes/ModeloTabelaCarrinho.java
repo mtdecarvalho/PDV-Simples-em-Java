@@ -16,9 +16,9 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
     private static final int COLUNA_CODIGO = 0;
     private static final int COLUNA_NOME = 1;
     private static final int COLUNA_QTD = 2;
+    private static final int COLUNA_PRECO = 3;
     
-    
-    private String colunas[] = new String[]{"Código", "Nome", "Quantidade"};
+    private String colunas[] = new String[]{"Código", "Nome", "Quantidade", "Preço"};
     private ArrayList<itemVenda> itens;
     
     public ModeloTabelaCarrinho(ArrayList<itemVenda> itens){
@@ -50,7 +50,9 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
             case COLUNA_NOME:
                 return itemvenda.getNome();
             case COLUNA_QTD:
-                return itemvenda.getqtdVendida();           
+                return itemvenda.getQtdVendida();
+            case COLUNA_PRECO:
+                return itemvenda.getPreco();
         }
         return "";
     }
@@ -66,7 +68,10 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
                 break;
             case COLUNA_QTD:
                 itemvenda.setQtdVendida(Integer.parseInt(valor.toString()));
-                break;           
+                break;
+            case COLUNA_PRECO:
+                itemvenda.setPreco(Double.parseDouble(valor.toString()));
+                break;
         }
     }
     
@@ -78,14 +83,18 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
         int ultimo = getRowCount()-1;
         fireTableRowsInserted(ultimo, ultimo);
     }
-    public void atualizarCliente(int indice, itemVenda itemvenda){
+    public void atualizarItemVenda(int indice, itemVenda itemvenda){
         itens.set(indice, itemvenda);
         fireTableRowsUpdated(indice, indice);
 
     }
-    public void excluirCliente(int indice){
+    public void excluirItemVenda(int indice){
         itens.remove(indice);
         fireTableRowsDeleted(indice, indice);
         
+    }
+    public ArrayList<itemVenda> getItens()
+    {
+        return itens;
     }
 }
