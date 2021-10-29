@@ -162,6 +162,11 @@ public class ModificarCliente extends javax.swing.JDialog {
         jLabel12.setText("UF:");
 
         cbUF.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO" }));
+        cbUF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbUFActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -318,6 +323,10 @@ public class ModificarCliente extends javax.swing.JDialog {
         if(JOptionPane.showConfirmDialog(null, "Cancelar cadastro?") == 0)
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void cbUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbUFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbUFActionPerformed
 
     /**
      * @param args the command line arguments
