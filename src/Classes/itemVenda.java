@@ -9,23 +9,21 @@ package Classes;
  *
  * @author Carvalho
  */
-public class itemVenda {
+public class ItemVenda {
     private int codigoProduto, qtdVendida, codigoVenda;
-    private double preco, precoTotal;
+    private double preco;
     private String nome;
     
     
     public int getCodigoProduto()                           { return codigoProduto; }
     public double getPreco()                                { return preco; }  
     public int getQtdVendida()                              { return qtdVendida; }
-    public double getPrecoTotal()                           { return precoTotal; }
     public int getCodigoVenda()                             { return codigoVenda; }
     public String getNome()                                 { return nome; }
     
     public void setCodigoProduto( int codigo )              { this. codigoProduto = codigo; }
     public void setQtdVendida( int qtdVendida )             { this.qtdVendida = qtdVendida; }
     public void setPreco( double preco )                    { this.preco = preco; }
-    public void setPrecoTotal( double precoTotal )          { this.precoTotal = precoTotal; }
     public void setCodigoVenda( int codigoVenda )           { this.codigoVenda = codigoVenda; }
     public void setNome( String nome )                      { this.nome = nome; }    
 }

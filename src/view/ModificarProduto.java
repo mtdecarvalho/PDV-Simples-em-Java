@@ -3,7 +3,7 @@ package view;
 import Classes.Parametros;
 import Classes.Produto;
 import javax.swing.JOptionPane;
-import Classes.ProdutoDAO;
+import Classes.DAO.ProdutoDAO;
 /**
  *
  * @author Carvalho

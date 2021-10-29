@@ -1,12 +1,14 @@
-package view;
+package view.Grade;
 
-import Classes.ModeloTabelaProduto;
+import Classes.ModeloTabela.ModeloTabelaProduto;
 import Classes.Parametros;
 import Classes.Produto;
-import Classes.ProdutoDAO;
+import Classes.DAO.ProdutoDAO;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import view.ModificarProduto;
 /**
  *
  * @author Carvalho
@@ -201,7 +203,7 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int indice = tbGradeProduto.getSelectedRow();
         
-        if ( indice >= 0 )
+        if ( indice >= 0 && JOptionPane.showConfirmDialog(null, "Deseja realmente excluir este produto do estoque?", "Confirmação", 2) == 0 )
         {
             ProdutoDAO dao = new ProdutoDAO();
             Produto produto = modeloProdutos.getProduto(indice);

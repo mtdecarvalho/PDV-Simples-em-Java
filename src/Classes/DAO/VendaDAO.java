@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.DAO;
 
+import Classes.ConnectionFactory;
+import Classes.Parametros;
+import Classes.Venda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,25 +22,41 @@ import javax.swing.JOptionPane;
  * @author Juliana
  */
 public class VendaDAO {
-    public void create(Venda venda)
+    public void create(Venda venda, Parametros parametro)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
+        formaPagamentoDAO dao = new formaPagamentoDAO();
         
         try 
         {
-            stmt = con.prepareStatement("INSERT INTO Venda(codigo, data, hora, formaDePagamento, precoTotal) VALUES (?,?,?,?,?)");
+            if ( venda.getCodigoCliente() > -1 )
+            {
+                stmt = con.prepareStatement("INSERT INTO Venda(codigo, data, hora, formaDePagamento, precoTotal, codigoCliente) VALUES (?,?,?,?,?,?)");
             
-            stmt.setInt(1, venda.getCodigo());
-            stmt.setString(2, venda.getData());
-            stmt.setString(3, venda.getHora());
-            stmt.setInt(4, venda.getFormaPagamento());
-            stmt.setDouble(5, venda.getPrecoTotal());
-//            stmt.setInt(6, venda.getCodigoCliente());
+                stmt.setInt(1, venda.getCodigo());
+                stmt.setString(2, venda.getData());
+                stmt.setString(3, venda.getHora());
+                stmt.setInt(4, venda.getFormaPagamento());
+                stmt.setDouble(5, venda.getPrecoTotal());
+                stmt.setInt(6, venda.getCodigoCliente());
+            }
+            else
+            {
+                stmt = con.prepareStatement("INSERT INTO Venda(codigo, data, hora, formaDePagamento, precoTotal) VALUES (?,?,?,?,?)");
+            
+                stmt.setInt(1, venda.getCodigo());
+                stmt.setString(2, venda.getData());
+                stmt.setString(3, venda.getHora());
+                stmt.setInt(4, venda.getFormaPagamento());
+                stmt.setDouble(5, venda.getPrecoTotal());
+            }
             
             stmt.executeUpdate();
+            dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal());
             
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            if ( parametro == Parametros.COM_NOTIFICACAO )
+                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } 
         catch (SQLException ex) 
         {

@@ -4,8 +4,8 @@ import Classes.Cliente;
 import Classes.Endereco;
 import Classes.Parametros;
 import javax.swing.JOptionPane;
-import Classes.ClienteDAO;
-import Classes.EnderecoDAO;
+import Classes.DAO.ClienteDAO;
+import Classes.DAO.EnderecoDAO;
 /**
  *
  * @author Carvalho

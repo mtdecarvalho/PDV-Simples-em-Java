@@ -5,10 +5,9 @@
  */
 package view;
 
-import Classes.ModeloTabelaProduto;
+import Classes.ModeloTabela.ModeloTabelaProduto;
 import Classes.Produto;
-import Classes.ProdutoDAO;
-import Classes.itemVenda;
+import Classes.ItemVenda;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -23,9 +22,9 @@ import javax.swing.text.DefaultFormatter;
 
 public class AdicionarItem extends javax.swing.JDialog {
     
-    private ArrayList<Produto> produtos = new ArrayList<Produto>();
+    private ArrayList<Produto> produtos = new ArrayList<>();
     private ModeloTabelaProduto modeloProdutos;
-    private itemVenda item;
+    private ItemVenda item;
     double preco;
     int codVenda;
     Produto produto = new Produto();
@@ -37,40 +36,21 @@ public class AdicionarItem extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         modeloProdutos = new ModeloTabelaProduto(produtos);
-        readJTable();
     }
     
-    public AdicionarItem(java.awt.Frame parent, boolean modal, int codVenda) {
+    public AdicionarItem(java.awt.Frame parent, boolean modal, int codVenda, ArrayList<Produto> produtos) {
         super(parent, modal);
         initComponents();
         this.codVenda = codVenda;
+        this.produtos = produtos;
         modeloProdutos = new ModeloTabelaProduto(produtos);
-        readJTable();
+        tbAddItem.setModel(modeloProdutos);
+//        readJTable();
     }
     
-    public itemVenda getItem()
+    public ItemVenda getItem()
     {
         return item;
-    }
-    
-    public void readJTable()
-    {
-        modeloProdutos = new ModeloTabelaProduto(produtos);
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        
-        for ( Produto produto : produtoDAO.read() )
-        {
-            
-            produto.getCodigo();
-            produto.getUnidade();
-            produto.getQtdEstoque();
-            produto.getNome();
-            produto.getPreco();
-            produto.getUltimaVenda();
-            modeloProdutos.inserirProduto(produto);
-        }
-        
-        tbAddItem.setModel(modeloProdutos);
     }
     
     public void calculoPrecoTotal()
@@ -116,7 +96,7 @@ public class AdicionarItem extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel2.setText("Adicionar Item");
+        jLabel2.setText("Adicionar item");
 
         tbAddItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -239,27 +219,30 @@ public class AdicionarItem extends javax.swing.JDialog {
 
     private void btnAddCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCarrinhoActionPerformed
         int indice = tbAddItem.getSelectedRow();
-        if (indice >= 0){
+        if (indice >= 0 && Integer.parseInt(spnQtd.getValue().toString()) > 0 ){
             produto = modeloProdutos.getProduto(indice);
-            item = new itemVenda();
+            item = new ItemVenda();
             item.setCodigoProduto(produto.getCodigo());
             item.setCodigoVenda(codVenda);
             item.setNome(produto.getNome());
             calculoPrecoTotal();
             item.setQtdVendida(Integer.parseInt(spnQtd.getValue().toString()));
             item.setPreco(preco);
+            dispose();
         }
-        dispose();
     }//GEN-LAST:event_btnAddCarrinhoActionPerformed
 
     private void tbAddItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAddItemMouseClicked
         int indice = tbAddItem.getSelectedRow();
         
         produto = modeloProdutos.getProduto(indice);
-        spnQtd.setModel(new SpinnerNumberModel(1, 0, produto.getQtdEstoque(), 1));
+        if ( produto.getQtdEstoque() > 0 )
+        {
+            spnQtd.setModel(new SpinnerNumberModel(0, 0, produto.getQtdEstoque(), 1));
+        }
+        
         tbxNome.setText(produto.getNome());
-        preco = produto.getPreco();
-        tbxPreco.setText(String.valueOf(produto.getPreco()));
+        tbxPreco.setText("0.0");
         atualizarPrecoTotal();
     }//GEN-LAST:event_tbAddItemMouseClicked
 

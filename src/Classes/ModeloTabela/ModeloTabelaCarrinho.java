@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.ModeloTabela;
 
+import Classes.ItemVenda;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -19,10 +20,10 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
     private static final int COLUNA_PRECO = 3;
     
     private String colunas[] = new String[]{"Código", "Nome", "Quantidade", "Preço"};
-    private ArrayList<itemVenda> itens;
+    private ArrayList<ItemVenda> itens;
     
-    public ModeloTabelaCarrinho(ArrayList<itemVenda> itens){
-        this.itens = new ArrayList<itemVenda>(itens);
+    public ModeloTabelaCarrinho(ArrayList<ItemVenda> itens){
+        this.itens = new ArrayList<ItemVenda>(itens);
     }
     
     @Override
@@ -43,7 +44,7 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
     }
     @Override
     public Object getValueAt(int linha, int coluna){
-        itemVenda itemvenda = itens.get(linha);
+        ItemVenda itemvenda = itens.get(linha);
         switch(coluna){
             case COLUNA_CODIGO:
                 return itemvenda.getCodigoProduto();
@@ -58,7 +59,7 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
     }
     @Override
     public void setValueAt(Object valor, int linha, int coluna){
-        itemVenda itemvenda = itens.get(linha);
+        ItemVenda itemvenda = itens.get(linha);
         switch(coluna){
             case COLUNA_CODIGO:
                 itemvenda.setCodigoProduto(Integer.parseInt(valor.toString()));
@@ -75,15 +76,15 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
         }
     }
     
-    public itemVenda getItemVenda(int indice){
+    public ItemVenda getItemVenda(int indice){
         return itens.get(indice);
     }
-    public void inserirItemVenda(itemVenda itemvenda){
+    public void inserirItemVenda(ItemVenda itemvenda){
         itens.add(itemvenda);
         int ultimo = getRowCount()-1;
         fireTableRowsInserted(ultimo, ultimo);
     }
-    public void atualizarItemVenda(int indice, itemVenda itemvenda){
+    public void atualizarItemVenda(int indice, ItemVenda itemvenda){
         itens.set(indice, itemvenda);
         fireTableRowsUpdated(indice, indice);
 
@@ -93,7 +94,7 @@ public class ModeloTabelaCarrinho extends AbstractTableModel {
         fireTableRowsDeleted(indice, indice);
         
     }
-    public ArrayList<itemVenda> getItens()
+    public ArrayList<ItemVenda> getItens()
     {
         return itens;
     }

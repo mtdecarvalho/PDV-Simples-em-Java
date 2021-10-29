@@ -1,14 +1,16 @@
-package view;
+package view.Grade;
 
 import Classes.Cliente;
-import Classes.ClienteDAO;
-import Classes.ModeloTabelaCliente;
+import Classes.DAO.ClienteDAO;
+import Classes.ModeloTabela.ModeloTabelaCliente;
 import Classes.Parametros;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableRowSorter;
+import view.ModificarCliente;
 /**
  *
  * @author Carvalho
@@ -195,7 +197,7 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int indice = tbGradeCliente.getSelectedRow();
         
-        if ( indice >= 0 )
+        if ( indice >= 0 && JOptionPane.showConfirmDialog(null, "Deseja realmente excluir este cliente? Todas as vendas vinculadas a ele serão excluídas.", "Confirmação", 2) == 0 )
         {
             ClienteDAO dao = new ClienteDAO();
             Cliente cliente = modeloClientes.getCliente(indice);

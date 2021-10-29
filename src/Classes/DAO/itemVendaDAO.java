@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.DAO;
 
 /**
  *
  * @author Juliana
  */
+import Classes.ConnectionFactory;
+import Classes.Parametros;
+import Classes.ItemVenda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,9 +22,9 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
-public class itemVendaDAO {
+public class ItemVendaDAO {
     
-    public void create(itemVenda itemvenda)
+    public void create(ItemVenda itemvenda, Parametros parametro)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
@@ -37,7 +40,8 @@ public class itemVendaDAO {
             
             stmt.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            if ( parametro == Parametros.COM_NOTIFICACAO )
+                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } 
         catch (SQLException ex) 
         {
@@ -49,13 +53,13 @@ public class itemVendaDAO {
         }
     }
     
-    public ArrayList<itemVenda> read()
+    public ArrayList<ItemVenda> read()
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         
-        ArrayList<itemVenda> itens = new ArrayList<>();
+        ArrayList<ItemVenda> itens = new ArrayList<>();
         
         try
         {
@@ -64,7 +68,7 @@ public class itemVendaDAO {
             
             while (rs.next())
             {
-                itemVenda itemvenda = new itemVenda();
+                ItemVenda itemvenda = new ItemVenda();
                 
                 itemvenda.setCodigoProduto(rs.getInt("codigoProduto"));
                 itemvenda.setCodigoVenda(rs.getInt("codigoVenda"));
@@ -76,7 +80,7 @@ public class itemVendaDAO {
             
         }
         catch (SQLException ex) {
-            Logger.getLogger(itemVendaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ItemVendaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
@@ -86,7 +90,46 @@ public class itemVendaDAO {
         return itens;
     }
     
-    public void update(itemVenda itemvenda, int codigo)
+    public ArrayList<ItemVenda> read(int codigo)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        ArrayList<ItemVenda> itens = new ArrayList<>();
+        
+        try
+        {
+            stmt = con.prepareStatement("SELECT * FROM itemvenda WHERE codigoVenda = ?");
+            stmt.setInt(1, codigo);
+            rs = stmt.executeQuery();
+            
+            while (rs.next())
+            {
+                ProdutoDAO pDAO = new ProdutoDAO();
+                ItemVenda itemvenda = new ItemVenda();
+                
+                itemvenda.setCodigoProduto(rs.getInt("codigoProduto"));
+                itemvenda.setCodigoVenda(rs.getInt("codigoVenda"));
+                itemvenda.setQtdVendida(rs.getInt("qtdVendida"));               
+                itemvenda.setPreco(rs.getDouble("preco"));
+                
+                itens.add(itemvenda);
+            }
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ItemVendaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return itens;
+    }
+    
+    public void update(ItemVenda itemvenda, int codigo)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
@@ -116,7 +159,7 @@ public class itemVendaDAO {
         }
     }
     
-    public void delete(itemVenda itemvenda)
+    public void delete(ItemVenda itemvenda)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 

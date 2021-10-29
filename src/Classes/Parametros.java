@@ -12,5 +12,8 @@ package Classes;
 public enum Parametros {
     ALTERAR,
     CONSULTAR,
-    ADICIONAR;
+    ADICIONAR,
+    REMOVER,
+    COM_NOTIFICACAO,
+    SEM_NOTIFICACAO;
 }

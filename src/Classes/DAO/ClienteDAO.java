@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.DAO;
 
+import Classes.Cliente;
+import Classes.ConnectionFactory;
+import Classes.Endereco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -185,6 +188,36 @@ public class ClienteDAO {
             ConnectionFactory.closeConnection(con, stmt);
         }
         
+    }
+    
+    public String getNome(int codigo)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String nome = null;
+        
+        try
+        {
+            stmt = con.prepareStatement("SELECT nome FROM cliente WHERE codigo = ?");
+            stmt.setInt(1, codigo);
+            rs = stmt.executeQuery();
+            
+            while (rs.next())
+            {
+                nome = rs.getString("nome");
+            }
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return nome;
     }
     
 }

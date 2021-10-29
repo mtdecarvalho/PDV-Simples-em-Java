@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.Grade;
 
-import Classes.ModeloTabelaVendas;
+import Classes.ModeloTabela.ModeloTabelaVendas;
 import Classes.Venda;
-import Classes.VendaDAO;
+import Classes.DAO.VendaDAO;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import view.Carrinho;
+import view.ConsultarVenda;
 
 /**
  *
@@ -22,7 +25,7 @@ public class GradeVendas extends javax.swing.JDialog {
      * Creates new form GradeVendas
      */
     private ModeloTabelaVendas modeloVendas;
-    private ArrayList<Venda> vendas = new ArrayList<Venda>();
+    private ArrayList<Venda> vendas = new ArrayList<>();
     
     public GradeVendas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -65,6 +68,8 @@ public class GradeVendas extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         btnAddVenda = new javax.swing.JButton();
         btnRemoverVenda = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -95,6 +100,20 @@ public class GradeVendas extends javax.swing.JDialog {
             }
         });
 
+        btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Consultar dados da venda");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,12 +125,17 @@ public class GradeVendas extends javax.swing.JDialog {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(81, 81, 81)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnAddVenda)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnRemoverVenda))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRemoverVenda)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnFechar)
+                                .addGap(26, 26, 26)))))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -121,11 +145,13 @@ public class GradeVendas extends javax.swing.JDialog {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddVenda)
-                    .addComponent(btnRemoverVenda))
-                .addContainerGap(48, Short.MAX_VALUE))
+                    .addComponent(btnRemoverVenda)
+                    .addComponent(btnFechar)
+                    .addComponent(jButton1))
+                .addGap(47, 47, 47))
         );
 
         pack();
@@ -142,8 +168,7 @@ public class GradeVendas extends javax.swing.JDialog {
 
     private void btnRemoverVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverVendaActionPerformed
         int indice = tbGradeVendas.getSelectedRow();
-        
-        if ( indice >= 0 )
+        if ( indice >= 0 && JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esta venda?", "Confirmação", 2) == 0 )
         {
             Venda venda = modeloVendas.getVenda(indice);
             VendaDAO dao = new VendaDAO();
@@ -151,6 +176,25 @@ public class GradeVendas extends javax.swing.JDialog {
             readJTable();
         }
     }//GEN-LAST:event_btnRemoverVendaActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int indice = tbGradeVendas.getSelectedRow();
+        Venda venda = new Venda();
+        
+        if ( indice >= 0 )
+        {
+            venda = modeloVendas.getVenda(indice);
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            ConsultarVenda abre = new ConsultarVenda(frame, true, venda);
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
+        }        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,7 +240,9 @@ public class GradeVendas extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddVenda;
+    private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnRemoverVenda;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbGradeVendas;
