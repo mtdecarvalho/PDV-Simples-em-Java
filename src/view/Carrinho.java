@@ -5,8 +5,6 @@
  */
 package view;
 
-import Classes.Cliente;
-import Classes.DAO.ClienteDAO;
 import Classes.ModeloTabela.ModeloTabelaCarrinho;
 import Classes.Parametros;
 import Classes.Produto;
@@ -15,9 +13,28 @@ import Classes.Venda;
 import Classes.DAO.VendaDAO;
 import Classes.ItemVenda;
 import Classes.DAO.ItemVendaDAO;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
 
 /**
  *
@@ -27,6 +44,7 @@ public class Carrinho extends javax.swing.JDialog {
     private ModeloTabelaCarrinho modeloCarrinho;
     private ArrayList<ItemVenda> itens = new ArrayList<>();
     private ArrayList<Produto> produtos = new ArrayList<>();
+    //public static final DateTimeFormatter ISO_LOCAL_TIME = '';
     private int codVenda;
     private int codCliente = -1;
     private double preco;
@@ -255,11 +273,11 @@ public class Carrinho extends javax.swing.JDialog {
         VendaDAO vendaDAO = new VendaDAO();
         
         String data = String.valueOf(java.time.LocalDate.now());
-        String hora = String.valueOf(java.time.LocalTime.now());
+        LocalTime hora = LocalTime.now();
         
         venda.setCodigo(codVenda);
         venda.setData(data);
-        venda.setHora(hora);
+        venda.setHora(String.valueOf(hora));
         if ( cbFormaPagamento.getSelectedItem().toString().equals("Cartão de Crédito") )
         {
             venda.setFormaPagamento(0);
@@ -281,9 +299,59 @@ public class Carrinho extends javax.swing.JDialog {
             
             dao.create(item, Parametros.SEM_NOTIFICACAO);
             pDAO.updateUltimaVenda(item.getCodigoProduto(), data);
-            pDAO.updateEstoque(item.getCodigoProduto(), item.getQtdVendida(), Parametros.REMOVER);
-        }
-        
+            pDAO.updateEstoque(item.getCodigoProduto(), item.getQtdVendida(), Parametros.REMOVER); 
+            
+            
+            Document document = new Document();   
+              
+            try {
+                PdfWriter.getInstance(document, new FileOutputStream("venda.pdf"));
+                
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
+                String f = formatter.format(hora);
+                
+                Paragraph p = new Paragraph();
+                document.open();
+                p.add(new Paragraph("Venda #" + venda.getCodigo()));
+                p.setAlignment(Element.ALIGN_CENTER);
+                document.add(p);
+                document.add(new Paragraph(" " + " "));
+                PdfPTable table = new PdfPTable(4);
+                PdfPCell c1 = new PdfPCell(new Phrase("Código Venda"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);
+                c1 = new PdfPCell(new Phrase("Data e Hora"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);
+                c1 = new PdfPCell(new Phrase("Preço Total"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);
+                c1 = new PdfPCell(new Phrase("Codigo do Cliente"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);            
+                table.setHeaderRows(1);
+                table.addCell(String.valueOf(venda.getCodigo()));                
+                table.addCell(venda.getData() + " " + f);
+                table.addCell(String.valueOf(venda.getPrecoTotal()));
+                if(venda.getCodigoCliente() > -1){
+                    table.addCell(String.valueOf(venda.getCodigoCliente()));
+                }else{
+                    table.addCell("");
+                }      
+                document.add(table);              
+                
+            } catch (FileNotFoundException | DocumentException ex) {
+                Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);           
+            } finally {
+                document.close();
+            }  
+            
+            try {
+                Desktop.getDesktop().open(new File("venda.pdf"));
+            } catch (IOException ex) {
+                Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }       
         dispose();
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
@@ -370,4 +438,8 @@ public class Carrinho extends javax.swing.JDialog {
     private javax.swing.JTextField tbxCliente;
     private javax.swing.JTextField tbxPrecoTotal;
     // End of variables declaration//GEN-END:variables
+
+    private void addEmptyLine(Paragraph p, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

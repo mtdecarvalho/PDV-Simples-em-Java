@@ -162,4 +162,33 @@ public class VendaDAO {
         }
     }
     
+    /*public String getHora(){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        ArrayList<Venda> vendas = new ArrayList<>();
+        
+        try
+        {
+            stmt = con.prepareStatement("SELECT * FROM venda");
+            rs = stmt.executeQuery();
+            
+            while (rs.next())
+            {
+                Venda venda = new Venda();                              
+                venda.setHora(rs.getString("hora"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally {
+        
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        
+        return ;
+    }*/
+    
 }

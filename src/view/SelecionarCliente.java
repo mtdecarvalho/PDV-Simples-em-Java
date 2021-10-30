@@ -8,16 +8,7 @@ package view;
 import Classes.Cliente;
 import Classes.DAO.ClienteDAO;
 import Classes.ModeloTabela.ModeloTabelaCliente;
-import Classes.ModeloTabela.ModeloTabelaProduto;
-import Classes.Produto;
-import Classes.DAO.ProdutoDAO;
-import Classes.ItemVenda;
 import java.util.ArrayList;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.text.DefaultFormatter;
 
 /**
  *
