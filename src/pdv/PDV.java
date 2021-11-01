@@ -5,6 +5,10 @@
  */
 package pdv;
 
+import view.TelaPrincipal;
+
+
+
 /**
  *
  * @author Carvalho
@@ -15,7 +19,9 @@ public class PDV {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        TelaPrincipal principal = new TelaPrincipal();
+        principal.setLocationRelativeTo(null);
+        principal.setVisible(true);
     }
     
 }

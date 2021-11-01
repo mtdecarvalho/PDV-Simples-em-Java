@@ -30,6 +30,10 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
         modeloProdutos = new ModeloTabelaProduto(produtos);
         readJTable();
     }
+
+    public GradeCadastroProduto() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public void readJTable()
     {

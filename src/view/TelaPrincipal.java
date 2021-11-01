@@ -5,23 +5,22 @@
  */
 package view;
 
-import view.Grade.GradeVendas;
-import view.Grade.GradeCadastroCliente;
-import view.Grade.GradeCadastroProduto;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import view.Grade.GradeCadastroCliente;
+import view.Grade.GradeCadastroProduto;
+import view.Grade.GradeVendas;
 
 /**
  *
- * @author Carvalho
+ * @author Juliana
  */
-public class TelaPrincipal extends javax.swing.JDialog {
+public class TelaPrincipal extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaPrincipal
      */
-    public TelaPrincipal(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public TelaPrincipal() {
         initComponents();
     }
 
@@ -38,7 +37,7 @@ public class TelaPrincipal extends javax.swing.JDialog {
         btnEstoque = new javax.swing.JButton();
         btnVendas = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnClientes.setText("Clientes");
         btnClientes.addActionListener(new java.awt.event.ActionListener() {
@@ -66,23 +65,23 @@ public class TelaPrincipal extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(145, 145, 145)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(153, 153, 153)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnVendas)
                     .addComponent(btnEstoque)
                     .addComponent(btnClientes))
-                .addContainerGap(179, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(85, 85, 85)
                 .addComponent(btnClientes)
-                .addGap(94, 94, 94)
-                .addComponent(btnEstoque)
                 .addGap(95, 95, 95)
+                .addComponent(btnEstoque)
+                .addGap(98, 98, 98)
                 .addComponent(btnVendas)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
 
         pack();
@@ -136,17 +135,10 @@ public class TelaPrincipal extends javax.swing.JDialog {
         }
         //</editor-fold>
 
-        /* Create and display the dialog */
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaPrincipal dialog = new TelaPrincipal(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                new TelaPrincipal().setVisible(true);
             }
         });
     }
