@@ -147,6 +147,7 @@ public class VendaDAO {
             stmt.setInt(1, venda.getCodigo());
             
             stmt.executeUpdate();
+            
             dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal(), Parametros.REMOVER);
             
             JOptionPane.showMessageDialog(null, "Excluido com sucesso!");

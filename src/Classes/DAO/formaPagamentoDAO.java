@@ -21,14 +21,11 @@ import java.util.logging.Logger;
  * @author Carvalho
  */
 public class formaPagamentoDAO {
-    Connection con = ConnectionFactory.getConnection();
-    PreparedStatement stmt = null; 
-    ResultSet rs = null;
-    
     public void updateValorTotal(int codigo, double valor, Parametros parametro)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
+        ResultSet rs = null;
         double valorAtual = 0;
         
         try 
