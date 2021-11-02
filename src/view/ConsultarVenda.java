@@ -36,8 +36,8 @@ public class ConsultarVenda extends javax.swing.JDialog {
         ItemVendaDAO dao = new ItemVendaDAO();
         ProdutoDAO pDAO = new ProdutoDAO();
         ClienteDAO cDAO = new ClienteDAO();
-        ArrayList<ItemVenda> itensBD = dao.read();
         this.codVenda = venda.getCodigo();
+        ArrayList<ItemVenda> itensBD = dao.read(codVenda);
         
         lblCodigo.setText("Venda #" + codVenda);
         tbxData.setText(venda.getData());

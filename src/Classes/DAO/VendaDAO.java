@@ -32,7 +32,7 @@ public class VendaDAO {
         {
             if ( venda.getCodigoCliente() > -1 )
             {
-                stmt = con.prepareStatement("INSERT INTO Venda(codigo, data, hora, formaDePagamento, precoTotal, codigoCliente) VALUES (?,?,?,?,?,?)");
+                stmt = con.prepareStatement("INSERT INTO venda(codigo, data, hora, formaDePagamento, precoTotal, codigoCliente) VALUES (?,?,?,?,?,?)");
             
                 stmt.setInt(1, venda.getCodigo());
                 stmt.setString(2, venda.getData());
@@ -43,7 +43,7 @@ public class VendaDAO {
             }
             else
             {
-                stmt = con.prepareStatement("INSERT INTO Venda(codigo, data, hora, formaDePagamento, precoTotal) VALUES (?,?,?,?,?)");
+                stmt = con.prepareStatement("INSERT INTO venda(codigo, data, hora, formaDePagamento, precoTotal) VALUES (?,?,?,?,?)");
             
                 stmt.setInt(1, venda.getCodigo());
                 stmt.setString(2, venda.getData());
