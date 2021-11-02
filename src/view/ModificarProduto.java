@@ -57,6 +57,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                 tbxUnidade.setEditable(false);
                 tbxPreco.setEditable(false);
                 tbxUltimaVenda.setEditable(false);
+                btnCancelar.setVisible(false);
             }
         }
     }

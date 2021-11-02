@@ -6,11 +6,15 @@
 package Classes.DAO;
 
 import Classes.ConnectionFactory;
+import Classes.FormaPagamento;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Carvalho
@@ -55,5 +59,41 @@ public class formaPagamentoDAO {
         {
             ConnectionFactory.closeConnection(con, stmt);
         }
+    }
+    
+    public ArrayList<FormaPagamento> read()
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        ArrayList<FormaPagamento> pagamentos = new ArrayList<>();
+        
+        try
+        {
+            stmt = con.prepareStatement("SELECT * FROM formadepagamento");
+            rs = stmt.executeQuery();
+            
+            while (rs.next())
+            {
+                FormaPagamento pagamento = new FormaPagamento();
+                
+                pagamento.setCodigo(rs.getInt("codigo"));
+                pagamento.setNome(rs.getString("nome"));
+                pagamento.setValorTotal(rs.getDouble("valorTotal"));
+                
+                pagamentos.add(pagamento);
+            }
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return pagamentos;
     }
 }

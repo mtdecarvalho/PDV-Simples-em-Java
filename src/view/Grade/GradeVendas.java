@@ -8,10 +8,11 @@ package view.Grade;
 import Classes.ModeloTabela.ModeloTabelaVendas;
 import Classes.Venda;
 import Classes.DAO.VendaDAO;
+import Classes.DAO.formaPagamentoDAO;
+import Classes.FormaPagamento;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -27,9 +28,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import view.Carrinho;
 import view.ConsultarVenda;
 
@@ -44,6 +43,7 @@ public class GradeVendas extends javax.swing.JDialog {
      */
     private ModeloTabelaVendas modeloVendas;
     private ArrayList<Venda> vendas = new ArrayList<>();
+    
     //private int codVenda;
     //private int codCliente = -1;
     //private double preco;
@@ -159,9 +159,9 @@ public class GradeVendas extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(247, 247, 247)
+                        .addGap(267, 267, 267)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE))
@@ -239,7 +239,11 @@ public class GradeVendas extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         VendaDAO vendadao = new VendaDAO();
+        formaPagamentoDAO pgDAO = new formaPagamentoDAO();
+        ArrayList<FormaPagamento> pagamentos = pgDAO.read();
         vendas = vendadao.read();
+        
+        
         
         Document document = new Document();   
               
@@ -282,6 +286,27 @@ public class GradeVendas extends javax.swing.JDialog {
                 
                 document.add(table);
                 
+                document.newPage();
+                PdfPTable table2 = new PdfPTable(3);
+                PdfPCell c2 = new PdfPCell(new Phrase("Código"));
+                c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table2.addCell(c2);
+                c2 = new PdfPCell(new Phrase("Forma de pagamento"));
+                c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table2.addCell(c2);
+                c2 = new PdfPCell(new Phrase("Total Vendido"));
+                c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table2.addCell(c2);
+                table2.setHeaderRows(1);
+                for(int i = 0; i < pagamentos.size(); i++){
+                    table2.addCell(String.valueOf(pagamentos.get(i).getCodigo()));                
+                    table2.addCell(pagamentos.get(i).getNome());
+                    table2.addCell(String.valueOf(pagamentos.get(i).getValorTotal()));
+                            
+                }
+                
+                document.add(table2);
+                                               
                 } catch (FileNotFoundException | DocumentException ex) {
                     Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);           
                 } finally {
@@ -289,7 +314,7 @@ public class GradeVendas extends javax.swing.JDialog {
                 }  
 
                 try {
-                    Desktop.getDesktop().open(new File("venda.pdf"));
+                    Desktop.getDesktop().open(new File("relatorio.pdf"));
                 } catch (IOException ex) {
                     Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
                 }
