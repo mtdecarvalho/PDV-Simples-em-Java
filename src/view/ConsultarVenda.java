@@ -53,19 +53,24 @@ public class ConsultarVenda extends javax.swing.JDialog {
                 break;
         }
         tbxPrecoTotal.setText(String.valueOf(venda.getPrecoTotal()));
-
-        modeloCarrinho = new ModeloTabelaCarrinho(itens);
+        
+//        for ( ItemVenda item : itensBD )
+//        {
+//            item.setNome(pDAO.getNome(item.getCodigoProduto()));
+//        }
+//        
+        modeloCarrinho = new ModeloTabelaCarrinho(itensBD);
         tbItensVenda.setModel(modeloCarrinho);
-        for ( ItemVenda item : dao.read() )
-        {
-            item.getCodigoVenda();
-            item.getCodigoProduto();
-            item.getQtdVendida();
-            item.getPreco();
-            item.setNome(pDAO.getNome(item.getCodigoProduto()));
-            modeloCarrinho.inserirItemVenda(item);
-        }
-        tbItensVenda.setModel(modeloCarrinho);
+//        for ( ItemVenda item : dao.read() )
+//        {
+//            item.getCodigoVenda();
+//            item.getCodigoProduto();
+//            item.getQtdVendida();
+//            item.getPreco();
+//            item.setNome(pDAO.getNome(item.getCodigoProduto()));
+//            modeloCarrinho.inserirItemVenda(item);
+//        }
+//        tbItensVenda.setModel(modeloCarrinho);
     }
 
     /**

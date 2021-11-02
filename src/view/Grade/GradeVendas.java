@@ -226,11 +226,10 @@ public class GradeVendas extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int indice = tbGradeVendas.getSelectedRow();
-        Venda venda = new Venda();
         
         if ( indice >= 0 )
         {
-            venda = modeloVendas.getVenda(indice);           
+            Venda venda = modeloVendas.getVenda(indice);           
             ConsultarVenda abre = new ConsultarVenda(new javax.swing.JFrame(), true, venda);
             abre.setLocationRelativeTo(null);
             abre.setVisible(true);

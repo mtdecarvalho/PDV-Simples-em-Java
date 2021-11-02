@@ -76,6 +76,7 @@ public class ModificarCliente extends javax.swing.JDialog {
                 tbxComplemento.setEditable(false);
                 cbUF.setEnabled(false);
                 tbxCidade.setEditable(false);
+                btnCancelar.setVisible(false);
             }
         }
 }

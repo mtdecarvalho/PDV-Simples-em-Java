@@ -113,6 +113,7 @@ public class ItemVendaDAO {
                 itemvenda.setCodigoVenda(rs.getInt("codigoVenda"));
                 itemvenda.setQtdVendida(rs.getInt("qtdVendida"));               
                 itemvenda.setPreco(rs.getDouble("preco"));
+                itemvenda.setNome(pDAO.getNome(rs.getInt("codigoProduto")));
                 
                 itens.add(itemvenda);
             }
