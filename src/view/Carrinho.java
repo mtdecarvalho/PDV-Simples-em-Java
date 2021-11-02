@@ -17,9 +17,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
@@ -33,6 +30,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 
@@ -66,6 +64,10 @@ public class Carrinho extends javax.swing.JDialog {
         modeloCarrinho = new ModeloTabelaCarrinho(itens);
         tbCarrinho.setModel(modeloCarrinho);
         produtos = dao.read();
+    }
+
+    public Carrinho() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public void calcularPreco()
@@ -131,8 +133,11 @@ public class Carrinho extends javax.swing.JDialog {
         tbxCliente = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnAddCliente = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Carrinho");
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("Registro de nova venda");
@@ -174,9 +179,14 @@ public class Carrinho extends javax.swing.JDialog {
 
         tbxPrecoTotal.setEditable(false);
 
-        jLabel3.setText("Preço total:");
+        jLabel3.setText("Preço total: R$");
 
         jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         tbxCliente.setEditable(false);
 
@@ -189,49 +199,56 @@ public class Carrinho extends javax.swing.JDialog {
             }
         });
 
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cesta.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tbxPrecoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(btnAddCliente)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnAddItem)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnRemoverItem)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnFinalizar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(jLabel1)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbFormaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tbxPrecoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(btnAddCliente)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddItem)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemoverItem)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFinalizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(137, 137, 137))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -249,7 +266,7 @@ public class Carrinho extends javax.swing.JDialog {
                     .addComponent(btnFinalizar)
                     .addComponent(jButton1)
                     .addComponent(btnAddCliente))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -300,9 +317,11 @@ public class Carrinho extends javax.swing.JDialog {
             dao.create(item, Parametros.SEM_NOTIFICACAO);
             pDAO.updateUltimaVenda(item.getCodigoProduto(), data);
             pDAO.updateEstoque(item.getCodigoProduto(), item.getQtdVendida(), Parametros.REMOVER); 
-            
-            
-            Document document = new Document();   
+                        
+        }
+        
+        JOptionPane.showMessageDialog(null, "Compra realizada com sucesso!");   
+        Document document = new Document();   
               
             try {
                 PdfWriter.getInstance(document, new FileOutputStream("venda.pdf"));
@@ -310,36 +329,36 @@ public class Carrinho extends javax.swing.JDialog {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
                 String f = formatter.format(hora);
                 
-                Paragraph p = new Paragraph();
-                document.open();
-                p.add(new Paragraph("Venda #" + venda.getCodigo()));
-                p.setAlignment(Element.ALIGN_CENTER);
-                document.add(p);
-                document.add(new Paragraph(" " + " "));
-                PdfPTable table = new PdfPTable(4);
-                PdfPCell c1 = new PdfPCell(new Phrase("Código Venda"));
-                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(c1);
-                c1 = new PdfPCell(new Phrase("Data e Hora"));
-                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(c1);
-                c1 = new PdfPCell(new Phrase("Preço Total"));
-                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(c1);
-                c1 = new PdfPCell(new Phrase("Codigo do Cliente"));
-                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(c1);            
-                table.setHeaderRows(1);
-                table.addCell(String.valueOf(venda.getCodigo()));                
-                table.addCell(venda.getData() + " " + f);
-                table.addCell(String.valueOf(venda.getPrecoTotal()));
-                if(venda.getCodigoCliente() > -1){
-                    table.addCell(String.valueOf(venda.getCodigoCliente()));
-                }else{
-                    table.addCell("");
-                }      
-                document.add(table);              
                 
+                document.open(); 
+                Paragraph p1 = new Paragraph("=============================\n"
+                        + "VENDA #" + venda.getCodigo()
+                        + "\n=============================");
+                p1.setAlignment(Element.ALIGN_CENTER);
+                document.add(p1); 
+                if(venda.getCodigoCliente() > -1){
+                    Paragraph p2 = new Paragraph("N° Cliente: " + venda.getCodigoCliente() + "\n");
+                    p2.setAlignment(Element.ALIGN_CENTER);
+                    document.add(p2);
+                } 
+                
+                if(venda.getFormaPagamento() == 0){
+                    Paragraph p3 = new Paragraph("Forma de pagamento: Cartão de crédito\n");
+                    p3.setAlignment(Element.ALIGN_CENTER);
+                    document.add(p3);
+                }
+                else{
+                    Paragraph p3 = new Paragraph("Forma de pagamento: Dinheiro\n");
+                    p3.setAlignment(Element.ALIGN_CENTER);
+                    document.add(p3);
+                }
+                Paragraph p4 = new Paragraph("Data: " + venda.getData() + "\nHora: " + f +
+                        "\nTotal: R$ " + String.format("%.2f", venda.getPrecoTotal()));
+                p4.setAlignment(Element.ALIGN_CENTER);
+                document.add(p4); 
+                Paragraph p5 = new Paragraph("=============================");
+                p5.setAlignment(Element.ALIGN_CENTER);
+                document.add(p5);
             } catch (FileNotFoundException | DocumentException ex) {
                 Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);           
             } finally {
@@ -351,7 +370,7 @@ public class Carrinho extends javax.swing.JDialog {
             } catch (IOException ex) {
                 Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }       
+               
         dispose();
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
@@ -379,6 +398,10 @@ public class Carrinho extends javax.swing.JDialog {
             tbxCliente.setText(abre.getCliente().getNome());
         }
     }//GEN-LAST:event_btnAddClienteActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -433,6 +456,7 @@ public class Carrinho extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbCarrinho;
     private javax.swing.JTextField tbxCliente;

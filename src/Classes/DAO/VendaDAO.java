@@ -55,8 +55,8 @@ public class VendaDAO {
             stmt.executeUpdate();
             dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal());
             
-            if ( parametro == Parametros.COM_NOTIFICACAO )
-                JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            //if ( parametro == Parametros.COM_NOTIFICACAO )
+                //JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } 
         catch (SQLException ex) 
         {

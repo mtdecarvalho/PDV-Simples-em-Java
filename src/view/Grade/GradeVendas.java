@@ -8,7 +8,25 @@ package view.Grade;
 import Classes.ModeloTabela.ModeloTabelaVendas;
 import Classes.Venda;
 import Classes.DAO.VendaDAO;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -26,6 +44,9 @@ public class GradeVendas extends javax.swing.JDialog {
      */
     private ModeloTabelaVendas modeloVendas;
     private ArrayList<Venda> vendas = new ArrayList<>();
+    //private int codVenda;
+    //private int codCliente = -1;
+    //private double preco;
     
     public GradeVendas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -74,8 +95,12 @@ public class GradeVendas extends javax.swing.JDialog {
         btnRemoverVenda = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Vendas");
+        setResizable(false);
 
         tbGradeVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -90,7 +115,7 @@ public class GradeVendas extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("Vendas");
 
-        btnAddVenda.setText("Adicionar nova venda");
+        btnAddVenda.setText("Nova Venda");
         btnAddVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddVendaActionPerformed(evt);
@@ -111,12 +136,21 @@ public class GradeVendas extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setText("Consultar dados da venda");
+        jButton1.setText("Consultar venda");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jButton2.setText("Relatório de vendas");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bitcoin.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,36 +159,43 @@ public class GradeVendas extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(322, 322, 322)
+                        .addGap(247, 247, 247)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 130, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
                 .addComponent(btnAddVenda)
                 .addGap(18, 18, 18)
                 .addComponent(btnRemoverVenda)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar)
-                .addGap(86, 86, 86))
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddVenda)
                     .addComponent(btnRemoverVenda)
-                    .addComponent(btnFechar)
-                    .addComponent(jButton1))
-                .addContainerGap())
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(btnFechar))
+                .addGap(39, 39, 39))
         );
 
         pack();
@@ -162,8 +203,7 @@ public class GradeVendas extends javax.swing.JDialog {
 
     private void btnAddVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVendaActionPerformed
         int ultimo = modeloVendas.getRowCount();
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        Carrinho abre = new Carrinho(frame, true, ultimo);
+        Carrinho abre = new Carrinho(new javax.swing.JFrame(), true, ultimo);
         abre.setLocationRelativeTo(null);
         abre.setVisible(true);
         readJTable();
@@ -190,14 +230,72 @@ public class GradeVendas extends javax.swing.JDialog {
         
         if ( indice >= 0 )
         {
-            venda = modeloVendas.getVenda(indice);
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            ConsultarVenda abre = new ConsultarVenda(frame, true, venda);
+            venda = modeloVendas.getVenda(indice);           
+            ConsultarVenda abre = new ConsultarVenda(new javax.swing.JFrame(), true, venda);
             abre.setLocationRelativeTo(null);
             abre.setVisible(true);
         }        
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        VendaDAO vendadao = new VendaDAO();
+        vendas = vendadao.read();
+        
+        Document document = new Document();   
+              
+            try {
+                PdfWriter.getInstance(document, new FileOutputStream("relatorio.pdf"));
+                
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
+                
+                
+                document.open();
+                Paragraph p = new Paragraph("Relatório de Vendas");
+                p.setAlignment(Element.ALIGN_CENTER);               
+                document.add(p);               
+                document.add(new Paragraph(" "));
+                PdfPTable table = new PdfPTable(4);
+                PdfPCell c1 = new PdfPCell(new Phrase("Código Venda"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);
+                c1 = new PdfPCell(new Phrase("Data e Hora"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);
+                c1 = new PdfPCell(new Phrase("Preço Total"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);
+                c1 = new PdfPCell(new Phrase("Codigo do Cliente"));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(c1);            
+                table.setHeaderRows(1);
+                for(int i = 0; i < vendas.size(); i++){
+                    table.addCell(String.valueOf(vendas.get(i).getCodigo()));                
+                    table.addCell(vendas.get(i).getData());
+                    table.addCell(String.valueOf(vendas.get(i).getPrecoTotal()));
+                    if (vendas.get(i).getCodigoCliente() > -1)
+                    {
+                        table.addCell(String.valueOf(vendas.get(i).getCodigoCliente()));
+                    } else {
+                        table.addCell("");
+                    }                        
+                }
+                
+                document.add(table);
+                
+                } catch (FileNotFoundException | DocumentException ex) {
+                    Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);           
+                } finally {
+                    document.close();
+                }  
+
+                try {
+                    Desktop.getDesktop().open(new File("venda.pdf"));
+                } catch (IOException ex) {
+                    Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,7 +344,9 @@ public class GradeVendas extends javax.swing.JDialog {
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnRemoverVenda;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbGradeVendas;
     // End of variables declaration//GEN-END:variables

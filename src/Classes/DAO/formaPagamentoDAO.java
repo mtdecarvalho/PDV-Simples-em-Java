@@ -45,7 +45,7 @@ public class formaPagamentoDAO {
             
             stmt.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+            //JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
         } 
         catch (SQLException ex) 
         {
