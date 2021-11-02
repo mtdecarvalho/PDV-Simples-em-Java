@@ -45,7 +45,6 @@ public class AdicionarItem extends javax.swing.JDialog {
         this.produtos = produtos;
         modeloProdutos = new ModeloTabelaProduto(produtos);
         tbAddItem.setModel(modeloProdutos);
-//        readJTable();
     }
     
     public ItemVenda getItem()

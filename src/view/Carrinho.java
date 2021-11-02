@@ -42,7 +42,6 @@ public class Carrinho extends javax.swing.JDialog {
     private ModeloTabelaCarrinho modeloCarrinho;
     private ArrayList<ItemVenda> itens = new ArrayList<>();
     private ArrayList<Produto> produtos = new ArrayList<>();
-    //public static final DateTimeFormatter ISO_LOCAL_TIME = '';
     private int codVenda;
     private int codCliente = -1;
     private double preco;
@@ -86,8 +85,6 @@ public class Carrinho extends javax.swing.JDialog {
         
         int qtdNova = 0, qtdAtual = 0;
         
-//        produtos = dao.read();
-        
         for ( int i = 0 ; i < produtos.size() ; i++ )
         {
             if ( produtos.get(i).getCodigo() == codigoProduto )
@@ -106,8 +103,6 @@ public class Carrinho extends javax.swing.JDialog {
                 break;
             }
         }
-        
-//        dao.updateEstoque(codigoProduto, quantidade, parametro);
     }
 
     /**

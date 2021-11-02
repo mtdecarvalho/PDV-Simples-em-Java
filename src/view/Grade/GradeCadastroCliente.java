@@ -14,7 +14,7 @@ import view.ModificarCliente;
 public class GradeCadastroCliente extends javax.swing.JDialog {
 
     private ModeloTabelaCliente modeloClientes;
-    private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+    private ArrayList<Cliente> clientes = new ArrayList<>();
     
     public GradeCadastroCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

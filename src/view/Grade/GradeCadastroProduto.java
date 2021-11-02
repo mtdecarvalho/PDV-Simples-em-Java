@@ -181,7 +181,7 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
         if ( indice >= 0 )
         {
             Produto produto = modeloProdutos.getProduto(indice);
-            ModificarProduto.executar(null, Parametros.CONSULTAR, produto, indice);
+            ModificarProduto.executar(null, Parametros.CONSULTAR, produto);
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -209,7 +209,7 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
         {
             Produto produto = modeloProdutos.getProduto(indice);
 
-            if (ModificarProduto.executar(null, Parametros.ALTERAR, produto, indice))
+            if (ModificarProduto.executar(null, Parametros.ALTERAR, produto))
             {
                 modeloProdutos.atualizarProduto(indice, produto);
             }
@@ -221,7 +221,7 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         //JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         Produto produto = new Produto();
-        if (ModificarProduto.executar(null, Parametros.ADICIONAR, produto, 0))
+        if (ModificarProduto.executar(null, Parametros.ADICIONAR, produto))
         {
             modeloProdutos.inserirProduto(produto);
             

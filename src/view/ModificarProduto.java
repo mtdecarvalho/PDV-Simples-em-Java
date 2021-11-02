@@ -11,12 +11,11 @@ import Classes.DAO.ProdutoDAO;
 public class ModificarProduto extends javax.swing.JDialog {
     private Parametros param;
     private boolean confirmado;
-    private int indice;
     private int cod;
     
-    public static boolean executar(java.awt.Frame parent, Parametros param, Produto produto, int indice)
+    public static boolean executar(java.awt.Frame parent, Parametros param, Produto produto)
     {
-        ModificarProduto modificar = new ModificarProduto(parent, param, produto, indice);
+        ModificarProduto modificar = new ModificarProduto(parent, param, produto);
         modificar.setLocationRelativeTo(null);
         modificar.setVisible(true);
         return modificar.paramConfirmado();
@@ -33,12 +32,11 @@ public class ModificarProduto extends javax.swing.JDialog {
         initComponents();
     }
     
-    public ModificarProduto(java.awt.Frame parent, Parametros param, Produto p, int indice)
+    public ModificarProduto(java.awt.Frame parent, Parametros param, Produto p)
     {
         super(parent, true);
         confirmado = false;
         this.param = param;
-        this.indice = indice;
         this.cod = p.getCodigo();
         initComponents();
         if ( param == Parametros.ALTERAR || param == Parametros.CONSULTAR )

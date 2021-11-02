@@ -53,10 +53,7 @@ public class VendaDAO {
             }
             
             stmt.executeUpdate();
-            dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal());
-            
-            //if ( parametro == Parametros.COM_NOTIFICACAO )
-                //JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal(), Parametros.ADICIONAR);
         } 
         catch (SQLException ex) 
         {
@@ -137,18 +134,20 @@ public class VendaDAO {
         }
     }
     
-    public void delete(int codigo)
+    public void delete(Venda venda)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
+        formaPagamentoDAO dao = new formaPagamentoDAO();
         
         try 
         {
             stmt = con.prepareStatement("DELETE FROM venda WHERE codigo = ?");
             
-            stmt.setInt(1, codigo);
+            stmt.setInt(1, venda.getCodigo());
             
             stmt.executeUpdate();
+            dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal(), Parametros.REMOVER);
             
             JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
         } 
@@ -161,34 +160,5 @@ public class VendaDAO {
             ConnectionFactory.closeConnection(con, stmt);
         }
     }
-    
-    /*public String getHora(){
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        
-        ArrayList<Venda> vendas = new ArrayList<>();
-        
-        try
-        {
-            stmt = con.prepareStatement("SELECT * FROM venda");
-            rs = stmt.executeQuery();
-            
-            while (rs.next())
-            {
-                Venda venda = new Venda();                              
-                venda.setHora(rs.getString("hora"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally {
-        
-            ConnectionFactory.closeConnection(con, stmt, rs);
-        }
-        
-        
-        return ;
-    }*/
     
 }

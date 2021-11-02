@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class ConsultarVenda extends javax.swing.JDialog {
 
     private ModeloTabelaCarrinho modeloCarrinho;
-    private ArrayList<ItemVenda> itens = new ArrayList<>();
     private int codVenda;
     /**
      * Creates new form ConsultarVenda
@@ -54,23 +53,8 @@ public class ConsultarVenda extends javax.swing.JDialog {
         }
         tbxPrecoTotal.setText(String.valueOf(venda.getPrecoTotal()));
         
-//        for ( ItemVenda item : itensBD )
-//        {
-//            item.setNome(pDAO.getNome(item.getCodigoProduto()));
-//        }
-//        
         modeloCarrinho = new ModeloTabelaCarrinho(itensBD);
         tbItensVenda.setModel(modeloCarrinho);
-//        for ( ItemVenda item : dao.read() )
-//        {
-//            item.getCodigoVenda();
-//            item.getCodigoProduto();
-//            item.getQtdVendida();
-//            item.getPreco();
-//            item.setNome(pDAO.getNome(item.getCodigoProduto()));
-//            modeloCarrinho.inserirItemVenda(item);
-//        }
-//        tbItensVenda.setModel(modeloCarrinho);
     }
 
     /**

@@ -215,7 +215,7 @@ public class GradeVendas extends javax.swing.JDialog {
         {
             Venda venda = modeloVendas.getVenda(indice);
             VendaDAO dao = new VendaDAO();
-            dao.delete(venda.getCodigo());
+            dao.delete(venda);
             readJTable();
         }
     }//GEN-LAST:event_btnRemoverVendaActionPerformed

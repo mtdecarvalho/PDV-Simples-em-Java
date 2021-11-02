@@ -7,6 +7,7 @@ package Classes.DAO;
 
 import Classes.ConnectionFactory;
 import Classes.FormaPagamento;
+import Classes.Parametros;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
@@ -24,11 +25,11 @@ public class formaPagamentoDAO {
     PreparedStatement stmt = null; 
     ResultSet rs = null;
     
-    public void updateValorTotal(int codigo, double valor)
+    public void updateValorTotal(int codigo, double valor, Parametros parametro)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
-        double valorNovo = 0;
+        double valorAtual = 0;
         
         try 
         {
@@ -38,18 +39,19 @@ public class formaPagamentoDAO {
 
             while (rs.next())
             {
-                valorNovo = rs.getDouble("valorTotal");
+                valorAtual = rs.getDouble("valorTotal");
             }
-            valorNovo = valorNovo + valor;
+            if ( parametro == Parametros.ADICIONAR )
+                valorAtual = valorAtual + valor;
+            else if ( parametro == Parametros.REMOVER )
+                valorAtual = valorAtual - valor;
             
             stmt = con.prepareStatement("UPDATE formadepagamento SET valorTotal = ? WHERE codigo = ?");
             
-            stmt.setDouble(1, valorNovo);
+            stmt.setDouble(1, valorAtual);
             stmt.setInt(2, codigo);
             
             stmt.executeUpdate();
-            
-            //JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
         } 
         catch (SQLException ex) 
         {
