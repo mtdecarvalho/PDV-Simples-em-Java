@@ -13,22 +13,12 @@ import Classes.Venda;
 import Classes.DAO.VendaDAO;
 import Classes.ItemVenda;
 import Classes.DAO.ItemVendaDAO;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
+import Classes.PDF;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -283,9 +273,12 @@ public class Carrinho extends javax.swing.JDialog {
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         Venda venda = new Venda();
         VendaDAO vendaDAO = new VendaDAO();
+        PDF pdf = new PDF();
         
         String data = String.valueOf(java.time.LocalDate.now());
         LocalTime hora = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
+        String f = formatter.format(hora);
         
         venda.setCodigo(codVenda);
         venda.setData(data);
@@ -316,56 +309,8 @@ public class Carrinho extends javax.swing.JDialog {
         }
         
         JOptionPane.showMessageDialog(null, "Compra realizada com sucesso!");   
-        Document document = new Document();   
-              
-            try {
-                PdfWriter.getInstance(document, new FileOutputStream("venda.pdf"));
-                
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
-                String f = formatter.format(hora);
-                
-                
-                document.open(); 
-                Paragraph p1 = new Paragraph("=============================\n"
-                        + "VENDA #" + venda.getCodigo()
-                        + "\n=============================");
-                p1.setAlignment(Element.ALIGN_CENTER);
-                document.add(p1); 
-                if(venda.getCodigoCliente() > -1){
-                    Paragraph p2 = new Paragraph("N° Cliente: " + venda.getCodigoCliente() + "\n");
-                    p2.setAlignment(Element.ALIGN_CENTER);
-                    document.add(p2);
-                } 
-                
-                if(venda.getFormaPagamento() == 0){
-                    Paragraph p3 = new Paragraph("Forma de pagamento: Cartão de crédito\n");
-                    p3.setAlignment(Element.ALIGN_CENTER);
-                    document.add(p3);
-                }
-                else{
-                    Paragraph p3 = new Paragraph("Forma de pagamento: Dinheiro\n");
-                    p3.setAlignment(Element.ALIGN_CENTER);
-                    document.add(p3);
-                }
-                Paragraph p4 = new Paragraph("Data: " + venda.getData() + "\nHora: " + f +
-                        "\nTotal: R$ " + String.format("%.2f", venda.getPrecoTotal()));
-                p4.setAlignment(Element.ALIGN_CENTER);
-                document.add(p4); 
-                Paragraph p5 = new Paragraph("=============================");
-                p5.setAlignment(Element.ALIGN_CENTER);
-                document.add(p5);
-            } catch (FileNotFoundException | DocumentException ex) {
-                Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);           
-            } finally {
-                document.close();
-            }  
-            
-            try {
-                Desktop.getDesktop().open(new File("venda.pdf"));
-            } catch (IOException ex) {
-                Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
-            }
-               
+   
+        pdf.gerarNotaFiscal(venda, f);             
         dispose();
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
