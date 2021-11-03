@@ -82,7 +82,7 @@ public class ConsultarVenda extends javax.swing.JDialog {
         btnOk = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Consultar Venda");
+        setTitle("Consulta de venda");
 
         lblCodigo.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         lblCodigo.setText("Venda #");

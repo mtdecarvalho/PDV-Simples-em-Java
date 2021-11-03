@@ -93,7 +93,7 @@ public class AdicionarItem extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Adicionar Item");
+        setTitle("Adicionar item");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel2.setText("Adicionar item");
