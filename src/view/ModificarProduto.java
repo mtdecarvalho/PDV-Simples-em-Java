@@ -4,6 +4,7 @@ import Classes.Parametros;
 import Classes.Produto;
 import javax.swing.JOptionPane;
 import Classes.DAO.ProdutoDAO;
+import java.awt.Dimension;
 /**
  *
  * @author Carvalho
@@ -18,6 +19,7 @@ public class ModificarProduto extends javax.swing.JDialog {
         ModificarProduto modificar = new ModificarProduto(parent, param, produto);
         modificar.setLocationRelativeTo(null);
         modificar.setVisible(true);
+        
         return modificar.paramConfirmado();
     }
     
@@ -39,21 +41,28 @@ public class ModificarProduto extends javax.swing.JDialog {
         this.param = param;
         this.cod = p.getCodigo();
         initComponents();
+
+        jLabel6.setVisible(false);
+        tbxUltimaVenda.setVisible(false);
+        tbxUltimaVenda.setEditable(false);
         if ( param == Parametros.ALTERAR || param == Parametros.CONSULTAR )
         {
             tbxCodigo.setText(String.valueOf(p.getCodigo()));
             tbxNome.setText(p.getNome());
             tbxQtdEstoque.setText(String.valueOf(p.getQtdEstoque()));
             tbxUnidade.setText(String.valueOf(p.getUnidade()));
-            tbxPreco.setText(String.valueOf(p.getPreco()));
-            tbxUltimaVenda.setText(p.getUltimaVenda());
+            tbxPreco.setText(String.valueOf(p.getPreco()));  
             if ( param == Parametros.CONSULTAR )
             {
+                
                 tbxCodigo.setEditable(false);
                 tbxNome.setEditable(false);
                 tbxQtdEstoque.setEditable(false);
                 tbxUnidade.setEditable(false);
                 tbxPreco.setEditable(false);
+                jLabel6.setVisible(true);
+                tbxUltimaVenda.setVisible(true);
+                tbxUltimaVenda.setText(p.getUltimaVenda());
                 tbxUltimaVenda.setEditable(false);
                 btnCancelar.setVisible(false);
             }
@@ -82,8 +91,7 @@ public class ModificarProduto extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastrar Pessoa Física");
-        setResizable(false);
+        setTitle("Produto");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Codigo:");
@@ -92,6 +100,7 @@ public class ModificarProduto extends javax.swing.JDialog {
         jLabel2.setText("Nome:");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Produto");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -143,12 +152,12 @@ public class ModificarProduto extends javax.swing.JDialog {
                                 .addComponent(btnOk)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCancelar))
-                            .addComponent(tbxCodigo)
-                            .addComponent(tbxNome)
+                            .addComponent(tbxNome, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                             .addComponent(tbxQtdEstoque)
+                            .addComponent(tbxCodigo)
                             .addComponent(tbxUnidade)
                             .addComponent(tbxPreco)
-                            .addComponent(tbxUltimaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(tbxUltimaVenda)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(105, 105, 105)
                         .addComponent(jLabel8)
@@ -187,7 +196,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(tbxUltimaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
                     .addComponent(btnCancelar))
@@ -209,8 +218,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                 produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
                 produto.setUnidade(Integer.parseInt(tbxUnidade.getText()));
                 produto.setPreco(Double.parseDouble(tbxPreco.getText()));
-                produto.setUltimaVenda(tbxUltimaVenda.getText());
-
+//                produto.setUltimaVenda(tbxUltimaVenda.getText());
                 dao.create(produto);
                 break;
             case ALTERAR:
@@ -219,7 +227,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                 produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
                 produto.setUnidade(Integer.parseInt(tbxUnidade.getText()));
                 produto.setPreco(Double.parseDouble(tbxPreco.getText()));
-                produto.setUltimaVenda(tbxUltimaVenda.getText());
+//                produto.setUltimaVenda(tbxUltimaVenda.getText());
 
                 dao.update(produto, cod);
                 break;
