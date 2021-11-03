@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.DAO;
 
+import Classes.ConnectionFactory;
+import Classes.Parametros;
+import Classes.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -88,6 +91,36 @@ public class ProdutoDAO {
         return produtos;
     }
     
+    public String getNome(int codigo)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String nome = null;
+        
+        try
+        {
+            stmt = con.prepareStatement("SELECT nome FROM produto WHERE codigo = ?");
+            stmt.setInt(1, codigo);
+            rs = stmt.executeQuery();
+            
+            while (rs.next())
+            {
+                nome = rs.getString("nome");
+            }
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return nome;
+    }
+    
     public void update(Produto produto, int codigo)
     {
         Connection con = ConnectionFactory.getConnection();
@@ -142,5 +175,102 @@ public class ProdutoDAO {
         {
             ConnectionFactory.closeConnection(con, stmt);
         }
+    }
+    
+    public void updateUltimaVenda(int codigo, String data)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null; 
+        
+        try 
+        {
+            stmt = con.prepareStatement("UPDATE produto SET ultimaVenda = ? WHERE codigo = ?");
+            
+            stmt.setString(1, data);
+            stmt.setInt(2, codigo);
+            
+            stmt.executeUpdate();
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+        } 
+        finally 
+        {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+    
+    public void updateEstoque(int codigo, int qtd, Parametros parametro)
+    {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null; 
+        ResultSet rs = null;
+        
+        int qtdNova = 0, qtdAtual = 0;
+        
+        if ( parametro == Parametros.REMOVER )
+        {
+            
+            try 
+            {
+                stmt = con.prepareStatement("SELECT qtdEstoque FROM produto WHERE codigo = ?");
+                stmt.setInt(1, codigo);
+                rs = stmt.executeQuery();
+                
+                while (rs.next())
+                {
+                    qtdAtual = rs.getInt("qtdEstoque");
+                }
+                qtdNova = qtdAtual - qtd;
+                
+                stmt = con.prepareStatement("UPDATE produto SET qtdEstoque = ? WHERE codigo = ?");
+
+                stmt.setInt(1, qtdNova);
+                stmt.setInt(2, codigo);
+
+                stmt.executeUpdate();
+            } 
+            catch (SQLException ex) 
+            {
+                JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            } 
+            finally 
+            {
+                ConnectionFactory.closeConnection(con, stmt);
+            }
+        }
+        else 
+        {
+            try 
+            {
+                stmt = con.prepareStatement("SELECT qtdEstoque FROM produto WHERE codigo = ?");
+                stmt.setInt(1, codigo);
+                rs = stmt.executeQuery();
+                
+                while (rs.next())
+                {
+                    qtdAtual = rs.getInt("qtdEstoque");
+                }
+                qtdNova = qtdAtual + qtd;
+                
+                stmt = con.prepareStatement("UPDATE produto SET qtdEstoque = ? WHERE codigo = ?");
+
+                stmt.setInt(1, qtdNova);
+                stmt.setInt(2, codigo);
+
+                stmt.executeUpdate();
+            } 
+            catch (SQLException ex) 
+            {
+                JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            } 
+            finally 
+            {
+                ConnectionFactory.closeConnection(con, stmt);
+            }
+        }
+        
+        
     }
 }

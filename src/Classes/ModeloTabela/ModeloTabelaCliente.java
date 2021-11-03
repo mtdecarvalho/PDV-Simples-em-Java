@@ -1,5 +1,6 @@
-package Classes;
+package Classes.ModeloTabela;
 
+import Classes.Cliente;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Classes;
+package Classes.DAO;
 
+import Classes.ConnectionFactory;
+import Classes.Endereco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

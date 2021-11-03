@@ -3,14 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.Grade;
 
-import Classes.ModeloTabelaVendas;
+import Classes.ModeloTabela.ModeloTabelaVendas;
 import Classes.Venda;
-import Classes.VendaDAO;
+import Classes.DAO.VendaDAO;
+import Classes.DAO.formaPagamentoDAO;
+import Classes.FormaPagamento;
+import Classes.PDF;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.JOptionPane;
+import view.Carrinho;
+import view.ConsultarVenda;
 
 /**
  *
@@ -22,13 +26,21 @@ public class GradeVendas extends javax.swing.JDialog {
      * Creates new form GradeVendas
      */
     private ModeloTabelaVendas modeloVendas;
-    private ArrayList<Venda> vendas = new ArrayList<Venda>();
+    private ArrayList<Venda> vendas = new ArrayList<>();
+    
+    //private int codVenda;
+    //private int codCliente = -1;
+    //private double preco;
     
     public GradeVendas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         modeloVendas = new ModeloTabelaVendas(vendas);
         readJTable();
+    }
+
+    public GradeVendas() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public void readJTable()
@@ -65,8 +77,14 @@ public class GradeVendas extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         btnAddVenda = new javax.swing.JButton();
         btnRemoverVenda = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Vendas");
+        setResizable(false);
 
         tbGradeVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -81,7 +99,7 @@ public class GradeVendas extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("Vendas");
 
-        btnAddVenda.setText("Adicionar nova venda");
+        btnAddVenda.setText("Nova Venda");
         btnAddVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddVendaActionPerformed(evt);
@@ -95,6 +113,29 @@ public class GradeVendas extends javax.swing.JDialog {
             }
         });
 
+        btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Consultar venda");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Relatório de vendas");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/bitcoin.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,30 +143,43 @@ public class GradeVendas extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(322, 322, 322)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAddVenda)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnRemoverVenda))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(68, Short.MAX_VALUE))
+                        .addGap(267, 267, 267)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(btnAddVenda)
+                .addGap(18, 18, 18)
+                .addComponent(btnRemoverVenda)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFechar)
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddVenda)
-                    .addComponent(btnRemoverVenda))
-                .addContainerGap(48, Short.MAX_VALUE))
+                    .addComponent(btnRemoverVenda)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(btnFechar))
+                .addGap(39, 39, 39))
         );
 
         pack();
@@ -133,8 +187,7 @@ public class GradeVendas extends javax.swing.JDialog {
 
     private void btnAddVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVendaActionPerformed
         int ultimo = modeloVendas.getRowCount();
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        Carrinho abre = new Carrinho(frame, true, ultimo);
+        Carrinho abre = new Carrinho(new javax.swing.JFrame(), true, ultimo);
         abre.setLocationRelativeTo(null);
         abre.setVisible(true);
         readJTable();
@@ -142,15 +195,40 @@ public class GradeVendas extends javax.swing.JDialog {
 
     private void btnRemoverVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverVendaActionPerformed
         int indice = tbGradeVendas.getSelectedRow();
-        
-        if ( indice >= 0 )
+        if ( indice >= 0 && JOptionPane.showConfirmDialog(null, "Deseja realmente excluir esta venda?", "Confirmação", 2) == 0 )
         {
             Venda venda = modeloVendas.getVenda(indice);
             VendaDAO dao = new VendaDAO();
-            dao.delete(venda.getCodigo());
+            dao.delete(venda);
             readJTable();
         }
     }//GEN-LAST:event_btnRemoverVendaActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int indice = tbGradeVendas.getSelectedRow();
+        
+        if ( indice >= 0 )
+        {
+            Venda venda = modeloVendas.getVenda(indice);           
+            ConsultarVenda abre = new ConsultarVenda(new javax.swing.JFrame(), true, venda);
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
+        }        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        VendaDAO vendadao = new VendaDAO();
+        PDF pdf = new PDF();
+        formaPagamentoDAO pgDAO = new formaPagamentoDAO();
+        ArrayList<FormaPagamento> pagamentos = pgDAO.read();
+        vendas = vendadao.read();
+        pdf.gerarRelatorio(vendas, pagamentos);        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,8 +274,12 @@ public class GradeVendas extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddVenda;
+    private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnRemoverVenda;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbGradeVendas;
     // End of variables declaration//GEN-END:variables

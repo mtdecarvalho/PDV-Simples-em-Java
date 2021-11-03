@@ -1,14 +1,12 @@
-package view;
+package view.Grade;
 
 import Classes.Cliente;
-import Classes.ClienteDAO;
-import Classes.ModeloTabelaCliente;
+import Classes.DAO.ClienteDAO;
+import Classes.ModeloTabela.ModeloTabelaCliente;
 import Classes.Parametros;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import javax.swing.RowFilter;
-import javax.swing.SwingUtilities;
-import javax.swing.table.TableRowSorter;
+import javax.swing.JOptionPane;
+import view.ModificarCliente;
 /**
  *
  * @author Carvalho
@@ -16,13 +14,17 @@ import javax.swing.table.TableRowSorter;
 public class GradeCadastroCliente extends javax.swing.JDialog {
 
     private ModeloTabelaCliente modeloClientes;
-    private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+    private ArrayList<Cliente> clientes = new ArrayList<>();
     
     public GradeCadastroCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         modeloClientes = new ModeloTabelaCliente(clientes);
         readJTable();
+    }
+
+    public GradeCadastroCliente() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public void readJTable()
@@ -65,12 +67,11 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         tbGradeCliente = new javax.swing.JTable();
         btnAlterar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         btnAdicionar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Pessoa Física");
+        setTitle("Clientes");
         setMinimumSize(new java.awt.Dimension(677, 398));
         setResizable(false);
 
@@ -81,7 +82,7 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
             }
         });
 
-        btnConsultar.setText("Consulta");
+        btnConsultar.setText("Consultar dados do cliente");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultarActionPerformed(evt);
@@ -107,58 +108,52 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jLabel1.setText("Cliente");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Pesquisar:");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        btnAdicionar.setText("Adicionar novo cliente");
+        btnAdicionar.setText("Adicionar cliente");
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionarActionPerformed(evt);
             }
         });
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cliente.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnConsultar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExcluir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAlterar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(btnAdicionar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(298, 298, 298)
+                .addGap(245, 245, 245)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
                         .addComponent(btnAdicionar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAlterar)
@@ -167,12 +162,8 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnConsultar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnFechar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(16, 16, 16))
+                        .addComponent(btnFechar)
+                        .addGap(15, 15, 15))))
         );
 
         pack();
@@ -195,7 +186,7 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int indice = tbGradeCliente.getSelectedRow();
         
-        if ( indice >= 0 )
+        if ( indice >= 0 && JOptionPane.showConfirmDialog(null, "Deseja realmente excluir este cliente? Todas as vendas vinculadas a ele serão excluídas.", "Confirmação", 2) == 0 )
         {
             ClienteDAO dao = new ClienteDAO();
             Cliente cliente = modeloClientes.getCliente(indice);
@@ -221,15 +212,8 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        TableRowSorter<ModeloTabelaCliente> sorter = new TableRowSorter<ModeloTabelaCliente>(((ModeloTabelaCliente) tbGradeCliente.getModel())); 
-        sorter.setRowFilter(RowFilter.regexFilter(jTextField1.getText()));
-
-        tbGradeCliente.setRowSorter(sorter);
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+
         Cliente cliente = new Cliente();
         if (ModificarCliente.executar(null, Parametros.ADICIONAR, cliente, 0))
         {
@@ -294,7 +278,6 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tbGradeCliente;
     // End of variables declaration//GEN-END:variables
 }
