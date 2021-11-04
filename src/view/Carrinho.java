@@ -33,7 +33,7 @@ public class Carrinho extends javax.swing.JDialog {
     private ArrayList<ItemVenda> itens = new ArrayList<>();
     private ArrayList<Produto> produtos = new ArrayList<>();
     private int codVenda;
-    private int codCliente = -1;
+    private String codCliente = "N/A";
     private double preco;
     /**
      * Creates new form Carrinho
@@ -334,7 +334,7 @@ public class Carrinho extends javax.swing.JDialog {
         abre.setVisible(true);
         if ( abre.getCliente() != null )
         {
-            codCliente = abre.getCliente().getCodigo();
+            codCliente = String.valueOf(abre.getCliente().getCodigo());
             tbxCliente.setText(abre.getCliente().getNome());
         }
     }//GEN-LAST:event_btnAddClienteActionPerformed

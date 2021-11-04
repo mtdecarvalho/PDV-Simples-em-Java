@@ -30,7 +30,7 @@ public class VendaDAO {
         
         try 
         {
-            if ( venda.getCodigoCliente() > -1 )
+            if ( venda.getCodigoCliente() != "N/A" )
             {
                 stmt = con.prepareStatement("INSERT INTO venda(codigo, data, hora, formaDePagamento, precoTotal, codigoCliente) VALUES (?,?,?,?,?,?)");
             
@@ -39,7 +39,7 @@ public class VendaDAO {
                 stmt.setString(3, venda.getHora());
                 stmt.setInt(4, venda.getFormaPagamento());
                 stmt.setDouble(5, venda.getPrecoTotal());
-                stmt.setInt(6, venda.getCodigoCliente());
+                stmt.setInt(6, Integer.parseInt(venda.getCodigoCliente()));
             }
             else
             {
@@ -75,6 +75,7 @@ public class VendaDAO {
         
         try
         {
+ 
             stmt = con.prepareStatement("SELECT * FROM venda");
             rs = stmt.executeQuery();
             
@@ -87,8 +88,9 @@ public class VendaDAO {
                 venda.setHora(rs.getString("hora"));
                 venda.setFormaPagamento(rs.getInt("formaDePagamento"));
                 venda.setPrecoTotal(rs.getDouble("precoTotal"));
-                venda.setCodigoCliente(rs.getInt("codigoCliente"));
-                
+                venda.setCodigoCliente(String.valueOf(rs.getInt("codigoCliente")));
+                if ( rs.wasNull() )
+                    venda.setCodigoCliente("");
                 vendas.add(venda);
             }
             

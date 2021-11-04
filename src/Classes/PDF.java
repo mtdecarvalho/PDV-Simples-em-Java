@@ -64,7 +64,7 @@ public class PDF {
                 table.addCell(String.valueOf(vendas.get(i).getCodigo()));                
                 table.addCell(vendas.get(i).getData());
                 table.addCell(String.valueOf(vendas.get(i).getPrecoTotal()));
-                if (vendas.get(i).getCodigoCliente() > -1)
+                if (vendas.get(i).getCodigoCliente() == "N/A")
                 {
                     table.addCell(String.valueOf(vendas.get(i).getCodigoCliente()));
                 } else {
@@ -119,7 +119,7 @@ public class PDF {
                         + "\n=============================");
                 p1.setAlignment(Element.ALIGN_CENTER);
                 document.add(p1); 
-                if(venda.getCodigoCliente() > -1){
+                if(venda.getCodigoCliente() == "N/A"){
                     Paragraph p2 = new Paragraph("N° Cliente: " + venda.getCodigoCliente() + "\n");
                     p2.setAlignment(Element.ALIGN_CENTER);
                     document.add(p2);
