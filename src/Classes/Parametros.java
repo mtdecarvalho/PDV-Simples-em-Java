@@ -15,5 +15,7 @@ public enum Parametros {
     ADICIONAR,
     REMOVER,
     COM_NOTIFICACAO,
-    SEM_NOTIFICACAO;
+    SEM_NOTIFICACAO,
+    LOGINCLIENTE,
+    LOGINESTOQUE;
 }
