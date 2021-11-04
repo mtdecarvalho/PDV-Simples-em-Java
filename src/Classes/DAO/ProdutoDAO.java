@@ -207,22 +207,24 @@ public class ProdutoDAO {
         PreparedStatement stmt = null; 
         ResultSet rs = null;
         
-        int qtdNova = 0, qtdAtual = 0;
+        int qtdNova = 0, qtdAtual = 0, unidade = 0;
         
         if ( parametro == Parametros.REMOVER )
         {
             
             try 
             {
-                stmt = con.prepareStatement("SELECT qtdEstoque FROM produto WHERE codigo = ?");
+                stmt = con.prepareStatement("SELECT unidade, qtdEstoque FROM produto WHERE codigo = ?");
                 stmt.setInt(1, codigo);
                 rs = stmt.executeQuery();
                 
                 while (rs.next())
                 {
+                    unidade = rs.getInt("unidade");
                     qtdAtual = rs.getInt("qtdEstoque");
                 }
-                qtdNova = qtdAtual - qtd;
+                qtd *= unidade;
+                qtdNova = Math.abs(qtdAtual - qtd);
                 
                 stmt = con.prepareStatement("UPDATE produto SET qtdEstoque = ? WHERE codigo = ?");
 

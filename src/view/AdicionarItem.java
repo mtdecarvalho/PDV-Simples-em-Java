@@ -26,7 +26,7 @@ public class AdicionarItem extends javax.swing.JDialog {
     private ModeloTabelaProduto modeloProdutos;
     private ItemVenda item;
     double preco;
-    int codVenda;
+    int codVenda, unidadeProduto;
     Produto produto = new Produto();
 
     /**
@@ -55,7 +55,7 @@ public class AdicionarItem extends javax.swing.JDialog {
     public void calculoPrecoTotal()
     {
         preco = produto.getPreco();
-        preco *= Double.parseDouble(spnQtd.getValue().toString());
+        preco *= (Double.parseDouble(spnQtd.getValue().toString()) * produto.getUnidade());
     }
     
     public void atualizarPrecoTotal()
