@@ -64,12 +64,12 @@ public class PDF {
                 table.addCell(String.valueOf(vendas.get(i).getCodigo()));                
                 table.addCell(vendas.get(i).getData());
                 table.addCell(String.valueOf(vendas.get(i).getPrecoTotal()));
-                if (vendas.get(i).getCodigoCliente() == "N/A")
-                {
+//                if (vendas.get(i).getCodigoCliente() == "N/A")
+//                {
                     table.addCell(String.valueOf(vendas.get(i).getCodigoCliente()));
-                } else {
-                    table.addCell("");
-                }                        
+//                } else {
+//                    table.addCell(String.valueOf(vendas.get(i).getCodigoCliente()));
+//                }                        
             }
                 
             document.add(table);

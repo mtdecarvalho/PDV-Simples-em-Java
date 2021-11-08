@@ -11,19 +11,19 @@ package Classes;
  * @author Carvalho
  */
 public class Produto {
-    private int codigo, unidade, qtdEstoque;
-    private String nome, ultimaVenda;
+    private int codigo, qtdEstoque;
+    private String nome, ultimaVenda, unidade;
     private double preco;
     
     public int getCodigo()                                  { return codigo; }
-    public int getUnidade()                                 { return unidade; }
+    public String getUnidade()                              { return unidade; }
     public int getQtdEstoque()                              { return qtdEstoque; } 
     public String getNome()                                 { return nome; }
     public String getUltimaVenda()                          { return ultimaVenda; }
     public double getPreco()                                { return preco; }
     
     public void setCodigo( int codigo )                     { this.codigo = codigo; }
-    public void setUnidade( int unidade )                   { this.unidade = unidade; }
+    public void setUnidade( String unidade )                { this.unidade = unidade; }
     public void setQtdEstoque( int qtdEstoque)              { this.qtdEstoque = qtdEstoque; } 
     public void setNome( String nome )                      { this.nome = nome; }
     public void setUltimaVenda( String ultimaVenda)         { this.ultimaVenda = ultimaVenda; }

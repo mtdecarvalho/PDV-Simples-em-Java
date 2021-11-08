@@ -76,8 +76,10 @@ public class ModeloTabelaVendas extends AbstractTableModel {
                 break;           
             case COLUNA_PRECO:
                 venda.setPrecoTotal(Double.parseDouble(valor.toString()));
+                break;
             case COLUNA_CLIENTE:
                 venda.setCodigoCliente(valor.toString());
+                break;
         }
     }
     

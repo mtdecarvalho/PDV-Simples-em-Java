@@ -10,16 +10,16 @@ package Classes;
  * @author Juliana
  */
 public class Usuario {
-    private int id;
+    private int codigo;
     private String login;
     private String senha;
 
-    public int getId() {
-        return id;
+    public int getCodigo() {
+        return codigo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getLogin() {

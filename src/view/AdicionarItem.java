@@ -55,7 +55,7 @@ public class AdicionarItem extends javax.swing.JDialog {
     public void calculoPrecoTotal()
     {
         preco = produto.getPreco();
-        preco *= (Double.parseDouble(spnQtd.getValue().toString()) * produto.getUnidade());
+        preco *= (Double.parseDouble(spnQtd.getValue().toString()));
     }
     
     public void atualizarPrecoTotal()

@@ -50,7 +50,14 @@ public class ModificarProduto extends javax.swing.JDialog {
             tbxCodigo.setText(String.valueOf(p.getCodigo()));
             tbxNome.setText(p.getNome());
             tbxQtdEstoque.setText(String.valueOf(p.getQtdEstoque()));
-            tbxUnidade.setText(String.valueOf(p.getUnidade()));
+            for ( int i = 0 ; i < cbUnidade.getItemCount() ; i++ )
+            {
+                if ( cbUnidade.getItemAt(i).contains(p.getUnidade()))
+                {
+                    cbUnidade.setSelectedIndex(i);
+                    break;
+                }
+            }
             tbxPreco.setText(String.valueOf(p.getPreco()));  
             if ( param == Parametros.CONSULTAR )
             {
@@ -58,7 +65,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                 tbxCodigo.setEditable(false);
                 tbxNome.setEditable(false);
                 tbxQtdEstoque.setEditable(false);
-                tbxUnidade.setEditable(false);
+                cbUnidade.setEnabled(false);
                 tbxPreco.setEditable(false);
                 jLabel6.setVisible(true);
                 tbxUltimaVenda.setVisible(true);
@@ -73,7 +80,6 @@ public class ModificarProduto extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tbxUnidade = new javax.swing.JTextField();
         tbxPreco = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         tbxUltimaVenda = new javax.swing.JTextField();
@@ -89,6 +95,7 @@ public class ModificarProduto extends javax.swing.JDialog {
         tbxNome = new javax.swing.JTextField();
         tbxQtdEstoque = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        cbUnidade = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Produto");
@@ -131,6 +138,8 @@ public class ModificarProduto extends javax.swing.JDialog {
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/produtos.png"))); // NOI18N
 
+        cbUnidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Grama (g)", "Kilograma (kg)", "Mililitro (ml)", "Litro (L)" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,7 +155,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnOk)
@@ -155,15 +164,15 @@ public class ModificarProduto extends javax.swing.JDialog {
                             .addComponent(tbxNome, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                             .addComponent(tbxQtdEstoque)
                             .addComponent(tbxCodigo)
-                            .addComponent(tbxUnidade)
                             .addComponent(tbxPreco)
-                            .addComponent(tbxUltimaVenda)))
+                            .addComponent(tbxUltimaVenda)
+                            .addComponent(cbUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(105, 105, 105)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,7 +196,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(tbxUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -216,18 +225,50 @@ public class ModificarProduto extends javax.swing.JDialog {
                 produto.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 produto.setNome(tbxNome.getText());
                 produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
-                produto.setUnidade(Integer.parseInt(tbxUnidade.getText()));
+                switch (cbUnidade.getSelectedItem().toString())
+                {
+                    case "Grama (g)":
+                        produto.setUnidade("g");
+                        break;
+                    case "Kilograma (kg)":
+                        produto.setUnidade("kg");
+                        break;
+                    case "Mililitro (ml)":
+                        produto.setUnidade("ml");
+                        break;
+                    case "Litro (L)":
+                        produto.setUnidade("L");
+                        break;
+                    default:
+                        produto.setUnidade("");
+                        break;
+                }
                 produto.setPreco(Double.parseDouble(tbxPreco.getText()));
-//                produto.setUltimaVenda(tbxUltimaVenda.getText());
                 dao.create(produto);
                 break;
             case ALTERAR:
                 produto.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 produto.setNome(tbxNome.getText());
                 produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
-                produto.setUnidade(Integer.parseInt(tbxUnidade.getText()));
+                switch (cbUnidade.getSelectedItem().toString())
+                {
+                    case "Grama (g)":
+                        produto.setUnidade("g");
+                        break;
+                    case "Kilograma (kg)":
+                        produto.setUnidade("kg");
+                        break;
+                    case "Mililitro (ml)":
+                        produto.setUnidade("ml");
+                        break;
+                    case "Litro (L)":
+                        produto.setUnidade("L");
+                        break;
+                    default:
+                        produto.setUnidade("");
+                        break;
+                }
                 produto.setPreco(Double.parseDouble(tbxPreco.getText()));
-//                produto.setUltimaVenda(tbxUltimaVenda.getText());
 
                 dao.update(produto, cod);
                 break;
@@ -301,6 +342,7 @@ public class ModificarProduto extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnOk;
+    private javax.swing.JComboBox<String> cbUnidade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -314,6 +356,5 @@ public class ModificarProduto extends javax.swing.JDialog {
     private javax.swing.JTextField tbxPreco;
     private javax.swing.JTextField tbxQtdEstoque;
     private javax.swing.JTextField tbxUltimaVenda;
-    private javax.swing.JTextField tbxUnidade;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,9 @@ import Classes.Endereco;
 import Classes.Parametros;
 import javax.swing.JOptionPane;
 import Classes.DAO.ClienteDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Carvalho
@@ -303,8 +306,15 @@ public class ModificarCliente extends javax.swing.JDialog {
                 endereco.setUF(cbUF.getSelectedItem().toString());
                 cliente.setEndereco(endereco);
 
-                daoC.create(cliente);
+            {
+                try {
+                    daoC.create(cliente);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ModificarCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
                 break;
+
             case ALTERAR:
                 cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 cliente.setNome(tbxNome.getText());

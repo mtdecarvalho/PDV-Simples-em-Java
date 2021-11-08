@@ -33,7 +33,7 @@ public class ProdutoDAO {
             stmt = con.prepareStatement("INSERT INTO produto(codigo, unidade, qtdEstoque, nome, preco) VALUES (?,?,?,?,?)");
             
             stmt.setInt(1, produto.getCodigo());
-            stmt.setInt(2, produto.getUnidade());
+            stmt.setString(2, produto.getUnidade());
             stmt.setInt(3, produto.getQtdEstoque());
             stmt.setString(4, produto.getNome());
             stmt.setDouble(5, produto.getPreco());
@@ -70,7 +70,7 @@ public class ProdutoDAO {
                 Produto produto = new Produto();
                 
                 produto.setCodigo(rs.getInt("codigo"));
-                produto.setUnidade(rs.getInt("unidade"));
+                produto.setUnidade(rs.getString("unidade"));
                 produto.setQtdEstoque(rs.getInt("qtdEstoque"));
                 produto.setNome(rs.getString("nome"));
                 produto.setPreco(rs.getDouble("preco"));
@@ -132,7 +132,7 @@ public class ProdutoDAO {
                     + "qtdEstoque = ? , nome = ? , preco = ? WHERE codigo = ?");
             
             stmt.setInt(1, produto.getCodigo());
-            stmt.setInt(2, produto.getUnidade());
+            stmt.setString(2, produto.getUnidade());
             stmt.setInt(3, produto.getQtdEstoque());
             stmt.setString(4, produto.getNome());
             stmt.setDouble(5, produto.getPreco());
@@ -207,24 +207,22 @@ public class ProdutoDAO {
         PreparedStatement stmt = null; 
         ResultSet rs = null;
         
-        int qtdNova = 0, qtdAtual = 0, unidade = 0;
+        int qtdNova = 0, qtdAtual = 0;
         
         if ( parametro == Parametros.REMOVER )
         {
             
             try 
             {
-                stmt = con.prepareStatement("SELECT unidade, qtdEstoque FROM produto WHERE codigo = ?");
+                stmt = con.prepareStatement("SELECT qtdEstoque FROM produto WHERE codigo = ?");
                 stmt.setInt(1, codigo);
                 rs = stmt.executeQuery();
                 
                 while (rs.next())
                 {
-                    unidade = rs.getInt("unidade");
                     qtdAtual = rs.getInt("qtdEstoque");
                 }
-                qtd *= unidade;
-                qtdNova = Math.abs(qtdAtual - qtd);
+                qtdNova = qtdAtual - qtd;
                 
                 stmt = con.prepareStatement("UPDATE produto SET qtdEstoque = ? WHERE codigo = ?");
 

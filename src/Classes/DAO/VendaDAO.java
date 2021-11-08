@@ -90,7 +90,7 @@ public class VendaDAO {
                 venda.setPrecoTotal(rs.getDouble("precoTotal"));
                 venda.setCodigoCliente(String.valueOf(rs.getInt("codigoCliente")));
                 if ( rs.wasNull() )
-                    venda.setCodigoCliente("");
+                    venda.setCodigoCliente("N/A");
                 vendas.add(venda);
             }
             

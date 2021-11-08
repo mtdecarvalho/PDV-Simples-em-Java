@@ -69,7 +69,7 @@ public class ModeloTabelaProduto extends AbstractTableModel {
                 produto.setQtdEstoque(Integer.parseInt(valor.toString()));
                 break;
             case COLUNA_UNIDADE:
-                produto.setUnidade(Integer.parseInt(valor.toString()));
+                produto.setUnidade(valor.toString());
                 break;
             case COLUNA_PRECO:
                 produto.setPreco(Double.parseDouble(valor.toString()));

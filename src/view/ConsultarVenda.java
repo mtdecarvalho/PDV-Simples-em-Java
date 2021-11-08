@@ -41,7 +41,11 @@ public class ConsultarVenda extends javax.swing.JDialog {
         lblCodigo.setText("Venda #" + codVenda);
         tbxData.setText(venda.getData());
         tbxHora.setText(venda.getHora());
-        tbxCliente.setText(cDAO.getNome(Integer.parseInt(venda.getCodigoCliente())));
+        if ( venda.getCodigoCliente() == "N/A" )
+            tbxCliente.setText("N/A");
+        else 
+            tbxCliente.setText(cDAO.getNome(Integer.parseInt(venda.getCodigoCliente())));
+
         switch ( venda.getFormaPagamento() )
         {
             case 0:
