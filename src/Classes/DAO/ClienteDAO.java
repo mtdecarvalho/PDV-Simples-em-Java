@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class ClienteDAO {
     
-    public void create(Cliente cliente)
+    public void create(Cliente cliente) throws SQLException
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -32,6 +32,7 @@ public class ClienteDAO {
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("INSERT INTO endereco(CEP, rua, numero, complemento, cidade, UF) VALUES (?,?,?,?,?,?)");
             
             stmt.setString(1, cliente.getEndereco().getCEP());
@@ -52,12 +53,21 @@ public class ClienteDAO {
             stmt.setString(5, cliente.getEndereco().getCEP());
             
             stmt.executeUpdate();
-            
+            con.commit();
             JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
+            
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao salvar cliente: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -118,6 +128,7 @@ public class ClienteDAO {
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("UPDATE endereco SET CEP = ?, rua = ? , "
                     + "numero = ? , complemento = ? , cidade = ? , UF = ? WHERE CEP = ?");
             
@@ -141,13 +152,22 @@ public class ClienteDAO {
             stmt.setString(5, cliente.getEndereco().getCEP());
             stmt.setInt(6, codigo);
             
-            stmt.executeUpdate();
-            
+            stmt.executeUpdate();           
+            con.commit();
             JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
+            
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -164,7 +184,7 @@ public class ClienteDAO {
         try 
         {
             
-            
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("DELETE FROM cliente WHERE codigo = ?");
             
             stmt.setInt(1, cliente.getCodigo());
@@ -176,12 +196,21 @@ public class ClienteDAO {
             stmt.setString(1, cliente.getEndereco().getCEP());
             
             stmt.executeUpdate();
+            con.commit();
             
             JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao excluir: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {

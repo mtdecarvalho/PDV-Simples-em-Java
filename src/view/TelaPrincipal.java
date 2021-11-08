@@ -5,9 +5,9 @@
  */
 package view;
 
+import Classes.Parametros;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import view.Grade.GradeCadastroCliente;
 import view.Grade.GradeCadastroProduto;
 import view.Grade.GradeVendas;
 
@@ -137,22 +137,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        GradeCadastroCliente abre = new GradeCadastroCliente(frame, true);
+        TelaLogin abre = new TelaLogin(null, true, Parametros.LOGINCLIENTE);
         abre.setLocationRelativeTo(null);
         abre.setVisible(true);
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstoqueActionPerformed
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        GradeCadastroProduto abre = new GradeCadastroProduto(frame, true);
+        TelaLogin abre = new TelaLogin(null, true, Parametros.LOGINESTOQUE);
         abre.setLocationRelativeTo(null);
         abre.setVisible(true);
     }//GEN-LAST:event_btnEstoqueActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        GradeVendas abre = new GradeVendas(frame, true);
+        GradeVendas abre = new GradeVendas(null, true);
         abre.setLocationRelativeTo(null);
         abre.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
