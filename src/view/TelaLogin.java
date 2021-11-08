@@ -144,23 +144,22 @@ public class TelaLogin extends javax.swing.JDialog {
         if(usuariodao.checkLogin(tbxLogin.getText(), tbxSenha.getText())){
             switch (param){
                 case LOGINCLIENTE:
+                    this.dispose();
                     GradeCadastroCliente abre = new GradeCadastroCliente(new javax.swing.JFrame(), true);
                     abre.setLocationRelativeTo(null);
                     abre.setVisible(true);
-                    this.dispose();
                     break;
                 case LOGINESTOQUE:
+                    this.dispose();
                     GradeCadastroProduto abre2 = new GradeCadastroProduto(new javax.swing.JFrame(), true);
                     abre2.setLocationRelativeTo(null);
                     abre2.setVisible(true);
-                    this.dispose();
                     break;
-            }
-            
+            }     
         } else {
             JOptionPane.showMessageDialog(null, "Dados invalidos!");
-            
-        }     
+        }   
+        
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed

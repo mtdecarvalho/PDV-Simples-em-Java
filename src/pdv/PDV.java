@@ -22,6 +22,5 @@ public class PDV {
         TelaPrincipal principal = new TelaPrincipal();
         principal.setLocationRelativeTo(null);
         principal.setVisible(true);
-    }
-    
+    } 
 }
