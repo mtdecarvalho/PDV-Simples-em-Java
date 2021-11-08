@@ -23,13 +23,14 @@ import javax.swing.JOptionPane;
  */
 public class ProdutoDAO {
     
-    public void create(Produto produto)
+    public void create(Produto produto) throws SQLException
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("INSERT INTO produto(codigo, unidade, qtdEstoque, nome, preco) VALUES (?,?,?,?,?)");
             
             stmt.setInt(1, produto.getCodigo());
@@ -40,11 +41,20 @@ public class ProdutoDAO {
             
             stmt.executeUpdate();
             
+            con.commit();
             JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -128,6 +138,7 @@ public class ProdutoDAO {
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("UPDATE produto SET codigo = ? , unidade = ? , "
                     + "qtdEstoque = ? , nome = ? , preco = ? WHERE codigo = ?");
             
@@ -139,12 +150,21 @@ public class ProdutoDAO {
             stmt.setInt(6, codigo);
             
             stmt.executeUpdate();
+            con.commit();
             
             JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -159,17 +179,27 @@ public class ProdutoDAO {
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("DELETE FROM produto WHERE codigo = ?");
             
             stmt.setInt(1, produto.getCodigo());
             
             stmt.executeUpdate();
+            con.commit();
             
             JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao excluir: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -184,16 +214,26 @@ public class ProdutoDAO {
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("UPDATE produto SET ultimaVenda = ? WHERE codigo = ?");
             
             stmt.setString(1, data);
             stmt.setInt(2, codigo);
             
             stmt.executeUpdate();
+            con.commit();
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -214,6 +254,7 @@ public class ProdutoDAO {
             
             try 
             {
+                con.setAutoCommit(false);
                 stmt = con.prepareStatement("SELECT qtdEstoque FROM produto WHERE codigo = ?");
                 stmt.setInt(1, codigo);
                 rs = stmt.executeQuery();
@@ -230,10 +271,19 @@ public class ProdutoDAO {
                 stmt.setInt(2, codigo);
 
                 stmt.executeUpdate();
+                con.commit();
             } 
             catch (SQLException ex) 
             {
                 JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+                if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+                }                    
             } 
             finally 
             {
@@ -244,6 +294,7 @@ public class ProdutoDAO {
         {
             try 
             {
+                con.setAutoCommit(false);
                 stmt = con.prepareStatement("SELECT qtdEstoque FROM produto WHERE codigo = ?");
                 stmt.setInt(1, codigo);
                 rs = stmt.executeQuery();
@@ -260,10 +311,19 @@ public class ProdutoDAO {
                 stmt.setInt(2, codigo);
 
                 stmt.executeUpdate();
+                con.commit();
             } 
             catch (SQLException ex) 
             {
                 JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+                if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
             } 
             finally 
             {

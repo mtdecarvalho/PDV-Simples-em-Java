@@ -32,6 +32,7 @@ public class VendaDAO {
         {
             if ( venda.getCodigoCliente() != "N/A" )
             {
+                con.setAutoCommit(false);
                 stmt = con.prepareStatement("INSERT INTO venda(codigo, data, hora, formaDePagamento, precoTotal, codigoCliente) VALUES (?,?,?,?,?,?)");
             
                 stmt.setInt(1, venda.getCodigo());
@@ -43,6 +44,7 @@ public class VendaDAO {
             }
             else
             {
+                con.setAutoCommit(false);
                 stmt = con.prepareStatement("INSERT INTO venda(codigo, data, hora, formaDePagamento, precoTotal) VALUES (?,?,?,?,?)");
             
                 stmt.setInt(1, venda.getCodigo());
@@ -53,11 +55,20 @@ public class VendaDAO {
             }
             
             stmt.executeUpdate();
+            con.commit();
             dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal(), Parametros.ADICIONAR);
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -113,6 +124,7 @@ public class VendaDAO {
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("UPDATE produto SET  data = ? , "
                     + "hora = ? , formaDePagamento = ? , precoTotal = ? WHERE codigo = ?");
             
@@ -123,12 +135,21 @@ public class VendaDAO {
             stmt.setInt(1, codigo);
             
             stmt.executeUpdate();
+            con.commit();
             
             JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
@@ -144,11 +165,13 @@ public class VendaDAO {
         
         try 
         {
+            con.setAutoCommit(false);
             stmt = con.prepareStatement("DELETE FROM venda WHERE codigo = ?");
             
             stmt.setInt(1, venda.getCodigo());
             
             stmt.executeUpdate();
+            con.commit();
             
             dao.updateValorTotal(venda.getFormaPagamento(), venda.getPrecoTotal(), Parametros.REMOVER);
             
@@ -157,6 +180,14 @@ public class VendaDAO {
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Erro ao excluir: " + ex);
+            if (con != null){
+                try {
+                   JOptionPane.showMessageDialog(null, "Transaction is being rolled back.");
+                   con.rollback();
+                } catch (SQLException excep) {
+                    JOptionPane.showMessageDialog(null, excep);
+                }
+            }
         } 
         finally 
         {
