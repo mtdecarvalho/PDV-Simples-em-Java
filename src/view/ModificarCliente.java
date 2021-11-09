@@ -306,13 +306,7 @@ public class ModificarCliente extends javax.swing.JDialog {
                 endereco.setUF(cbUF.getSelectedItem().toString());
                 cliente.setEndereco(endereco);
 
-            {
-                try {
-                    daoC.create(cliente);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ModificarCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+                daoC.create(cliente);
                 break;
 
             case ALTERAR:

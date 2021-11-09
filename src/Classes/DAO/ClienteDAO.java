@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class ClienteDAO {
     
-    public void create(Cliente cliente) throws SQLException
+    public void create(Cliente cliente)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;

@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
  */
 public class ProdutoDAO {
     
-    public void create(Produto produto) throws SQLException
+    public void create(Produto produto)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
