@@ -1,6 +1,6 @@
 Este é o repositório para a AV2 de PRJ feita por mim e pela Juliana.
 
-# Implementação de um PDV (Ponto de Venda)
+## Implementação de um PDV (Ponto de Venda)
 
 Sistema para registrar vendas de uma empresa.
 
