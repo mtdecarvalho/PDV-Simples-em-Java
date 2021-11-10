@@ -5,7 +5,7 @@
  */
 package pdv;
 
-import view.TelaPrincipal;
+import view.TelaLogin;
 
 
 
@@ -19,8 +19,8 @@ public class PDV {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        TelaPrincipal principal = new TelaPrincipal();
-        principal.setLocationRelativeTo(null);
-        principal.setVisible(true);
+        TelaLogin login = new TelaLogin(null, true);
+        login.setLocationRelativeTo(null);
+        login.setVisible(true);
     } 
 }

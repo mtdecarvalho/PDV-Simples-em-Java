@@ -131,6 +131,7 @@ CREATE TABLE IF NOT EXISTS `bdpdv`.`usuario` (
   `codigo` INT NOT NULL,
   `login` VARCHAR(45) NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
+  `permissao` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`codigo`))
 ENGINE = InnoDB;
 

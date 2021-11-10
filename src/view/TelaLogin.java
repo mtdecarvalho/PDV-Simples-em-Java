@@ -22,12 +22,7 @@ public class TelaLogin extends javax.swing.JDialog {
     /**
      * Creates new form TelaLogin
      */
-    
-    public TelaLogin(java.awt.Frame parent, boolean modal, Parametros parametro){
-        super(parent, modal);
-        initComponents();
-        this.param = parametro;
-    }
+      
     
     public TelaLogin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -140,26 +135,22 @@ public class TelaLogin extends javax.swing.JDialog {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         UsuarioDAO usuariodao = new UsuarioDAO();
-        
-        if(usuariodao.checkLogin(tbxLogin.getText(), tbxSenha.getText())){
-            switch (param){
-                case LOGINCLIENTE:
-                    this.dispose();
-                    GradeCadastroCliente abre = new GradeCadastroCliente(new javax.swing.JFrame(), true);
-                    abre.setLocationRelativeTo(null);
-                    abre.setVisible(true);
-                    break;
-                case LOGINESTOQUE:
-                    this.dispose();
-                    GradeCadastroProduto abre2 = new GradeCadastroProduto(new javax.swing.JFrame(), true);
-                    abre2.setLocationRelativeTo(null);
-                    abre2.setVisible(true);
-                    break;
-            }     
+               
+        if(usuariodao.checkLogin(tbxLogin.getText(), tbxSenha.getText())){ 
+            if(tbxLogin.getText().equals("admin")){
+                this.dispose();
+                TelaPrincipal principal = new TelaPrincipal(Parametros.LOGINADM);
+                principal.setLocationRelativeTo(null);
+                principal.setVisible(true); 
+            } else {
+                this.dispose();
+                TelaPrincipal principal = new TelaPrincipal(Parametros.LOGINVENDEDOR);
+                principal.setLocationRelativeTo(null);
+                principal.setVisible(true);
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Dados invalidos!");
-        }   
-        
+            JOptionPane.showMessageDialog(null, "Dados invalidos");
+        }    
     }//GEN-LAST:event_btnOkActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed

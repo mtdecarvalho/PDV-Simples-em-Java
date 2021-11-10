@@ -29,7 +29,7 @@ public class UsuarioDAO {
         {
             stmt = con.prepareStatement("SELECT * FROM usuario WHERE login = ? and senha = ?");
             stmt.setString(1, login);
-            stmt.setString(2, senha);
+            stmt.setString(2, senha); 
             
             rs = stmt.executeQuery();
             

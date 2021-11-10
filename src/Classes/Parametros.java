@@ -16,6 +16,6 @@ public enum Parametros {
     REMOVER,
     COM_NOTIFICACAO,
     SEM_NOTIFICACAO,
-    LOGINCLIENTE,
-    LOGINESTOQUE;
+    LOGINADM,
+    LOGINVENDEDOR;
 }
