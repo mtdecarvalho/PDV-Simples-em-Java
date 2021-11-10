@@ -32,9 +32,9 @@ public class Carrinho extends javax.swing.JDialog {
     private ModeloTabelaCarrinho modeloCarrinho;
     private ArrayList<ItemVenda> itens = new ArrayList<>();
     private ArrayList<Produto> produtos = new ArrayList<>();
-    private int codVenda;
     private String codCliente = "N/A";
     private double preco;
+    private int novoCod;
     /**
      * Creates new form Carrinho
      */
@@ -45,11 +45,11 @@ public class Carrinho extends javax.swing.JDialog {
         tbCarrinho.setModel(modeloCarrinho);
     }
     
-    public Carrinho(java.awt.Frame parent, boolean modal, int codVenda) {
+    public Carrinho(java.awt.Frame parent, boolean modal, int novoCod) {
         super(parent, modal);
         initComponents();
+        this.novoCod = novoCod;
         ProdutoDAO dao = new ProdutoDAO();
-        this.codVenda = codVenda+1;
         modeloCarrinho = new ModeloTabelaCarrinho(itens);
         tbCarrinho.setModel(modeloCarrinho);
         produtos = dao.read();
@@ -71,9 +71,7 @@ public class Carrinho extends javax.swing.JDialog {
     
     public void atualizarEstoque(int codigoProduto, int quantidade, Parametros parametro)
     {
-        ProdutoDAO dao = new ProdutoDAO();
-        
-        int qtdNova = 0, qtdAtual = 0;
+        int qtdNova, qtdAtual;
         
         for ( int i = 0 ; i < produtos.size() ; i++ )
         {
@@ -259,7 +257,7 @@ public class Carrinho extends javax.swing.JDialog {
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        AdicionarItem abre = new AdicionarItem(frame, true, codVenda, produtos);
+        AdicionarItem abre = new AdicionarItem(frame, true, produtos, novoCod);
         abre.setLocationRelativeTo(null);
         abre.setVisible(true);
         if ( abre.getItem() != null ) 
@@ -280,13 +278,13 @@ public class Carrinho extends javax.swing.JDialog {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
         String f = formatter.format(hora);
         
-        venda.setCodigo(codVenda);
+        venda.setCodigo(novoCod);
         venda.setData(data);
         venda.setHora(String.valueOf(hora));
         if ( cbFormaPagamento.getSelectedItem().toString().equals("Cartão de Crédito") )
         {
-            venda.setFormaPagamento(1);
-        } else venda.setFormaPagamento(2);
+            venda.setFormaPagamento(0);
+        } else venda.setFormaPagamento(1);
         venda.setPrecoTotal(preco);
         venda.setCodigoCliente(codCliente);
         

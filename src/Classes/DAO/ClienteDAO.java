@@ -31,18 +31,19 @@ public class ClienteDAO {
         try 
         {
             con.setAutoCommit(false);
-            stmt = con.prepareStatement("INSERT INTO cliente(telefone, nome, email, CEP, rua, numero, complemento, cidade, UF)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?)");
+            stmt = con.prepareStatement("INSERT INTO cliente(codigo, telefone, nome, email, CEP, rua, numero, complemento, cidade, UF)"
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?)");
             
-            stmt.setInt(1, cliente.getTelefone());
-            stmt.setString(2, cliente.getNome());
-            stmt.setString(3, cliente.getEmail());
-            stmt.setString(4, cliente.getCEP());
-            stmt.setString(5, cliente.getRua());
-            stmt.setInt(6, cliente.getNumero());
-            stmt.setString(7, cliente.getComplemento());
-            stmt.setString(8, cliente.getCidade());
-            stmt.setString(9, cliente.getUF());
+            stmt.setInt(1, cliente.getCodigo());
+            stmt.setInt(2, cliente.getTelefone());
+            stmt.setString(3, cliente.getNome());
+            stmt.setString(4, cliente.getEmail());
+            stmt.setString(5, cliente.getCEP());
+            stmt.setString(6, cliente.getRua());
+            stmt.setInt(7, cliente.getNumero());
+            stmt.setString(8, cliente.getComplemento());
+            stmt.setString(9, cliente.getCidade());
+            stmt.setString(10, cliente.getUF());
             
             stmt.executeUpdate();
             con.commit();

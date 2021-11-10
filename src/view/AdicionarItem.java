@@ -26,7 +26,7 @@ public class AdicionarItem extends javax.swing.JDialog {
     private ModeloTabelaProduto modeloProdutos;
     private ItemVenda item;
     double preco;
-    int codVenda, unidadeProduto;
+    int novoCod;
     Produto produto = new Produto();
 
     /**
@@ -38,11 +38,11 @@ public class AdicionarItem extends javax.swing.JDialog {
         modeloProdutos = new ModeloTabelaProduto(produtos);
     }
     
-    public AdicionarItem(java.awt.Frame parent, boolean modal, int codVenda, ArrayList<Produto> produtos) {
+    public AdicionarItem(java.awt.Frame parent, boolean modal, ArrayList<Produto> produtos, int novoCod) {
         super(parent, modal);
         initComponents();
-        this.codVenda = codVenda;
         this.produtos = produtos;
+        this.novoCod = novoCod;
         modeloProdutos = new ModeloTabelaProduto(produtos);
         tbAddItem.setModel(modeloProdutos);
     }
@@ -215,8 +215,8 @@ public class AdicionarItem extends javax.swing.JDialog {
         if (indice >= 0 && Integer.parseInt(spnQtd.getValue().toString()) > 0 ){
             produto = modeloProdutos.getProduto(indice);
             item = new ItemVenda();
+            item.setCodigoVenda(novoCod);
             item.setCodigoProduto(produto.getCodigo());
-            item.setCodigoVenda(codVenda);
             item.setNome(produto.getNome());
             calculoPrecoTotal();
             item.setQtdVendida(Integer.parseInt(spnQtd.getValue().toString()));

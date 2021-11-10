@@ -180,8 +180,11 @@ public class GradeVendas extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVendaActionPerformed
-        int ultimo = modeloVendas.getRowCount();
-        Carrinho abre = new Carrinho(new javax.swing.JFrame(), true, ultimo);
+        int novoCod = 0;
+        if ( tbGradeVendas.getRowCount() > 0 )
+            novoCod = modeloVendas.getVenda(tbGradeVendas.getRowCount()-1).getCodigo() + 1;
+        System.out.println(novoCod);
+        Carrinho abre = new Carrinho(new javax.swing.JFrame(), true, novoCod);
         abre.setLocationRelativeTo(null);
         abre.setVisible(true);
         readJTable();

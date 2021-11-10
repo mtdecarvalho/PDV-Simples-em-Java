@@ -175,7 +175,9 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         if ( indice >= 0 )
         {
             Cliente cliente = modeloClientes.getCliente(indice);
-            ModificarCliente.executar(null, Parametros.CONSULTAR, cliente, indice);
+            ModificarCliente abre = new ModificarCliente(null, Parametros.CONSULTAR, cliente, indice, 0);
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -202,26 +204,24 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
         if ( indice >= 0 )
         {
             Cliente cliente = modeloClientes.getCliente(indice);
-
-            if (ModificarCliente.executar(null, Parametros.ALTERAR, cliente, indice))
-            {
-                modeloClientes.atualizarCliente(indice, cliente);
-                
-            }
+            
+            ModificarCliente abre = new ModificarCliente(null, Parametros.ALTERAR, cliente, indice, 0);
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
             readJTable();
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-
+        int novoCod = 0;
+        if ( tbGradeCliente.getRowCount() > 0 )
+            novoCod = modeloClientes.getCliente(tbGradeCliente.getRowCount()-1).getCodigo() + 1;
+        System.out.println(novoCod);
         Cliente cliente = new Cliente();
-        if (ModificarCliente.executar(null, Parametros.ADICIONAR, cliente, 0))
-        {
-            modeloClientes.inserirCliente(cliente);
-            
-        }
+        ModificarCliente abre = new ModificarCliente(new javax.swing.JFrame(), Parametros.ADICIONAR, cliente, 0, novoCod);
+        abre.setLocationRelativeTo(null);
+        abre.setVisible(true);
         readJTable();
-        
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     /**

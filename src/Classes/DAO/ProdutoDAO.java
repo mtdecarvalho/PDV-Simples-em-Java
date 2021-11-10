@@ -31,12 +31,13 @@ public class ProdutoDAO {
         try 
         {
             con.setAutoCommit(false);
-            stmt = con.prepareStatement("INSERT INTO produto(unidade, qtdEstoque, nome, preco) VALUES (?,?,?,?)");
+            stmt = con.prepareStatement("INSERT INTO produto(codigo, unidade, qtdEstoque, nome, preco) VALUES (?,?,?,?,?)");
             
-            stmt.setString(1, produto.getUnidade());
-            stmt.setInt(2, produto.getQtdEstoque());
-            stmt.setString(3, produto.getNome());
-            stmt.setDouble(4, produto.getPreco());
+            stmt.setInt(1, produto.getCodigo());
+            stmt.setString(2, produto.getUnidade());
+            stmt.setInt(3, produto.getQtdEstoque());
+            stmt.setString(4, produto.getNome());
+            stmt.setDouble(5, produto.getPreco());
             
             stmt.executeUpdate();
             

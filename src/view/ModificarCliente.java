@@ -15,21 +15,7 @@ public class ModificarCliente extends javax.swing.JDialog {
     private Parametros param;
     private boolean confirmado;
     private int indice;
-    private String CEP;
-    private int cod;
-    
-    public static boolean executar(java.awt.Frame parent, Parametros param, Cliente cliente, int indice)
-    {
-        ModificarCliente modificar = new ModificarCliente(parent, param, cliente, indice);
-        modificar.setLocationRelativeTo(null);
-        modificar.setVisible(true);
-        return modificar.paramConfirmado();
-    }
-    
-    public boolean paramConfirmado()
-    {
-        return confirmado;
-    }
+    private int novoCod;
     
     public ModificarCliente(java.awt.Frame parent, boolean modal) 
     {
@@ -37,20 +23,18 @@ public class ModificarCliente extends javax.swing.JDialog {
         initComponents();
     }
     
-    public ModificarCliente(java.awt.Frame parent, Parametros param, Cliente c, int indice)
+    public ModificarCliente(java.awt.Frame parent, Parametros param, Cliente c, int indice, int novoCod)
     {
         super(parent, true);
         confirmado = false;
         this.param = param;
         this.indice = indice;
-        this.CEP = c.getCEP();
-        this.cod = c.getCodigo();
+        this.novoCod = novoCod;
         initComponents();
         lblCodigo.setVisible(false);
         tbxCodigo.setVisible(false);
         if ( param == Parametros.ALTERAR || param == Parametros.CONSULTAR )
         {
-            
             tbxNome.setText(c.getNome());
             tbxTelefone.setText(String.valueOf(c.getTelefone()));
             tbxEmail.setText(c.getEmail());
@@ -86,8 +70,6 @@ public class ModificarCliente extends javax.swing.JDialog {
             }
         }
 }
-    
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -298,7 +280,7 @@ public class ModificarCliente extends javax.swing.JDialog {
         switch(param)
         {
             case ADICIONAR:
-//                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
+                cliente.setCodigo(novoCod);
                 cliente.setNome(tbxNome.getText());
                 cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
                 cliente.setEmail(tbxEmail.getText());
@@ -311,9 +293,7 @@ public class ModificarCliente extends javax.swing.JDialog {
 
                 dao.create(cliente);
                 break;
-
             case ALTERAR:
-//                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 cliente.setNome(tbxNome.getText());
                 cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
                 cliente.setEmail(tbxEmail.getText());
@@ -324,7 +304,7 @@ public class ModificarCliente extends javax.swing.JDialog {
                 cliente.setCidade(tbxCidade.getText());
                 cliente.setUF(cbUF.getSelectedItem().toString());
 
-                dao.update(cliente, cod);
+                dao.update(cliente, cliente.getCodigo());
                 break;
         }
         dispose();

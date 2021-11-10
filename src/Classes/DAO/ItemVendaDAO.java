@@ -130,36 +130,6 @@ public class ItemVendaDAO {
         return itens;
     }
     
-    public void update(ItemVenda itemvenda, int codigo)
-    {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement stmt = null; 
-        
-        try 
-        {
-            stmt = con.prepareStatement("UPDATE itemvenda SET codigoProduto = ? , codigoVenda = ? , "
-                    + "qtdVendida = ? , preco = ? WHERE codigoProduto = ?");
-            
-            stmt.setInt(1, itemvenda.getCodigoProduto());
-            stmt.setInt(2, itemvenda.getCodigoVenda());
-            stmt.setInt(3, itemvenda.getQtdVendida());            
-            stmt.setDouble(4, itemvenda.getPreco());
-            stmt.setInt(5, codigo);
-            
-            stmt.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Atualizado com sucesso!");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
-        } 
-        finally 
-        {
-            ConnectionFactory.closeConnection(con, stmt);
-        }
-    }
-    
     public void delete(ItemVenda itemvenda)
     {
         Connection con = ConnectionFactory.getConnection();

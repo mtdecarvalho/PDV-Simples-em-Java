@@ -181,7 +181,10 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
         if ( indice >= 0 )
         {
             Produto produto = modeloProdutos.getProduto(indice);
-            ModificarProduto.executar(null, Parametros.CONSULTAR, produto);
+            ModificarProduto abre = new ModificarProduto(new javax.swing.JFrame(), Parametros.CONSULTAR, produto, 0);
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
+            readJTable();
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -208,25 +211,33 @@ public class GradeCadastroProduto extends javax.swing.JDialog {
         if ( indice >= 0 )
         {
             Produto produto = modeloProdutos.getProduto(indice);
-
-            if (ModificarProduto.executar(null, Parametros.ALTERAR, produto))
-            {
-                modeloProdutos.atualizarProduto(indice, produto);
-            }
+            ModificarProduto abre = new ModificarProduto(new javax.swing.JFrame(), Parametros.ALTERAR, produto, 0);
+            abre.setLocationRelativeTo(null);
+            abre.setVisible(true);
             readJTable();
         }
         
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        //JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        int novoCod = 0;
         Produto produto = new Produto();
-        if (ModificarProduto.executar(null, Parametros.ADICIONAR, produto))
-        {
-            modeloProdutos.inserirProduto(produto);
-            
-        }
+        
+        if ( tbGradeProduto.getRowCount() > 0 )
+            novoCod = modeloProdutos.getProduto(tbGradeProduto.getRowCount()-1).getCodigo() + 1;
+        System.out.println(novoCod);
+        ModificarProduto abre = new ModificarProduto(new javax.swing.JFrame(), Parametros.ADICIONAR, produto, novoCod);
+        abre.setLocationRelativeTo(null);
+        abre.setVisible(true);
         readJTable();
+//        
+//        Produto produto = new Produto();
+//        if (ModificarProduto.executar(null, Parametros.ADICIONAR, produto))
+//        {
+//            modeloProdutos.inserirProduto(produto);
+//            
+//        }
+//        readJTable();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     /**

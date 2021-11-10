@@ -12,21 +12,7 @@ import java.awt.Dimension;
 public class ModificarProduto extends javax.swing.JDialog {
     private Parametros param;
     private boolean confirmado;
-    private int cod;
-    
-    public static boolean executar(java.awt.Frame parent, Parametros param, Produto produto)
-    {
-        ModificarProduto modificar = new ModificarProduto(parent, param, produto);
-        modificar.setLocationRelativeTo(null);
-        modificar.setVisible(true);
-        
-        return modificar.paramConfirmado();
-    }
-    
-    public boolean paramConfirmado()
-    {
-        return confirmado;
-    }
+    private int cod, novoCod;
     
     public ModificarProduto(java.awt.Frame parent, boolean modal) 
     {
@@ -34,12 +20,13 @@ public class ModificarProduto extends javax.swing.JDialog {
         initComponents();
     }
     
-    public ModificarProduto(java.awt.Frame parent, Parametros param, Produto p)
+    public ModificarProduto(java.awt.Frame parent, Parametros param, Produto p, int novoCod)
     {
         super(parent, true);
         confirmado = false;
         this.param = param;
         this.cod = p.getCodigo();
+        this.novoCod = novoCod;
         initComponents();
 
         lblCodigo.setVisible(false);
@@ -226,6 +213,7 @@ public class ModificarProduto extends javax.swing.JDialog {
         switch (param)
         {
             case ADICIONAR:
+                produto.setCodigo(novoCod);
                 produto.setNome(tbxNome.getText());
                 produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
                 switch (cbUnidade.getSelectedItem().toString())
