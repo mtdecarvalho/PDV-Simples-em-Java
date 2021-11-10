@@ -285,8 +285,8 @@ public class Carrinho extends javax.swing.JDialog {
         venda.setHora(String.valueOf(hora));
         if ( cbFormaPagamento.getSelectedItem().toString().equals("Cartão de Crédito") )
         {
-            venda.setFormaPagamento(0);
-        } else venda.setFormaPagamento(1);
+            venda.setFormaPagamento(1);
+        } else venda.setFormaPagamento(2);
         venda.setPrecoTotal(preco);
         venda.setCodigoCliente(codCliente);
         

@@ -1,7 +1,6 @@
 package view;
 
 import Classes.Cliente;
-import Classes.Endereco;
 import Classes.Parametros;
 import javax.swing.JOptionPane;
 import Classes.DAO.ClienteDAO;
@@ -44,32 +43,36 @@ public class ModificarCliente extends javax.swing.JDialog {
         confirmado = false;
         this.param = param;
         this.indice = indice;
-        this.CEP = c.getEndereco().getCEP();
+        this.CEP = c.getCEP();
         this.cod = c.getCodigo();
         initComponents();
+        lblCodigo.setVisible(false);
+        tbxCodigo.setVisible(false);
         if ( param == Parametros.ALTERAR || param == Parametros.CONSULTAR )
         {
-            tbxCodigo.setText(String.valueOf(c.getCodigo()));
+            
             tbxNome.setText(c.getNome());
             tbxTelefone.setText(String.valueOf(c.getTelefone()));
             tbxEmail.setText(c.getEmail());
-            tbxCEP.setText(c.getEndereco().getCEP());
-            tbxRua.setText(c.getEndereco().getRua());
-            tbxNumero.setText(String.valueOf(c.getEndereco().getNumero()));
-            tbxComplemento.setText(c.getEndereco().getComplemento());
+            tbxCEP.setText(c.getCEP());
+            tbxRua.setText(c.getRua());
+            tbxNumero.setText(String.valueOf(c.getNumero()));
+            tbxComplemento.setText(c.getComplemento());
             for ( int i = 0 ; i < cbUF.getItemCount() ; i++ )
             {
-                if ( cbUF.getItemAt(i).contains(c.getEndereco().getUF()) )
+                if ( cbUF.getItemAt(i).contains(c.getUF()) )
                 {
                     cbUF.setSelectedIndex(i);
                     break;
                 }
             }
-            tbxCidade.setText(c.getEndereco().getCidade());
+            tbxCidade.setText(c.getCidade());
             
             if ( param == Parametros.CONSULTAR )
             {
-                tbxCodigo.setEditable(false);
+                lblCodigo.setVisible(true);
+                tbxCodigo.setVisible(true);
+                tbxCodigo.setText(String.valueOf(c.getCodigo()));
                 tbxNome.setEditable(false);
                 tbxTelefone.setEditable(false);
                 tbxEmail.setEditable(false);
@@ -92,7 +95,7 @@ public class ModificarCliente extends javax.swing.JDialog {
 
         tbxEmail = new javax.swing.JTextField();
         tbxCEP = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
         tbxRua = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -119,8 +122,8 @@ public class ModificarCliente extends javax.swing.JDialog {
         setTitle("Cliente");
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Codigo:");
+        lblCodigo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblCodigo.setText("Codigo:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Nome:");
@@ -153,6 +156,8 @@ public class ModificarCliente extends javax.swing.JDialog {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Rua:");
+
+        tbxCodigo.setEditable(false);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel9.setText("Numero:");
@@ -208,7 +213,7 @@ public class ModificarCliente extends javax.swing.JDialog {
                             .addComponent(jLabel5)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel1)
+                            .addComponent(lblCodigo)
                             .addComponent(jLabel4)
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -237,7 +242,7 @@ public class ModificarCliente extends javax.swing.JDialog {
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblCodigo)
                     .addComponent(tbxCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,7 +284,7 @@ public class ModificarCliente extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnOk)
                     .addComponent(btnCancelar))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -287,42 +292,39 @@ public class ModificarCliente extends javax.swing.JDialog {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         Cliente cliente = new Cliente();
-        Endereco endereco = new Endereco();
 
-        ClienteDAO daoC = new ClienteDAO();
+        ClienteDAO dao = new ClienteDAO();
         
         switch(param)
         {
             case ADICIONAR:
-                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
+//                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 cliente.setNome(tbxNome.getText());
                 cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
                 cliente.setEmail(tbxEmail.getText());
-                endereco.setCEP(tbxCEP.getText());
-                endereco.setRua(tbxRua.getText());
-                endereco.setNumero(Integer.parseInt(tbxNumero.getText()));
-                endereco.setComplemento(tbxComplemento.getText());
-                endereco.setCidade(tbxCidade.getText());
-                endereco.setUF(cbUF.getSelectedItem().toString());
-                cliente.setEndereco(endereco);
+                cliente.setCEP(tbxCEP.getText());
+                cliente.setRua(tbxRua.getText());
+                cliente.setNumero(Integer.parseInt(tbxNumero.getText()));
+                cliente.setComplemento(tbxComplemento.getText());
+                cliente.setCidade(tbxCidade.getText());
+                cliente.setUF(cbUF.getSelectedItem().toString());
 
-                daoC.create(cliente);
+                dao.create(cliente);
                 break;
 
             case ALTERAR:
-                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
+//                cliente.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 cliente.setNome(tbxNome.getText());
                 cliente.setTelefone(Integer.parseInt(tbxTelefone.getText()));
                 cliente.setEmail(tbxEmail.getText());
-                endereco.setCEP(tbxCEP.getText());
-                endereco.setRua(tbxRua.getText());
-                endereco.setNumero(Integer.parseInt(tbxNumero.getText()));
-                endereco.setComplemento(tbxComplemento.getText());
-                endereco.setCidade(tbxCidade.getText());
-                endereco.setUF(cbUF.getSelectedItem().toString());
-                cliente.setEndereco(endereco);
+                cliente.setCEP(tbxCEP.getText());
+                cliente.setRua(tbxRua.getText());
+                cliente.setNumero(Integer.parseInt(tbxNumero.getText()));
+                cliente.setComplemento(tbxComplemento.getText());
+                cliente.setCidade(tbxCidade.getText());
+                cliente.setUF(cbUF.getSelectedItem().toString());
 
-                daoC.update(cliente, CEP, cod);
+                dao.update(cliente, cod);
                 break;
         }
         dispose();
@@ -391,7 +393,6 @@ public class ModificarCliente extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnOk;
     private javax.swing.JComboBox<String> cbUF;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -403,6 +404,7 @@ public class ModificarCliente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblCodigo;
     private javax.swing.JTextField tbxCEP;
     private javax.swing.JTextField tbxCidade;
     private javax.swing.JTextField tbxCodigo;

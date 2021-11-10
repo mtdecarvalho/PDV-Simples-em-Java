@@ -33,25 +33,23 @@ public class VendaDAO {
             if ( venda.getCodigoCliente() != "N/A" )
             {
                 con.setAutoCommit(false);
-                stmt = con.prepareStatement("INSERT INTO venda(codigo, data, hora, formaDePagamento, precoTotal, codigoCliente) VALUES (?,?,?,?,?,?)");
-            
-                stmt.setInt(1, venda.getCodigo());
-                stmt.setString(2, venda.getData());
-                stmt.setString(3, venda.getHora());
-                stmt.setInt(4, venda.getFormaPagamento());
-                stmt.setDouble(5, venda.getPrecoTotal());
-                stmt.setInt(6, Integer.parseInt(venda.getCodigoCliente()));
+                stmt = con.prepareStatement("INSERT INTO venda(data, hora, formaDePagamento, precoTotal, codigoCliente) VALUES (?,?,?,?,?,?)");
+
+                stmt.setString(1, venda.getData());
+                stmt.setString(2, venda.getHora());
+                stmt.setInt(3, venda.getFormaPagamento());
+                stmt.setDouble(4, venda.getPrecoTotal());
+                stmt.setInt(5, Integer.parseInt(venda.getCodigoCliente()));
             }
             else
             {
                 con.setAutoCommit(false);
-                stmt = con.prepareStatement("INSERT INTO venda(codigo, data, hora, formaDePagamento, precoTotal) VALUES (?,?,?,?,?)");
+                stmt = con.prepareStatement("INSERT INTO venda(data, hora, formaDePagamento, precoTotal) VALUES (?,?,?,?,?)");
             
-                stmt.setInt(1, venda.getCodigo());
-                stmt.setString(2, venda.getData());
-                stmt.setString(3, venda.getHora());
-                stmt.setInt(4, venda.getFormaPagamento());
-                stmt.setDouble(5, venda.getPrecoTotal());
+                stmt.setString(1, venda.getData());
+                stmt.setString(2, venda.getHora());
+                stmt.setInt(3, venda.getFormaPagamento());
+                stmt.setDouble(4, venda.getPrecoTotal());
             }
             
             stmt.executeUpdate();

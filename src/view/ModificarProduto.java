@@ -42,12 +42,13 @@ public class ModificarProduto extends javax.swing.JDialog {
         this.cod = p.getCodigo();
         initComponents();
 
-        jLabel6.setVisible(false);
+        lblCodigo.setVisible(false);
+        tbxCodigo.setVisible(false);
+        lblUltimaVenda.setVisible(false);
         tbxUltimaVenda.setVisible(false);
         tbxUltimaVenda.setEditable(false);
         if ( param == Parametros.ALTERAR || param == Parametros.CONSULTAR )
         {
-            tbxCodigo.setText(String.valueOf(p.getCodigo()));
             tbxNome.setText(p.getNome());
             tbxQtdEstoque.setText(String.valueOf(p.getQtdEstoque()));
             for ( int i = 0 ; i < cbUnidade.getItemCount() ; i++ )
@@ -61,13 +62,14 @@ public class ModificarProduto extends javax.swing.JDialog {
             tbxPreco.setText(String.valueOf(p.getPreco()));  
             if ( param == Parametros.CONSULTAR )
             {
-                
-                tbxCodigo.setEditable(false);
+                lblCodigo.setVisible(true);
+                tbxCodigo.setVisible(true);
+                tbxCodigo.setText(String.valueOf(p.getCodigo()));
                 tbxNome.setEditable(false);
                 tbxQtdEstoque.setEditable(false);
                 cbUnidade.setEnabled(false);
                 tbxPreco.setEditable(false);
-                jLabel6.setVisible(true);
+                lblUltimaVenda.setVisible(true);
                 tbxUltimaVenda.setVisible(true);
                 tbxUltimaVenda.setText(p.getUltimaVenda());
                 tbxUltimaVenda.setEditable(false);
@@ -81,7 +83,7 @@ public class ModificarProduto extends javax.swing.JDialog {
     private void initComponents() {
 
         tbxPreco = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        lblCodigo = new javax.swing.JLabel();
         tbxUltimaVenda = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -90,7 +92,7 @@ public class ModificarProduto extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lblUltimaVenda = new javax.swing.JLabel();
         tbxCodigo = new javax.swing.JTextField();
         tbxNome = new javax.swing.JTextField();
         tbxQtdEstoque = new javax.swing.JTextField();
@@ -100,8 +102,8 @@ public class ModificarProduto extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Produto");
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Codigo:");
+        lblCodigo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblCodigo.setText("Codigo:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Nome:");
@@ -133,8 +135,10 @@ public class ModificarProduto extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("Preço:");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setText("Última Venda:");
+        lblUltimaVenda.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblUltimaVenda.setText("Última Venda:");
+
+        tbxCodigo.setEditable(false);
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/produtos.png"))); // NOI18N
 
@@ -149,12 +153,12 @@ public class ModificarProduto extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6)
+                            .addComponent(lblUltimaVenda)
                             .addComponent(jLabel5)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel1))
+                            .addComponent(lblCodigo))
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -183,7 +187,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblCodigo)
                     .addComponent(tbxCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,7 +207,7 @@ public class ModificarProduto extends javax.swing.JDialog {
                     .addComponent(tbxPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
+                    .addComponent(lblUltimaVenda)
                     .addComponent(tbxUltimaVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -222,7 +226,6 @@ public class ModificarProduto extends javax.swing.JDialog {
         switch (param)
         {
             case ADICIONAR:
-                produto.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 produto.setNome(tbxNome.getText());
                 produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
                 switch (cbUnidade.getSelectedItem().toString())
@@ -247,7 +250,6 @@ public class ModificarProduto extends javax.swing.JDialog {
                 dao.create(produto);
                 break;
             case ALTERAR:
-                produto.setCodigo(Integer.parseInt(tbxCodigo.getText()));
                 produto.setNome(tbxNome.getText());
                 produto.setQtdEstoque(Integer.parseInt(tbxQtdEstoque.getText()));
                 switch (cbUnidade.getSelectedItem().toString())
@@ -343,14 +345,14 @@ public class ModificarProduto extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnOk;
     private javax.swing.JComboBox<String> cbUnidade;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblUltimaVenda;
     private javax.swing.JTextField tbxCodigo;
     private javax.swing.JTextField tbxNome;
     private javax.swing.JTextField tbxPreco;

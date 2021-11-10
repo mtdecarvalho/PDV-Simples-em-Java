@@ -39,12 +39,12 @@ public class GradeCadastroCliente extends javax.swing.JDialog {
             cliente.getTelefone();
             cliente.getNome();
             cliente.getEmail();
-            cliente.getEndereco().getCEP();
-            cliente.getEndereco().getRua();
-            cliente.getEndereco().getNumero();
-            cliente.getEndereco().getComplemento();
-            cliente.getEndereco().getCidade();
-            cliente.getEndereco().getUF();
+            cliente.getCEP();
+            cliente.getRua();
+            cliente.getNumero();
+            cliente.getComplemento();
+            cliente.getCidade();
+            cliente.getUF();
             modeloClientes.inserirCliente(cliente);
         }
         

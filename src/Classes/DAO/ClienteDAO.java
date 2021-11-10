@@ -7,7 +7,6 @@ package Classes.DAO;
 
 import Classes.Cliente;
 import Classes.ConnectionFactory;
-import Classes.Endereco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -28,29 +27,22 @@ public class ClienteDAO {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
         PreparedStatement stmtEndereco = null;
-        EnderecoDAO eDAO = new EnderecoDAO();
         
         try 
         {
             con.setAutoCommit(false);
-            stmt = con.prepareStatement("INSERT INTO endereco(CEP, rua, numero, complemento, cidade, UF) VALUES (?,?,?,?,?,?)");
+            stmt = con.prepareStatement("INSERT INTO cliente(telefone, nome, email, CEP, rua, numero, complemento, cidade, UF)"
+                    + " VALUES (?,?,?,?,?,?,?,?,?)");
             
-            stmt.setString(1, cliente.getEndereco().getCEP());
-            stmt.setString(2, cliente.getEndereco().getRua());
-            stmt.setInt(3, cliente.getEndereco().getNumero());
-            stmt.setString(4, cliente.getEndereco().getComplemento());
-            stmt.setString(5, cliente.getEndereco().getCidade());
-            stmt.setString(6, cliente.getEndereco().getUF());
-            
-            stmt.executeUpdate();
-            
-            stmt = con.prepareStatement("INSERT INTO cliente(codigo, telefone, nome, email, CEP) VALUES (?,?,?,?,?)");
-            
-            stmt.setInt(1, cliente.getCodigo());
-            stmt.setInt(2, cliente.getTelefone());
-            stmt.setString(3, cliente.getNome());
-            stmt.setString(4, cliente.getEmail());
-            stmt.setString(5, cliente.getEndereco().getCEP());
+            stmt.setInt(1, cliente.getTelefone());
+            stmt.setString(2, cliente.getNome());
+            stmt.setString(3, cliente.getEmail());
+            stmt.setString(4, cliente.getCEP());
+            stmt.setString(5, cliente.getRua());
+            stmt.setInt(6, cliente.getNumero());
+            stmt.setString(7, cliente.getComplemento());
+            stmt.setString(8, cliente.getCidade());
+            stmt.setString(9, cliente.getUF());
             
             stmt.executeUpdate();
             con.commit();
@@ -85,26 +77,23 @@ public class ClienteDAO {
         
         try
         {
-            stmt = con.prepareStatement("SELECT c.*, e.rua, e.numero, e.complemento, e.cidade, e.UF"
-                    + " FROM cliente as c, endereco as e WHERE c.CEP = e.CEP");
+            stmt = con.prepareStatement("SELECT * FROM cliente");
             rs = stmt.executeQuery();
             
             while (rs.next())
             {
                 Cliente cliente = new Cliente();
-                Endereco endereco = new Endereco();
                 
                 cliente.setCodigo(rs.getInt("codigo"));
                 cliente.setTelefone(rs.getInt("telefone"));
                 cliente.setNome(rs.getString("nome"));
                 cliente.setEmail(rs.getString("email"));
-                endereco.setCEP(rs.getString("CEP"));
-                endereco.setRua(rs.getString("rua"));
-                endereco.setNumero(rs.getInt("numero"));
-                endereco.setComplemento(rs.getString("complemento"));
-                endereco.setCidade(rs.getString("cidade"));
-                endereco.setUF(rs.getString("UF"));
-                cliente.setEndereco(endereco);
+                cliente.setCEP(rs.getString("CEP"));
+                cliente.setRua(rs.getString("rua"));
+                cliente.setNumero(rs.getInt("numero"));
+                cliente.setComplemento(rs.getString("complemento"));
+                cliente.setCidade(rs.getString("cidade"));
+                cliente.setUF(rs.getString("UF"));
                 
                 clientes.add(cliente);
             }
@@ -121,7 +110,7 @@ public class ClienteDAO {
         return clientes;
     }
     
-    public void update(Cliente cliente, String CEP, int codigo)
+    public void update(Cliente cliente, int codigo)
     {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null; 
@@ -129,28 +118,20 @@ public class ClienteDAO {
         try 
         {
             con.setAutoCommit(false);
-            stmt = con.prepareStatement("UPDATE endereco SET CEP = ?, rua = ? , "
-                    + "numero = ? , complemento = ? , cidade = ? , UF = ? WHERE CEP = ?");
+            stmt = con.prepareStatement("UPDATE cliente SET telefone = ? , "
+                    + "nome = ? , email = ? , CEP = ?, rua = ?, numero = ? , complemento = ? "
+                    + ", cidade = ? , UF = ? WHERE codigo = ?");
             
-            stmt.setString(1, cliente.getEndereco().getCEP());
-            stmt.setString(2, cliente.getEndereco().getRua());
-            stmt.setInt(3, cliente.getEndereco().getNumero());
-            stmt.setString(4, cliente.getEndereco().getComplemento());
-            stmt.setString(5, cliente.getEndereco().getCidade());
-            stmt.setString(6, cliente.getEndereco().getUF());
-            stmt.setString(7, CEP);
-            
-            stmt.executeUpdate();
-            
-            stmt = con.prepareStatement("UPDATE cliente SET codigo = ? , telefone = ? , "
-                    + "nome = ? , email = ? , CEP = ? WHERE codigo = ?");
-            
-            stmt.setInt(1, cliente.getCodigo());
-            stmt.setInt(2, cliente.getTelefone());
-            stmt.setString(3, cliente.getNome());
-            stmt.setString(4, cliente.getEmail());
-            stmt.setString(5, cliente.getEndereco().getCEP());
-            stmt.setInt(6, codigo);
+            stmt.setInt(1, cliente.getTelefone());
+            stmt.setString(2, cliente.getNome());
+            stmt.setString(3, cliente.getEmail());
+            stmt.setString(4, cliente.getCEP());
+            stmt.setString(5, cliente.getRua());
+            stmt.setInt(6, cliente.getNumero());
+            stmt.setString(7, cliente.getComplemento());
+            stmt.setString(8, cliente.getCidade());
+            stmt.setString(9, cliente.getUF());
+            stmt.setInt(10, codigo);
             
             stmt.executeUpdate();           
             con.commit();
@@ -191,13 +172,7 @@ public class ClienteDAO {
             
             stmt.executeUpdate();
             
-            stmt = con.prepareStatement("DELETE FROM endereco WHERE CEP = ?");
-            
-            stmt.setString(1, cliente.getEndereco().getCEP());
-            
-            stmt.executeUpdate();
             con.commit();
-            
             JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
         } 
         catch (SQLException ex) 
