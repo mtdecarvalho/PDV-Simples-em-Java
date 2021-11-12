@@ -8,7 +8,7 @@ Sistema para registrar vendas de uma empresa.
 - Manter um cadastro produtos (inclusão, alteração, exclusão e consulta de produtos);
 - Manter um cadastro de clientes (inclusão, alteração, exclusão e consulta de clientes);
 - Manter um cadastro de usuários com diferentes permissões, onde um usuário administrador pode alterar 
-dados e cadastrar novos usuários;
+dados e cadastrar novos produtos/clientes;
 - Registrar vendas. Uma venda pode ter mais de um item e a venda pode ou não ser vinculada a um
 cliente;
 - Registrar a forma de pagamento. A venda pode ser paga em dinheiro ou com cartão de
